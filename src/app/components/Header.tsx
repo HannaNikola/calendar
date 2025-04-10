@@ -16,9 +16,9 @@ export default function Header() {
         </div>
         <p className=" flex mr-20">autor@gmail.com</p>
 
-        <button className="flex items-center">
+        <button className="flex items-center transition-colors duration-500 hover:text-sky-400">
           Log out
-          <LogOut size={20} className="ml-3" />
+          <LogOut size={15} className="ml-3" />
         </button>
       </div>
     </div>
