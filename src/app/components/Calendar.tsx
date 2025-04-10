@@ -7,13 +7,7 @@ import eventsData from "../api/Event";
 import { useState } from "react";
 import { EventModal } from "./modal";
 
-interface Event {
-  id: number;
-  title: string;
-  start: Date;
-  end: Date;
-  allDay: boolean;
-}
+
 
 const localizer = momentLocalizer(moment);
 
@@ -26,7 +20,7 @@ export const CalendarEl = () => {
     setSlot({ start, end });
     setModalOpen(true);
   };
-  console.log(myEvents);
+  
 
   return (
     <div>
