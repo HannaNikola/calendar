@@ -1,25 +1,21 @@
 "use client";
 
-
-import { Field, Formik } from "formik";
+import { Field, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
-
-
 
 interface EventModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (values: {
     title: string;
-    start: Date;
-    end: Date;
+    start: string;
+    end: string;
     allDay: boolean;
+    addTask: boolean;
   }) => void;
   slotStart: Date;
   slotEnd: Date;
 }
-
-
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -28,9 +24,6 @@ const EventSchema = Yup.object().shape({
     .required("title can`t be empty"),
 });
 
-
-
-
 export const EventModal = ({
   isOpen,
   onClose,
@@ -38,11 +31,7 @@ export const EventModal = ({
   slotStart,
   slotEnd,
 }: EventModalProps) => {
-
-
   if (!isOpen) return null;
-
-
 
   return (
     <div className=" flex fixed inset-0 bg-black/50  items-center justify-center z-50 shadow-2xs">
@@ -51,21 +40,31 @@ export const EventModal = ({
           Create new event
         </h1>
         <Formik
-          initialValues={{ title: "", allDay: false }}
+          initialValues={{ title: "", allDay: false, addTask: false }}
           validationSchema={EventSchema}
-          onSubmit={(values,{ resetForm }) => {
+          onSubmit={(
+            values,
+            {
+              resetForm,
+            }: FormikHelpers<{
+              title: string;
+              allDay: boolean;
+              addTask: boolean;
+            }>
+          ) => {
             onSubmit({
               title: values.title,
-              start: slotStart,
-              end: slotEnd,
+              start: slotStart.toISOString(),
+              end: slotEnd.toISOString(),
               allDay: values.allDay,
+              addTask: values.addTask,
             });
-            resetForm ()
+            resetForm();
             onClose();
           }}
         >
-          {({handleSubmit }) => (
-            <form onSubmit={handleSubmit }>
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
               <div className="flex flex-col ">
                 <Field
                   as="textarea"
@@ -79,11 +78,18 @@ export const EventModal = ({
                     e.target.style.height = e.target.scrollHeight + "px";
                   }}
                 />
-                <div className="flex items-center mb-8 ">
-                  <label className=" flex text-black mr-2 ">
-                    All day event
-                  </label>
-                  <Field type="checkbox" name="allDay" />
+
+                <div className="flex justify-between  mb-8 ">
+                  <div className="flex items-center  ">
+                    <label className=" flex text-black mr-2 ">
+                      All day event
+                    </label>
+                    <Field type="checkbox" name="allDay" />
+                  </div>
+                  <div className="flex items-center  ">
+                    <label className="mr-2">Add Task</label>
+                    <Field type="checkbox" name="AddTask" />
+                  </div>
                 </div>
               </div>
 
@@ -106,5 +112,3 @@ export const EventModal = ({
     </div>
   );
 };
-
-

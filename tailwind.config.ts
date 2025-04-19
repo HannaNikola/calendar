@@ -11,10 +11,6 @@ const config: Config = {
           'system-ui',
           '-apple-system',]
       },
-        screens:{
-            laptop: '1280px',
-            desktop: '1440px'
-        }
     },
   },
 };

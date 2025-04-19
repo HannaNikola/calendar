@@ -25,6 +25,14 @@ Follow the instructions below to run the project.
 `http://localhost:3000`
 5. check yor code before deployment npx eslint src --ext .ts,.tsx
 
+# API Documentation swagger you can find follow this link  
+
+https://calendar-back-end-s3b2.onrender.com/api-docs/
+
+# The backend for this project is located in this repository.
+
+https://github.com/HannaNikola/Calendar_back_end
+
 ## Technologies
 
 
