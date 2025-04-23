@@ -57,10 +57,13 @@ export const CalendarEl = () => {
     setModalOpen(true);
   };
 
+
+
   return (
     <section className="flex items-center justify-center p-4 ">
       <div className=" flex w-full h-[360px] md:h-[700px] ">
         <Calendar
+        style={{ height: "100%", width: "100%"}}
           localizer={localizer}
           events={parsedEvents}
           startAccessor="start"
