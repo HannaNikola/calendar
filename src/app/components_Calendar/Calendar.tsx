@@ -9,7 +9,6 @@ import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
 import {
   addEventApi,
-  deleteEventApi,
   fetchEventsApi,
 } from "@/app/api/eventsApi";
 import { EventModal } from "@/app/components_Calendar/modal";
@@ -70,6 +69,7 @@ export const CalendarEl = () => {
           endAccessor="end"
           defaultView="month"
           selectable
+          onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
           eventPropGetter={(event) => ({
             style: {
