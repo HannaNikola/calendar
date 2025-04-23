@@ -3,7 +3,8 @@ import { LogOut } from "lucide-react";
 
 export default function Header() {
   return (
-    <div className=" h-[100px] flex w-full  bg-sky-200  py-5 px-5 shadow-sm">
+    <section className="w-full  bg-sky-200 ">
+    <div className=" h-[100px] flex  py-5 px-5 shadow-sm">
       <div className="flex ml-auto items-center  ">
         <div className="flex w-[30px] h-[30px] mr-4 border-[1] border-gray-500  rounded-[50px] overflow-hidden ">
           <Image
@@ -22,5 +23,6 @@ export default function Header() {
         </button>
       </div>
     </div>
+    </section>
   );
 }

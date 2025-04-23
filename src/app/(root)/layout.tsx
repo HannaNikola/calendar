@@ -1,10 +1,10 @@
 'use client'
 
-import Header from "../components_Calendar/Header";
+import Header from "@/app/components_Calendar/Header";
 import "./globals.css";
-import { PageWrapper } from "../shared/PageWrapper";
+import { PageWrapper } from "@/app/shared/PageWrapper";
 import { Provider } from 'react-redux';
-import { store } from '../store/store'
+import { store } from "@/app/store/store"
 
 
 export default function RootLayout({ 

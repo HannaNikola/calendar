@@ -1,5 +1,5 @@
 import { TaskEl } from "@/app/components_Task/Task";
-import Navbar from "../../components_Calendar/Navbar";
+import Navbar from "@/app/components_Calendar/Navbar";
 
 
 export default function Task() {

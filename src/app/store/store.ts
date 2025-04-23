@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { eventReducer } from './slices/eventReducer';
+import { eventReducer } from "@/app/store/slices/eventReducer";
 import logger from 'redux-logger'
 
 export const store = configureStore({

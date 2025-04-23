@@ -2,20 +2,12 @@
 
 import { Field, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
+import {EventModalProps} from "@/app/types/typesModal"
+import { X } from 'lucide-react';
 
-interface EventModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (values: {
-    title: string;
-    start: Date;
-    end: Date;
-    allDay: boolean;
-    addTask: boolean;
-  }) => void;
-  slotStart: Date;
-  slotEnd: Date;
-}
+
+
+
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -33,12 +25,20 @@ export const EventModal = ({
 }: EventModalProps) => {
   if (!isOpen) return null;
 
+  
+
   return (
     <div className=" flex fixed inset-0 bg-black/50  items-center justify-center z-50 shadow-2xs">
+      
+     
       <div className=" p-4 rounded-lg min-w-[400px] bg-white">
+        <div className="flex ">
         <h1 className="flex-1 text-center  text-black mb-6">
           Create new event
         </h1>
+        <button className='flex' onClick={onClose}> <X size={15}/></button>
+        </div>
+        
         <Formik
   initialValues={{ title: "", allDay: false, addTask: false }}
   validationSchema={EventSchema}
@@ -84,8 +84,13 @@ export const EventModal = ({
       </div>
 
       <div className="flex flex-row justify-between">
-        <button onClick={onClose} className="w-[50px] text-red-700" type="button">
+        <button 
+         
+         type='button'  className="w-[50px] text-red-700" >
           Delete
+        </button>
+        <button className="w-[50px] text-sky-950" type="submit">
+          Update
         </button>
         <button className="w-[50px] text-sky-950" type="submit">
           Save
