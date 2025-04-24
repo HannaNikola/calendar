@@ -1,4 +1,4 @@
-"use client";
+
 
 import { Field, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
@@ -16,7 +16,8 @@ const EventSchema = Yup.object().shape({
     .required("title can`t be empty"),
 });
 
-export const EventModal = ({
+export const ModalEvent = ({
+  type = 'new',
   isOpen,
   onClose,
   onSubmit,
@@ -24,6 +25,9 @@ export const EventModal = ({
   slotEnd,
 }: EventModalProps) => {
   if (!isOpen) return null;
+
+  const isNew = type === 'new'
+  
 
   
 
@@ -33,9 +37,14 @@ export const EventModal = ({
      
       <div className=" p-4 rounded-lg min-w-[400px] bg-white">
         <div className="flex ">
-        <h1 className="flex-1 text-center  text-black mb-6">
-          Create new event
-        </h1>
+          { isNew ? (
+            <h1 className="flex-1 text-center  text-black mb-6">
+            Create event
+          </h1>
+          ):(<h1 className="flex-1 text-center  text-black mb-6">
+            Update event
+          </h1>)}
+        
         <button className='flex' onClick={onClose}> <X size={15}/></button>
         </div>
         
@@ -89,9 +98,10 @@ export const EventModal = ({
          type='button'  className="w-[50px] text-red-700" >
           Delete
         </button>
-        <button className="w-[50px] text-sky-950" type="submit">
+        {!isNew ?(<button className="w-[50px] text-sky-950" type="submit">
           Update
-        </button>
+        </button>):(<></>)}
+        
         <button className="w-[50px] text-sky-950" type="submit">
           Save
         </button>

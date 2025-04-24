@@ -1,8 +1,11 @@
+
 import { CalendarEvent } from "./typesApi";
+
+export type ModalType = 'new' | 'update'
 
 export interface EventModalProps {
     isOpen: boolean;
-    
+    type?: ModalType 
     onClose: () => void;
     onSubmit: (values: {
       title: string;
