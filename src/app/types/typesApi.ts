@@ -5,6 +5,7 @@
     end: Date;
     allDay: boolean;
     addTask: boolean;
+    
   }
   
   export interface EventState {

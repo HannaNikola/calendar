@@ -18,6 +18,7 @@ const EventSchema = Yup.object().shape({
 
 export const ModalEvent = ({
   type = 'new',
+  selectedEvent,
   isOpen,
   onClose,
   onSubmit,
@@ -49,7 +50,10 @@ export const ModalEvent = ({
         </div>
         
         <Formik
-  initialValues={{ title: "", allDay: false, addTask: false }}
+  initialValues={{ 
+    title: selectedEvent?.title || '' ,
+     allDay: selectedEvent?.allDay || false, 
+     addTask: selectedEvent?.addTask ||false }}
   validationSchema={EventSchema}
   onSubmit={(
     values,

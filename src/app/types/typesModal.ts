@@ -16,4 +16,5 @@ export interface EventModalProps {
     }) => void;
     slotStart: Date;
     slotEnd: Date;
+    selectedEvent?: CalendarEvent | null | undefined
   }

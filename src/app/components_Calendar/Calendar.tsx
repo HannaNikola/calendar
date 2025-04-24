@@ -81,6 +81,7 @@ export const CalendarEl = () => {
           onSubmit={handleSubmitNewEvent}
           slotStart={slot.start}
           slotEnd={slot.end}
+          selectedEvent = {selectedEvent}
           type={modalType}
         />
       </div>
