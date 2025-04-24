@@ -7,6 +7,7 @@ export interface EventModalProps {
     isOpen: boolean;
     type?: ModalType 
     onClose: () => void;
+    handleDeleteEvent:() => void
     onSubmit: (values: {
       title: string;
       start: Date;
@@ -18,3 +19,7 @@ export interface EventModalProps {
     slotEnd: Date;
     selectedEvent?: CalendarEvent | null | undefined
   }
+
+
+
+

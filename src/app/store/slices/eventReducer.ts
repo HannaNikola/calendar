@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addEventApi, fetchEventsApi, deleteEventApi, updateEventApi } from "@/app/api/eventsApi";
-import {EventState} from "@/app/types/typesApi"
-
-
-
+import {
+  addEventApi,
+  fetchEventsApi,
+  deleteEventApi,
+  updateEventApi,
+} from "@/app/api/eventsApi";
+import { EventState } from "@/app/types/typesApi";
 
 const initialState: EventState = {
   events: [],
   status: "idle",
   error: null,
 };
-
-
 
 const eventSlice = createSlice({
   name: "eventData",
@@ -37,41 +37,38 @@ const eventSlice = createSlice({
       })
       .addCase(addEventApi.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.events = [...state.events, action.payload]; 
+        state.events = [...state.events, action.payload];
       })
       .addCase(addEventApi.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Unknown error"; 
+        state.error = action.error.message || "Unknown error";
       })
-      .addCase(updateEventApi.pending,(state)=>{
-        state.status = 'loading'
+      .addCase(updateEventApi.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(updateEventApi.fulfilled,(state, action)=>{
+      .addCase(updateEventApi.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.events = state.events.map(item => 
+        state.events = state.events.map((item) =>
           item._id === action.payload._id ? action.payload : item
         );
       })
-      .addCase(updateEventApi.rejected, (state, action)=>{
-        state.status = 'failed'
+      .addCase(updateEventApi.rejected, (state, action) => {
+        state.status = "failed";
         state.error = action.error.message || "Unknown error";
       })
-      .addCase(deleteEventApi.pending, (state)=>{
+      .addCase(deleteEventApi.pending, (state) => {
         state.status = "loading";
-        
       })
-      // .addCase(deleteEventApi.fulfilled, (state, action)=>{
-      //   state.status = "succeeded";
-      //   state.events = state.events.filter(event => event.id !== action.payload);
-      // })
-      .addCase(deleteEventApi.fulfilled, (state, action)=>{
+      .addCase(deleteEventApi.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.events = state.events.filter(event => event._id !== action.payload);
+        state.events = state.events.filter(
+          (item) => item._id !== action.payload
+        );
       })
-      .addCase(deleteEventApi.rejected, (state, action)=>{
-       state.status = "failed"
-       state.error = action.error.message || "Unknown error"; 
-      })
+      .addCase(deleteEventApi.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message || "Unknown error";
+      });
   },
 });
 
