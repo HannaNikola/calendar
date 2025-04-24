@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addEventApi, fetchEventsApi, deleteEventApi } from "@/app/api/eventsApi";
+import { addEventApi, fetchEventsApi, deleteEventApi, updateEventApi } from "@/app/api/eventsApi";
 import {EventState} from "@/app/types/typesApi"
 
 
@@ -43,8 +43,22 @@ const eventSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message || "Unknown error"; 
       })
+      .addCase(updateEventApi.pending,(state)=>{
+        state.status = 'loading'
+      })
+      .addCase(updateEventApi.fulfilled,(state, action)=>{
+        state.status = "succeeded";
+        state.events = state.events.map(item => 
+          item._id === action.payload._id ? action.payload : item
+        );
+      })
+      .addCase(updateEventApi.rejected, (state, action)=>{
+        state.status = 'failed'
+        state.error = action.error.message || "Unknown error";
+      })
       .addCase(deleteEventApi.pending, (state)=>{
         state.status = "loading";
+        
       })
       // .addCase(deleteEventApi.fulfilled, (state, action)=>{
       //   state.status = "succeeded";

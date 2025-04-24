@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { Axios, AxiosError } from "axios";
+import axios, {  AxiosError } from "axios";
+import { CalendarEvent } from "../types/typesApi";
 
 
 
@@ -9,7 +10,7 @@ axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 // solition for render.com free version
 
 export const fetchEventsApi = createAsyncThunk(
-    "allEvents/fetchAll",
+    "eventsData/fetchAll",
     async (_, thunkAPI) => {
       const maxRetries = 3;
       let attempt = 0;
@@ -62,7 +63,7 @@ export const fetchEventsApi = createAsyncThunk(
 // );
   
   export const addEventApi = createAsyncThunk(
-    "eventItem/addEvent",
+    "eventsData/addEvent",
     async (newEvent:{ title: string; start: Date; end: Date; allDay: boolean; addTask: boolean }, thunkAPI) => {
       try {
         const payload = {
@@ -83,8 +84,22 @@ export const fetchEventsApi = createAsyncThunk(
   );
 
 
-export const deleteEventApi =createAsyncThunk<string, string>(
-  "eventItem/deleteEvent",
+  export const updateEventApi = createAsyncThunk(
+    'eventsData/updateEvent',
+    async (payload: {id: string; eventData: CalendarEvent }, thunkApi) => {
+      try {
+        const response = await axios.put(`/api/events/${payload.id}`, payload.eventData);
+        return response.data;
+      } catch (error) {
+        const err = error as AxiosError;
+        return thunkApi.rejectWithValue(err.response?.data || "Something went wrong");
+      }
+    }
+  );
+
+
+export const deleteEventApi = createAsyncThunk<string, string>(
+  "eventsData/deleteEvent",
   async(id, thunkApi)=>{
     try{
       const response = await axios.delete(`/api/events/${id}`)

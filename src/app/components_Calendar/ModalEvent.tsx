@@ -1,5 +1,3 @@
-
-
 import { Field, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import {EventModalProps} from "@/app/types/typesModal"
@@ -50,11 +48,11 @@ export const ModalEvent = ({
         </div>
         
         <Formik
-  initialValues={{ 
-    title: selectedEvent?.title || '' ,
-     allDay: selectedEvent?.allDay || false, 
-     addTask: selectedEvent?.addTask ||false }}
-  validationSchema={EventSchema}
+      initialValues={{ 
+      title: selectedEvent?.title || '' ,
+      allDay: selectedEvent?.allDay || false, 
+      addTask: selectedEvent?.addTask ||false }}
+      validationSchema={EventSchema}
   onSubmit={(
     values,
     { resetForm }: FormikHelpers<{ title: string; allDay: boolean; addTask: boolean }>

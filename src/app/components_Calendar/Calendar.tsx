@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
-import { addEventApi, fetchEventsApi } from "@/app/api/eventsApi";
+import { addEventApi, fetchEventsApi, updateEventApi } from "@/app/api/eventsApi";
 import { ModalEvent } from "@/app/components_Calendar/ModalEvent";
 import {ModalType} from "@/app/types/typesModal"
 
@@ -33,12 +33,19 @@ export const CalendarEl = () => {
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
     setModalType('new')
+    setSelectedEvent(null); 
     setSlot({ start, end });
     setModalOpen(true);
   };
 
-  const handleSubmitNewEvent = (newEvent: CalendarEvent) => {
-    dispatch(addEventApi(newEvent));
+  const handleSubmitNewEvent = (eventData: CalendarEvent) => {
+    if(modalType === 'new'){
+      dispatch(addEventApi(eventData));
+    } else if (selectedEvent?._id){
+      dispatch(updateEventApi({id: selectedEvent._id, eventData}))
+    }
+    // check
+    // setModalOpen(false);
   };
 
   const parsedEvents = events.map((event) => ({
