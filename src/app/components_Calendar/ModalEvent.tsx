@@ -22,7 +22,7 @@ export const ModalEvent = ({
   slotStart,
   slotEnd,
 }: EventModalProps) => {
-  if (!isOpen) return null;
+  
 
   const[title, setTitle]= useState('')
   const isNew = type === "new";
@@ -30,6 +30,8 @@ export const ModalEvent = ({
   useEffect(()=>{
     setTitle(selectedEvent?.title || "")
   },[selectedEvent])
+
+  if (!isOpen) return null;
   
   const handleSubmit = ()=>{
     const eventData: CalendarEvent = {

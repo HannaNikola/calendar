@@ -53,7 +53,10 @@ export const CalendarEl = () => {
     setModalType("update");
     setSelectedEvent(event);
     
-    setSlot({ start: new Date(event.start ?? new Date()), end: new Date(event.end ?? new Date()) });
+    setSlot({
+      start: event.start ? new Date(event.start) : new Date(),
+      end: event.end ? new Date(event.end) : new Date(),
+    });
     setModalOpen(true);
   };
 
