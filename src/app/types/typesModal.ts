@@ -7,16 +7,11 @@ export interface EventModalProps {
     isOpen: boolean;
     type?: ModalType 
     onClose: () => void;
+    handelAddEvent: (eventData: CalendarEvent) => void;
+    handelUpdateEvent: (eventData: CalendarEvent) => void;
     handleDeleteEvent:() => void
-    onSubmit: (values: {
-      title: string;
-      start: Date;
-      end: Date;
-      allDay: boolean;
-      addTask: boolean;
-    }) => void;
-    slotStart: Date;
-    slotEnd: Date;
+    slotStart?: Date;
+    slotEnd?: Date;
     selectedEvent?: CalendarEvent | null | undefined
   }
 

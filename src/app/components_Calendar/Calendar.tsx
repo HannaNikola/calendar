@@ -18,15 +18,16 @@ import { ModalType } from "@/app/types/typesModal";
 
 const localizer = momentLocalizer(moment);
 
+
+
 export const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
-    null
-  );
+  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>( null);
   const [slot, setSlot] = useState({ start: new Date(), end: new Date() });
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>("new");
+
 
   const events = useSelector(
     (state: RootState) => state.eventData.events
@@ -36,8 +37,10 @@ export const CalendarEl = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchEventsApi() as any);
+    dispatch(fetchEventsApi());
   }, [dispatch]);
+
+
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
     setModalType("new");
@@ -46,35 +49,52 @@ export const CalendarEl = () => {
     setModalOpen(true);
   };
 
-  const handleSubmitNewEvent = (eventData: CalendarEvent) => {
-    if (modalType === "new") {
-      dispatch(addEventApi(eventData));
-    } else if (selectedEvent?._id) {
-      dispatch(updateEventApi({ id: selectedEvent._id, eventData }));
-    }
-    // check
-    // setModalOpen(false);
+  const handleSelectEvent = (event: CalendarEvent) => {
+    setModalType("update");
+    setSelectedEvent(event);
+    
+    setSlot({ start: new Date(event.start ?? new Date()), end: new Date(event.end ?? new Date()) });
+    setModalOpen(true);
   };
+
+
+  const handelAddEvent = (eventData: CalendarEvent)=>{
+    if(!eventData.start || !eventData.end){
+      return
+    } 
+    const formattedEvent = {
+      ...eventData,
+      start: new Date(eventData.start),
+      end: new Date(eventData.end),
+      allDay: eventData.allDay ?? false,
+      addTask: eventData.addTask ?? false,
+    }
+    dispatch(addEventApi(formattedEvent));
+    setModalOpen(false)
+  }
+
+  const handelUpdateEvent = (eventData: CalendarEvent ) =>{
+
+    if(!selectedEvent?._id){
+      return
+    }
+    dispatch(updateEventApi({ id:selectedEvent._id, eventData }));
+    setModalOpen(false)
+  }
 
   const handleDeleteEvent = () => {
     if (!selectedEvent?._id) return;
-    console.log("delete", dispatch(deleteEventApi(selectedEvent._id)));
+     dispatch(deleteEventApi(selectedEvent._id));
     setModalOpen(false);
   };
 
   const parsedEvents = events.map((event) => ({
     ...event,
-    start: new Date(event.start),
-    end: new Date(event.end),
+    start: event.start ? new Date(event.start) : new Date(),
+    end: event.end ? new Date(event.end) : new Date(),
   }));
 
-  const handleSelectEvent = (event: CalendarEvent) => {
-    setModalType("update");
-    setSelectedEvent(event);
-    setSlot({ start: new Date(event.start), end: new Date(event.end) });
-    setModalOpen(true);
-  };
-
+ 
   return (
     <section className="flex items-center justify-center p-4 ">
       <div className=" flex w-full h-[360px] md:h-[700px] ">
@@ -97,15 +117,16 @@ export const CalendarEl = () => {
         />
 
         <ModalEvent
+          type={modalType}
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          onSubmit={handleSubmitNewEvent}
           slotStart={slot.start}
           slotEnd={slot.end}
           selectedEvent={selectedEvent}
+          handelAddEvent={handelAddEvent}
+          handelUpdateEvent={handelUpdateEvent}
           handleDeleteEvent={handleDeleteEvent}
-          type={modalType}
-        />
+          />
       </div>
     </section>
   );

@@ -1,10 +1,10 @@
  export interface CalendarEvent {
     _id?: string
     title: string;
-    start: Date;
-    end: Date;
-    allDay: boolean;
-    addTask: boolean;
+    start?: Date | string;
+    end?: Date | string;
+    allDay?: boolean;
+    addTask?: boolean;
     
   }
   
