@@ -4,12 +4,12 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CalendarEvent } from "../types/typesApi";
 
-const EventSchema = Yup.object().shape({
-  title: Yup.string()
-    .min(2, "short")
-    .max(30, "long")
-    .required("title can`t be empty"),
-});
+// const EventSchema = Yup.object().shape({
+//   title: Yup.string()
+//     .min(2, "short")
+//     .max(30, "long")
+//     .required("title can`t be empty"),
+// });
 
 export const ModalEvent = ({
   type = "new",
@@ -31,9 +31,10 @@ export const ModalEvent = ({
     setTitle(selectedEvent?.title || "")
   },[selectedEvent])
 
-  if (!isOpen) return null;
+  
   
   const handleSubmit = ()=>{
+    
     const eventData: CalendarEvent = {
       ...selectedEvent,
       title,
@@ -41,11 +42,11 @@ export const ModalEvent = ({
       end: slotEnd,
       allDay: false
     }
-
+console.log('eventdata',eventData)
     isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData)
   }
 
-
+  if (!isOpen) return null;
   
 
   return (
@@ -99,7 +100,7 @@ export const ModalEvent = ({
           {isNew && (
             <button 
             onClick={handleSubmit}
-            className="w-[50px] text-sky-950" type="submit">
+            className="w-[50px] text-sky-950 hover:text-sky-300" type="submit">
             Save
           </button>)}
           
@@ -107,12 +108,12 @@ export const ModalEvent = ({
             <>
             <button
            onClick={handleSubmit}
-             className="w-[50px] text-sky-950" type="submit">
+             className="w-[50px] text-sky-950 hover:text-sky-300" type="submit">
               Update
             </button>
             <button
             onClick={handleDeleteEvent}
-             type="button" className="w-[50px] text-red-700">
+             type="button" className="w-[50px] text-red-700 hover:text-red-300">
             Delete
           </button>
             </>

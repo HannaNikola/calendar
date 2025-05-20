@@ -85,14 +85,36 @@ export const addEventApi = createAsyncThunk(
   }
 );
 
+// export const updateEventApi = createAsyncThunk(
+//   "eventsData/updateEvent",
+//   async (payload: { id: string; eventData: CalendarEvent }, thunkApi) => {
+//     try {
+//       const response = await axios.patch(
+//         `/api/events/${payload.id}`,
+//         payload.eventData
+//       );
+//       return response.data;
+//     } catch (error) {
+//       const err = error as AxiosError;
+//       return thunkApi.rejectWithValue(
+//         err.response?.data || "Something went wrong"
+//       );
+//     }
+//   }
+// );
+
 export const updateEventApi = createAsyncThunk(
   "eventsData/updateEvent",
   async (payload: { id: string; eventData: CalendarEvent }, thunkApi) => {
     try {
+      
+      const { _id, ...sanitizedEventData } = payload.eventData;
+
       const response = await axios.put(
         `/api/events/${payload.id}`,
-        payload.eventData
+        sanitizedEventData
       );
+
       return response.data;
     } catch (error) {
       const err = error as AxiosError;

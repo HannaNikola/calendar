@@ -12,7 +12,7 @@ export interface EventModalProps {
     handleDeleteEvent:() => void
     slotStart?: Date;
     slotEnd?: Date;
-    selectedEvent?: CalendarEvent | null | undefined
+    selectedEvent?: CalendarEvent | null 
   }
 
 

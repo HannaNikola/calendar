@@ -67,7 +67,8 @@ export const CalendarEl = () => {
     } 
     const formattedEvent = {
       ...eventData,
-      start: new Date(eventData.start),
+      ...eventData,
+      start: new Date(eventData.start), 
       end: new Date(eventData.end),
       allDay: eventData.allDay ?? false,
       addTask: eventData.addTask ?? false,
@@ -76,20 +77,23 @@ export const CalendarEl = () => {
     setModalOpen(false)
   }
 
-  const handelUpdateEvent = (eventData: CalendarEvent ) =>{
 
-    if(!selectedEvent?._id){
-      return
-    }
-    dispatch(updateEventApi({ id:selectedEvent._id, eventData }));
-    setModalOpen(false)
-  }
+  const handelUpdateEvent = (eventData: CalendarEvent) => {
+    if (!selectedEvent?._id) return;
+
+    dispatch(updateEventApi({ id: selectedEvent._id, eventData }));
+    setModalOpen(false);
+  };
 
   const handleDeleteEvent = () => {
     if (!selectedEvent?._id) return;
      dispatch(deleteEventApi(selectedEvent._id));
     setModalOpen(false);
   };
+
+
+  
+  
 
   const parsedEvents = events.map((event) => ({
     ...event,
