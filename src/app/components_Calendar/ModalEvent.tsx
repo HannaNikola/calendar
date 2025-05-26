@@ -3,6 +3,8 @@ import { EventModalProps } from "@/app/types/typesModal";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CalendarEvent } from "../types/typesApi";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/airbnb.css";
 
 // const EventSchema = Yup.object().shape({
 //   title: Yup.string()
@@ -22,32 +24,27 @@ export const ModalEvent = ({
   slotStart,
   slotEnd,
 }: EventModalProps) => {
-  
-
-  const[title, setTitle]= useState('')
+  const [title, setTitle] = useState("");
   const isNew = type === "new";
 
-  useEffect(()=>{
-    setTitle(selectedEvent?.title || "")
-  },[selectedEvent])
+  useEffect(() => {
+    setTitle(selectedEvent?.title || "");
+  }, [selectedEvent]);
 
-  
-  
-  const handleSubmit = ()=>{
-    
+  const handleSubmit = () => {
+    console.log;
     const eventData: CalendarEvent = {
       ...selectedEvent,
       title,
       start: slotStart,
       end: slotEnd,
-      allDay: false
-    }
-console.log('eventdata',eventData)
-    isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData)
-  }
+      allDay: false,
+    };
+
+    isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
+  };
 
   if (!isOpen) return null;
-  
 
   return (
     <div className=" flex fixed inset-0 bg-black/50  items-center justify-center z-50 shadow-2xs">
@@ -71,54 +68,66 @@ console.log('eventdata',eventData)
 
         <div className="flex flex-col ">
           <textarea
-         value={title}
-         onChange={(e) => setTitle(e.target.value)}
-            className="border-none rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 mb-3 text-black placeholder:text-gray resize-none overflow-hidden min-h-[40px]"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border-none rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 mb-4 text-black placeholder:text-gray resize-none overflow-hidden min-h-[40px]"
             onInput={(e) => {
               e.currentTarget.style.height = "auto";
               e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
             }}
           />
+
+          <div className="justify-between mb-4" >
+            <label className="text-sm text-black mr-2">Start Time</label>
+            <Flatpickr
+            data-enable-time
+            className="rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"/>
+            <label className="text-sm text-black mx-2">End Time</label>
+             <Flatpickr
+            data-enable-time
+            className="rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"/>
+          </div>
           <div className="flex justify-between mb-8 ">
             <div className="flex items-center">
               <label className="flex text-black mr-2">All day event</label>
-              <input 
-              
-              type="checkbox" name="allDay" />
+              <input type="checkbox" name="allDay" />
             </div>
             <div className="flex items-center">
-              <label 
-              className="mr-2">Add Task</label>
-              <input 
-              
-              type="checkbox" name="addTask" />
+              <label className="mr-2">Add Task</label>
+              <input type="checkbox" name="addTask" />
             </div>
           </div>
         </div>
 
         <div className="flex flex-row justify-between">
           {isNew && (
-            <button 
-            onClick={handleSubmit}
-            className="w-[50px] text-sky-950 hover:text-sky-300" type="submit">
-            Save
-          </button>)}
-          
+            <button
+              onClick={handleSubmit}
+              className="w-[50px] text-sky-950 hover:text-sky-300"
+              type="submit"
+            >
+              Save
+            </button>
+          )}
+
           {!isNew && (
             <>
-            <button
-           onClick={handleSubmit}
-             className="w-[50px] text-sky-950 hover:text-sky-300" type="submit">
-              Update
-            </button>
-            <button
-            onClick={handleDeleteEvent}
-             type="button" className="w-[50px] text-red-700 hover:text-red-300">
-            Delete
-          </button>
+              <button
+                onClick={handleSubmit}
+                className="w-[50px] text-sky-950 hover:text-sky-300"
+                type="submit"
+              >
+                Update
+              </button>
+              <button
+                onClick={handleDeleteEvent}
+                type="button"
+                className="w-[50px] text-red-700 hover:text-red-300"
+              >
+                Delete
+              </button>
             </>
-            )}
-
+          )}
         </div>
       </div>
     </div>

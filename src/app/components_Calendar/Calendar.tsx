@@ -1,6 +1,8 @@
 "use client";
 
+
 import { Calendar, momentLocalizer } from "react-big-calendar";
+
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -15,6 +17,7 @@ import {
 } from "@/app/api/eventsApi";
 import { ModalEvent } from "@/app/components_Calendar/ModalEvent";
 import { ModalType } from "@/app/types/typesModal";
+import {CustomEventTooltip} from "@/app/shared/CustomEventTooltip"
 
 const localizer = momentLocalizer(moment);
 
@@ -27,7 +30,7 @@ export const CalendarEl = () => {
   const [slot, setSlot] = useState({ start: new Date(), end: new Date() });
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>("new");
-
+  
 
   const events = useSelector(
     (state: RootState) => state.eventData.events
@@ -41,6 +44,7 @@ export const CalendarEl = () => {
   }, [dispatch]);
 
 
+  
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
     setModalType("new");
@@ -109,6 +113,7 @@ export const CalendarEl = () => {
           style={{ height: "100%", width: "100%" }}
           localizer={localizer}
           events={parsedEvents}
+          
           startAccessor="start"
           endAccessor="end"
           defaultView="month"
@@ -120,7 +125,14 @@ export const CalendarEl = () => {
               backgroundColor: "#3174ad",
               color: "white",
             },
+            title: null,
           })}
+          components={{
+             event: CustomEventTooltip,
+            month: {
+      event: CustomEventTooltip, 
+    },
+          }}
         />
 
         <ModalEvent
@@ -140,3 +152,10 @@ export const CalendarEl = () => {
 };
 
 export default CalendarEl;
+
+
+
+
+
+// "react-datepicker": "^8.3.0",
+//     "react-time-picker": "^7.0.0",
