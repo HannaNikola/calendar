@@ -1,0 +1,28 @@
+.react-datepicker__header {
+    background: rgb(186, 230, 253);
+    border: none;
+}
+
+.react-datepicker-time__header {
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+ .fc-event-title {
+    flex-grow: 1;
+    flex-shrink: 1;
+    font-weight: 700;
+    min-width: 0px;
+    overflow: hidden;
+    border: 0,5 px solid transparent;
+    border-radius: 5 px;
+    background-color: rgb(186, 230, 253);
+}
+.fc-event-time {
+   border: 0,5 px solid transparent;
+    border-radius: 5 px;
+    background-color: rgb(186, 230, 253);
+    margin: 0 !important;
+}

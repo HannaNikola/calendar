@@ -1,86 +1,85 @@
 "use client";
 
-
-import { Calendar, momentLocalizer } from "react-big-calendar";
-
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import moment from "moment";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
+import multiMonthPlugin from "@fullcalendar/multimonth";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
 import {
   addEventApi,
+  deleteEventApi,
   fetchEventsApi,
   updateEventApi,
-  deleteEventApi,
 } from "@/app/api/eventsApi";
-import { ModalEvent } from "@/app/components_Calendar/ModalEvent";
+import { ModalEvent } from "./ModalEvent";
 import { ModalType } from "@/app/types/typesModal";
-import {CustomEventTooltip} from "@/app/shared/CustomEventTooltip"
-
-const localizer = momentLocalizer(moment);
-
-
+import { EventClickArg } from "@fullcalendar/core/index.js";
 
 export const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>( null);
+  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
+    null
+  );
   const [slot, setSlot] = useState({ start: new Date(), end: new Date() });
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>("new");
-  
 
-  const events = useSelector(
-    (state: RootState) => state.eventData.events
-  ) as CalendarEvent[];
-  const { events: rawEvents, status } = useSelector(
-    (state: RootState) => state.eventData
-  );
+  const { events } = useSelector((state: RootState) => state.eventData);
 
   useEffect(() => {
     dispatch(fetchEventsApi());
   }, [dispatch]);
 
+  const handleSelectSlot = (arg: DateClickArg) => {
+    const start = arg.date;
+    const end = new Date(start.getTime() + 60 * 60 * 1000);
 
-  
-
-  const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
     setModalType("new");
     setSelectedEvent(null);
     setSlot({ start, end });
     setModalOpen(true);
   };
 
-  const handleSelectEvent = (event: CalendarEvent) => {
+  const handleSelectEvent = (arg: EventClickArg) => {
+    const event = arg.event;
+
+    const calendarEvent: CalendarEvent = {
+      _id: event.id,
+      title: event.title,
+      start: event.start ?? new Date(),
+      end: event.end ?? new Date(),
+      allDay: event.allDay,
+    };
+
     setModalType("update");
-    setSelectedEvent(event);
-    
+    setSelectedEvent(calendarEvent);
     setSlot({
-      start: event.start ? new Date(event.start) : new Date(),
-      end: event.end ? new Date(event.end) : new Date(),
+      start: new Date(calendarEvent.start || new Date()),
+      end: new Date(calendarEvent.end || new Date()),
     });
     setModalOpen(true);
   };
 
-
-  const handelAddEvent = (eventData: CalendarEvent)=>{
-    if(!eventData.start || !eventData.end){
-      return
-    } 
+  const handelAddEvent = (eventData: CalendarEvent) => {
+    if (!eventData.start || !eventData.end) {
+      return;
+    }
     const formattedEvent = {
       ...eventData,
-      ...eventData,
-      start: new Date(eventData.start), 
+      start: new Date(eventData.start),
       end: new Date(eventData.end),
       allDay: eventData.allDay ?? false,
       addTask: eventData.addTask ?? false,
-    }
+    };
     dispatch(addEventApi(formattedEvent));
-    setModalOpen(false)
-  }
-
+    setModalOpen(false);
+  };
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     if (!selectedEvent?._id) return;
@@ -91,13 +90,9 @@ export const CalendarEl = () => {
 
   const handleDeleteEvent = () => {
     if (!selectedEvent?._id) return;
-     dispatch(deleteEventApi(selectedEvent._id));
+    dispatch(deleteEventApi(selectedEvent._id));
     setModalOpen(false);
   };
-
-
-  
-  
 
   const parsedEvents = events.map((event) => ({
     ...event,
@@ -105,34 +100,59 @@ export const CalendarEl = () => {
     end: event.end ? new Date(event.end) : new Date(),
   }));
 
- 
   return (
     <section className="flex items-center justify-center p-4 ">
       <div className=" flex w-full h-[360px] md:h-[700px] ">
-        <Calendar
-          style={{ height: "100%", width: "100%" }}
-          localizer={localizer}
-          events={parsedEvents}
-          
-          startAccessor="start"
-          endAccessor="end"
-          defaultView="month"
-          selectable
-          onSelectEvent={handleSelectEvent}
-          onSelectSlot={handleSelectSlot}
-          eventPropGetter={(event) => ({
-            style: {
-              backgroundColor: "#3174ad",
-              color: "white",
-            },
-            title: null,
-          })}
-          components={{
-             event: CustomEventTooltip,
-            month: {
-      event: CustomEventTooltip, 
-    },
+        <FullCalendar
+          plugins={[
+            dayGridPlugin,
+            timeGridPlugin,
+            interactionPlugin,
+            listPlugin,
+            multiMonthPlugin,
+          ]}
+          initialView="dayGridMonth"
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right:
+              "dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear",
           }}
+          views={{
+            dayGridMonth: { buttonText: "Month" },
+            timeGridWeek: { buttonText: "Week" },
+            timeGridDay: { buttonText: "Day" },
+
+            listYear: {
+              type: "list",
+              duration: { years: 1 },
+              buttonText: "Year List",
+            },
+            multiMonthYear: {
+              type: "multiMonth",
+              duration: { months: 12 },
+              buttonText: "Year",
+              multiMonthMinWidth: 200,
+            },
+          }}
+          events={parsedEvents}
+          editable={true}
+          selectable={true}
+          dateClick={handleSelectSlot}
+          eventClick={handleSelectEvent}
+          height="auto"
+          businessHours={[
+            {
+              daysOfWeek: [1, 2, 3], // Пн, Вт, Ср
+              startTime: "08:00",
+              endTime: "18:00",
+            },
+            {
+              daysOfWeek: [4, 5], // Чт, Пт
+              startTime: "10:00",
+              endTime: "16:00",
+            },
+          ]}
         />
 
         <ModalEvent
@@ -145,14 +165,10 @@ export const CalendarEl = () => {
           handelAddEvent={handelAddEvent}
           handelUpdateEvent={handelUpdateEvent}
           handleDeleteEvent={handleDeleteEvent}
-          />
+        />
       </div>
     </section>
   );
 };
 
 export default CalendarEl;
-
-
-
-
