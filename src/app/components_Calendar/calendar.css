@@ -17,12 +17,24 @@
     min-width: 0px;
     overflow: hidden;
     border: 0,5 px solid transparent;
-    border-radius: 5 px;
-    background-color: rgb(186, 230, 253);
+    border-radius: 20 px;
+    background-color: #3788d8;
 }
 .fc-event-time {
    border: 0,5 px solid transparent;
     border-radius: 5 px;
-    background-color: rgb(186, 230, 253);
+    background-color: #3788d8;
     margin: 0 !important;
+}
+
+.fc .fc-button-primary {
+    background-color: #808080!important;
+    border-color: transparent !important;
+    color: var(--fc-button-text-color);
+}
+
+/* style for tooltip tippy */
+.tippy-box[data-theme~='gray'] {
+  background-color: #808080;
+  color: white;
 }

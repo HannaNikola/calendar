@@ -19,6 +19,8 @@ import {
 import { ModalEvent } from "./ModalEvent";
 import { ModalType } from "@/app/types/typesModal";
 import { EventClickArg } from "@fullcalendar/core/index.js";
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css';
 
 export const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -100,10 +102,28 @@ export const CalendarEl = () => {
     end: event.end ? new Date(event.end) : new Date(),
   }));
 
+
+const handleMouseEnter = ({ el, event }: any) => {
+  tippy(el, {
+    content: `
+      <strong>${event.title}</strong><br/>
+      ${event.start?.toLocaleString()} - ${event.end?.toLocaleString()}
+    `,
+    allowHTML: true,
+    placement: 'top',
+    theme: 'gray',
+    animation: 'fade',
+  })
+};
+
+
+ 
+
   return (
     <section className="flex items-center justify-center p-4 ">
       <div className=" flex w-full h-[360px] md:h-[700px] ">
         <FullCalendar
+         eventMouseEnter={handleMouseEnter}
           plugins={[
             dayGridPlugin,
             timeGridPlugin,
