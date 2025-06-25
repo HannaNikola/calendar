@@ -36,8 +36,8 @@ export const ModalEvent = ({
   const isNew = type === "new";
 
   useEffect(() => {
+    setTitle(type === "new" ? "" : selectedEvent?.title || "");
     if (selectedEvent) {
-      setTitle(selectedEvent?.title || "");
       const start = new Date(selectedEvent.start || "");
       const end = new Date(selectedEvent.end || "");
       setStartDay(start);
@@ -67,6 +67,7 @@ export const ModalEvent = ({
   const handleSubmit = () => {
     const start = combineDateTime(startDay, startTime);
     const end = combineDateTime(endDay, endTime);
+
     if (!start || !end) {
       return;
     }
