@@ -6,54 +6,54 @@ axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
 // solition for render.com free version
 
-export const fetchEventsApi = createAsyncThunk(
-  "eventsData/fetchAll",
-  async (_, thunkAPI) => {
-    const maxRetries = 3;
-    let attempt = 0;
-
-    while (attempt < maxRetries) {
-      try {
-        const response = await axios.get("/api/events");
-        console.log(response);
-        return response.data;
-      } catch (error) {
-        attempt++;
-        const err = error as AxiosError;
-        console.error(`Attempt ${attempt} failed:`, err.message);
-
-        if (attempt >= maxRetries) {
-          return thunkAPI.rejectWithValue(
-            err.response?.data || "Something went wrong"
-          );
-        }
-
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-      }
-    }
-  }
-);
-
 // export const fetchEventsApi = createAsyncThunk(
-//   "allEvents/fetchAll",
+//   "eventsData/fetchAll",
 //   async (_, thunkAPI) => {
+//     const maxRetries = 3;
+//     let attempt = 0;
 
+//     while (attempt < maxRetries) {
 //       try {
 //         const response = await axios.get("/api/events");
-//         console.log(response)
+//         console.log(response);
 //         return response.data;
 //       } catch (error) {
+//         attempt++;
 //         const err = error as AxiosError;
-//         console.error("Fetch error:", err);
-//         return thunkAPI.rejectWithValue(
-//           err.response?.data || "Something went wrong"
-//         );
+//         console.error(`Attempt ${attempt} failed:`, err.message);
 
+//         if (attempt >= maxRetries) {
+//           return thunkAPI.rejectWithValue(
+//             err.response?.data || "Something went wrong"
+//           );
+//         }
+
+//         await new Promise((resolve) => setTimeout(resolve, 1500));
 //       }
-
 //     }
-
+//   }
 // );
+
+export const fetchEventsApi = createAsyncThunk(
+  "allEvents/fetchAll",
+  async (_, thunkAPI) => {
+
+      try {
+        const response = await axios.get("/api/events");
+        console.log(response)
+        return response.data;
+      } catch (error) {
+        const err = error as AxiosError;
+        console.error("Fetch error:", err);
+        return thunkAPI.rejectWithValue(
+          err.response?.data || "Something went wrong"
+        );
+
+      }
+
+    }
+
+);
 
 export const addEventApi = createAsyncThunk(
   "eventsData/addEvent",
