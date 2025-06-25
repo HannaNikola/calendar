@@ -18,7 +18,7 @@ import {
 } from "@/app/api/eventsApi";
 import { ModalEvent } from "./ModalEvent";
 import { ModalType } from "@/app/types/typesModal";
-import { EventClickArg } from "@fullcalendar/core/index.js";
+import { EventClickArg, EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
@@ -84,9 +84,10 @@ export const CalendarEl = () => {
   };
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
-    if (!selectedEvent?._id) return;
+    const eventId = eventData._id;
+    if(!eventId) return;
 
-    dispatch(updateEventApi({ id: selectedEvent._id, eventData }));
+    dispatch(updateEventApi({ id: eventId, eventData }));
     setModalOpen(false);
   };
 
@@ -98,12 +99,17 @@ export const CalendarEl = () => {
 
   const parsedEvents = events.map((event) => ({
     ...event,
+    id: event._id,
     start: event.start ? new Date(event.start) : new Date(),
     end: event.end ? new Date(event.end) : new Date(),
   }));
 
+
   const handleMouseEnter = ({ el, event }: any) => {
-    const time = event.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const time = event.start?.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
     tippy(el, {
       content: `
       <strong>${event.title}</strong><br/>
@@ -116,11 +122,23 @@ export const CalendarEl = () => {
     });
   };
 
+  const handelEventDrop = (info: EventDropArg) => {
+    const updatedEvent: CalendarEvent = {
+      _id: info.event.id,
+      title: info.event.title,
+      start: info.event.start!,
+      end: info.event.end!,
+      allDay: info.event.allDay,
+    };
+    handelUpdateEvent(updatedEvent);
+  };
+
   return (
     <section className="flex items-center justify-center p-4 ">
       <div className=" flex w-full h-[360px] md:h-[700px] ">
         <FullCalendar
           eventMouseEnter={handleMouseEnter}
+          eventDrop={handelEventDrop}
           plugins={[
             dayGridPlugin,
             timeGridPlugin,
@@ -160,12 +178,12 @@ export const CalendarEl = () => {
           height="auto"
           businessHours={[
             {
-              daysOfWeek: [1, 2, 3], // Пн, Вт, Ср
+              daysOfWeek: [1, 2, 3], 
               startTime: "08:00",
               endTime: "18:00",
             },
             {
-              daysOfWeek: [4, 5], // Чт, Пт
+              daysOfWeek: [4, 5], 
               startTime: "10:00",
               endTime: "16:00",
             },

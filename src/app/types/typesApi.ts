@@ -1,5 +1,5 @@
  export interface CalendarEvent {
-    _id?: string
+    _id?: string;
     title: string;
     allDay?: boolean;
     addTask?: boolean;
