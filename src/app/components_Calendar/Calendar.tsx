@@ -103,10 +103,11 @@ export const CalendarEl = () => {
   }));
 
   const handleMouseEnter = ({ el, event }: any) => {
+    const time = event.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     tippy(el, {
       content: `
       <strong>${event.title}</strong><br/>
-      ${event.start?.toLocaleString()} - ${event.end?.toLocaleString()}
+      ${time}
     `,
       allowHTML: true,
       placement: "top",
