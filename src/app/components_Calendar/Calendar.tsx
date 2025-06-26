@@ -6,7 +6,7 @@ import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
@@ -33,6 +33,7 @@ export const CalendarEl = () => {
   const [modalType, setModalType] = useState<ModalType>("new");
 
   const { events } = useSelector((state: RootState) => state.eventData);
+
 
   useEffect(() => {
     dispatch(fetchEventsApi());
@@ -93,9 +94,13 @@ export const CalendarEl = () => {
 
   const handleDeleteEvent = () => {
     if (!selectedEvent?._id) return;
+
     dispatch(deleteEventApi(selectedEvent._id));
     setModalOpen(false);
   };
+
+
+ 
 
   const parsedEvents = events.map((event) => ({
     ...event,
@@ -137,6 +142,7 @@ export const CalendarEl = () => {
     <section className="flex items-center justify-center p-4 ">
       <div className=" flex w-full h-[360px] md:h-[700px] m-0">
         <FullCalendar
+          
           eventMouseEnter={handleMouseEnter}
           eventDrop={handelEventDrop}
           plugins={[
@@ -176,6 +182,7 @@ export const CalendarEl = () => {
           dateClick={handleSelectSlot}
           eventClick={handleSelectEvent}
           height="auto"
+          
           businessHours={[
             {
               daysOfWeek: [1, 2, 3], 
