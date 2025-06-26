@@ -95,10 +95,10 @@ export const ModalEvent = ({
   return (
     <div
       onClick={handelOverlowClick}
-      className=" flex fixed inset-0 bg-black/50  items-center justify-center z-50 shadow-2xs"
+      className=" flex fixed inset-0  bg-black/50  items-center justify-center z-50 shadow-2xs p-4"
     >
-      <div className=" p-4 rounded-lg min-w-[400px] bg-white">
-        <div className="flex  ">
+      <div className=" p-4 rounded-lg shadow-lg min-w-[300px] bg-white mx-auto">
+        <div className="flex ">
           {isNew ? (
             <h1 className="flex-1 text-center  text-black mb-6">
               Create event
@@ -126,17 +126,15 @@ export const ModalEvent = ({
             }}
           />
 
-          <div className="justify-between mb-4">
-            <label className="text-sm text-black mr-2">Start Day</label>
-
+          <div className="mb-4">
+            <div className="flex flex-1 mb-2 gap-2">
             <DatePicker
               selected={startDay}
               onChange={(date) => setStartDay(date)}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className="rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
+              className=" w-[150px] rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black "
             />
-            <label className="text-sm text-black mx-2">Start Time</label>
             <DatePicker
               selected={startTime}
               onChange={(date) => setStartTime(date)}
@@ -147,18 +145,17 @@ export const ModalEvent = ({
               timeIntervals={5}
               timeCaption="Время"
               placeholderText="Select the time"
-              className="rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
+              className="rounded w-[150px] bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
             />
-
-            <label className="text-sm text-black mx-2">End Day</label>
-            <DatePicker
+          </div>
+          <div className="flex flex-1 mb-2 gap-2">
+           <DatePicker
               selected={endDay}
               onChange={(date) => setEndDay(date)}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className="rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
+              className=" w-[150px] rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
             />
-            <label className="text-sm text-black mx-2">End Time</label>
             <DatePicker
               selected={endTime}
               onChange={(date) => setEndTime(date)}
@@ -169,8 +166,9 @@ export const ModalEvent = ({
               timeIntervals={5}
               timeCaption="Time"
               placeholderText="Select the time"
-              className="rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
+              className=" w-[150px] rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
             />
+            </div>
           </div>
           <div className="flex justify-between mb-8 ">
             <div className="flex items-center">
