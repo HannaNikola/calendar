@@ -84,18 +84,19 @@ export const ModalEvent = ({
     isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
   };
 
-  const handelOverlowClick = (e:React.MouseEvent<HTMLDivElement>)=>{
-    if(e.target === e.currentTarget){
-      onClose()
+  const handelOverlowClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
     }
-  }
+  };
 
   if (!isOpen) return null;
 
   return (
     <div
-    onClick={handelOverlowClick}
-     className=" flex fixed inset-0 bg-black/50  items-center justify-center z-50 shadow-2xs">
+      onClick={handelOverlowClick}
+      className=" flex fixed inset-0 bg-black/50  items-center justify-center z-50 shadow-2xs"
+    >
       <div className=" p-4 rounded-lg min-w-[400px] bg-white">
         <div className="flex  ">
           {isNew ? (

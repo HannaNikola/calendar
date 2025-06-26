@@ -1,29 +1,22 @@
 @import "tailwindcss";
 
-
-
-
 @layer utilities {
-    .text-balance {
-        text-wrap: balance;
-    }
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
 @layer base {
-    * {
-        @apply box-border;
+  * {
+    @apply box-border;
+  }
 
-    
-    }
-
-    body{
-        font-family: var(--font-inter), Arial, Helvetica, sans-serif;
-        font-size: 16px;
-        margin: auto;
-        width: 100%;
-  min-width: 375px;
-  height: 100%;
-    }
+  body {
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    margin: auto;
+    width: 100%;
+    min-width: 375px;
+    height: 100%;
+  }
 }
-
-

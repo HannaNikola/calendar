@@ -34,7 +34,6 @@ export const CalendarEl = () => {
 
   const { events } = useSelector((state: RootState) => state.eventData);
 
-
   useEffect(() => {
     dispatch(fetchEventsApi());
   }, [dispatch]);
@@ -86,7 +85,7 @@ export const CalendarEl = () => {
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     const eventId = eventData._id;
-    if(!eventId) return;
+    if (!eventId) return;
 
     dispatch(updateEventApi({ id: eventId, eventData }));
     setModalOpen(false);
@@ -99,16 +98,12 @@ export const CalendarEl = () => {
     setModalOpen(false);
   };
 
-
- 
-
   const parsedEvents = events.map((event) => ({
     ...event,
     id: event._id,
     start: event.start ? new Date(event.start) : new Date(),
     end: event.end ? new Date(event.end) : new Date(),
   }));
-
 
   const handleMouseEnter = ({ el, event }: any) => {
     const time = event.start?.toLocaleTimeString([], {
@@ -140,9 +135,8 @@ export const CalendarEl = () => {
 
   return (
     <section className="flex items-center justify-center p-4 ">
-      <div className=" flex w-full h-[360px] md:h-[700px] m-0">
+      <div className=" flex w-full m-0">
         <FullCalendar
-          
           eventMouseEnter={handleMouseEnter}
           eventDrop={handelEventDrop}
           plugins={[
@@ -182,15 +176,18 @@ export const CalendarEl = () => {
           dateClick={handleSelectSlot}
           eventClick={handleSelectEvent}
           height="auto"
-          
+          eventClassNames={() => "bg-sky-700 text-white "}
+          contentHeight="auto"
+          // aspectRatio={1.5}
+
           businessHours={[
             {
-              daysOfWeek: [1, 2, 3], 
+              daysOfWeek: [1, 2, 3],
               startTime: "08:00",
               endTime: "18:00",
             },
             {
-              daysOfWeek: [4, 5], 
+              daysOfWeek: [4, 5],
               startTime: "10:00",
               endTime: "16:00",
             },
