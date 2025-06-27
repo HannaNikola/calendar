@@ -106,11 +106,11 @@ export const ModalEvent = ({
       <div className=" p-4 rounded-lg shadow-lg min-w-[300px] bg-white mx-auto">
         <div className="flex ">
           {isNew ? (
-            <h1 className="flex-1 text-center  text-black mb-6">
+            <h1 className="flex-1 text-center  text-black-text mb-6">
               Create event
             </h1>
           ) : (
-            <h1 className="flex-1 text-center  text-black mb-6">
+            <h1 className="flex-1 text-center  text-black-text mb-6">
               Update event
             </h1>
           )}
@@ -125,7 +125,7 @@ export const ModalEvent = ({
           <textarea
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border-none rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 mb-4 text-black placeholder:text-gray resize-none overflow-hidden min-h-[40px]"
+            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-black-text placeholder:text-gray resize-none overflow-hidden min-h-[40px]"
             onInput={(e) => {
               e.currentTarget.style.height = "auto";
               e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
@@ -139,7 +139,7 @@ export const ModalEvent = ({
               onChange={(date) => setStartDay(date)}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className=" w-[150px] rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black "
+              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-black-text"
             />
             <DatePicker
               selected={startTime}
@@ -151,7 +151,7 @@ export const ModalEvent = ({
               timeIntervals={5}
               timeCaption="Время"
               placeholderText="Select the time"
-              className="rounded w-[150px] bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
+              className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-black-text"
             />
           </div>
           <div className="flex flex-1 mb-2 gap-2">
@@ -160,7 +160,7 @@ export const ModalEvent = ({
               onChange={(date) => setEndDay(date)}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className=" w-[150px] rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
+              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-black-text"
             />
             <DatePicker
               selected={endTime}
@@ -172,13 +172,13 @@ export const ModalEvent = ({
               timeIntervals={5}
               timeCaption="Time"
               placeholderText="Select the time"
-              className=" w-[150px] rounded bg-sky-100 focus:outline-none focus:bg-sky-200 p-2 text-black"
+              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-black-text"
             />
             </div>
           </div>
           <div className="flex justify-between mb-8 ">
             <div className="flex items-center">
-              <label className="flex text-black mr-2">All day event</label>
+              <label className="flex text-black-text mr-2">All day event</label>
               <input type="checkbox" name="allDay" />
             </div>
             <div className="flex items-center">
@@ -192,7 +192,7 @@ export const ModalEvent = ({
           {isNew && (
             <button
               onClick={handleSubmit}
-              className="w-[50px] text-sky-950 hover:text-sky-300"
+              className="w-[50px] text-sky-dark hover:text-dark-text-hover"
               type="submit"
             >
               Save
@@ -203,7 +203,7 @@ export const ModalEvent = ({
             <>
               <button
                 onClick={handleSubmit}
-                className="w-[50px] text-sky-950 hover:text-sky-300"
+                className="w-[50px] text-sky-dark hover:text-dark-text-hover"
                 type="submit"
               >
                 Update
@@ -211,7 +211,7 @@ export const ModalEvent = ({
               <button
                 onClick={handleDeleteEvent}
                 type="button"
-                className="w-[50px] text-red-700 hover:text-red-300"
+                className="w-[50px] text-alert-text hover:text-alert-hover"
               >
                 Delete
               </button>
