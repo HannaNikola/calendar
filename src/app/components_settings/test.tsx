@@ -2,7 +2,7 @@
 
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-export const TaskEl = ()=>{
+export const Test = ()=>{
    
 
     return(

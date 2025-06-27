@@ -25,7 +25,7 @@ export const Navbar = ({className}: NavbarProps) => {
       </li>
       <li className=" flex  bg-sky-100  px-[40px] py-[5px] transition-colors duration-500 hover:bg-sky-200 rounded-sm items-center shadow-sm">
         <Cog size={20} />
-        <Link className="ml-3" href="/task">
+        <Link className="ml-3" href="/settings">
           Settings
         </Link>
       </li>

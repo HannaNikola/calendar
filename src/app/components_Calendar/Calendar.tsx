@@ -176,9 +176,9 @@ export const CalendarEl = () => {
           dateClick={handleSelectSlot}
           eventClick={handleSelectEvent}
           height="auto"
-          eventClassNames={() => "bg-sky-700 text-white "}
+          eventClassNames={() => "bg-sky-700 text-white w-full"}
           contentHeight="auto"
-          // aspectRatio={1.5}
+          aspectRatio={1.5}
 
           businessHours={[
             {

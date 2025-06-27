@@ -1,3 +1,5 @@
+"use client";
+
 import * as Yup from "yup";
 import { EventModalProps } from "@/app/types/typesModal";
 import { X } from "lucide-react";
@@ -9,6 +11,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "../components_Calendar/calendar.css";
+import { useRouter } from "next/navigation";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -34,6 +37,8 @@ export const ModalEvent = ({
   const [startDay, setStartDay] = useState<Date | null>(null);
   const [endDay, setEndDay] = useState<Date | null>(null);
   const isNew = type === "new";
+
+  const router = useRouter()
 
   useEffect(() => {
     setTitle(type === "new" ? "" : selectedEvent?.title || "");
@@ -90,6 +95,7 @@ export const ModalEvent = ({
     }
   };
 
+
   if (!isOpen) return null;
 
   return (
@@ -127,7 +133,7 @@ export const ModalEvent = ({
           />
 
           <div className="mb-4">
-            <div className="flex flex-1 mb-2 gap-2">
+            <div className="flex flex-1  mb-2 gap-2">
             <DatePicker
               selected={startDay}
               onChange={(date) => setStartDay(date)}
@@ -177,7 +183,7 @@ export const ModalEvent = ({
             </div>
             <div className="flex items-center">
               <label className="mr-2">Add Task</label>
-              <input type="checkbox" name="addTask" />
+              <input  type="checkbox" name="addTask" onChange={() => router.push('/task')}  />
             </div>
           </div>
         </div>
