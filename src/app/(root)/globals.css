@@ -1,39 +1,49 @@
 @import "tailwindcss";
 
-
-
 @theme {
-  --color-sky-light: #e0f2fe; /*sky-100*/
-  --color-sky-medium: #bae6fd; /*sky-200*/
-   --color-sky-950: #082f49; /*sky-950*/
-   --color-black: #000000; /* black */
-   --color-red: #b91c1c; /* red-700 */
-   
+  --color-sky-100: #e0f2fe; /*sky-100*/
+  --color-sky-200: #bae6fd; /*sky-200*/
+  --color-sky-950: #082f49; /*sky-950*/
+  --color-black: #000000; /* black */
+  --color-700: #b91c1c; /* red-700 */
+  --color-gray-500: #6b7280;
+
+  /* border color */
+  --color-grey-border: #6b7280; /* gray-500 */
+
   /* hover */
   --color-sky-hover: #38bdf8; /*sky-400*/
   --color-sky-hover-medium: #bae6fd; /*sky-200*/
-  --color-grey-border: #6b7280 ; /* gray-500 */
   --color-alert-hover: #fca5a5; /* red-300 */
+
   /* input color */
-  --color-input-light:#e0f2fe; /*sky-100*/
-  --color-hover-input:#bae6fd; /*sky-200*/
- /* text color */
- --color-main:#000000; /* black */
- --color-black-text: #000000; /* black */
- --color-sky-dark: #082f49; /*sky-950*/
- --color-dark-text-hover: #bae6fd; /*sky-200*/
- --color-alert-text:#b91c1c; /* red-700 */
- --color-alert-text-hover:#fca5a5; /* red-300 */
- 
- /* button color */
- --color-navbar-button: #e0f2fe; /*sky-100*/
- --color-navbar-button-hover: #bae6fd; /*sky-200*/
+  --color-input-light: #e0f2fe; /*sky-100*/
+  --color-hover-input: #bae6fd; /*sky-200*/
 
+  /* text color */
+  --color-main: #000000; /* black */
+  --color-black-text: #000000; /* black */
+  --color-sky-dark: #082f49; /*sky-950*/
+  --color-dark-text-hover: #bae6fd; /*sky-200*/
+  --color-alert-text: #b91c1c; /* red-700 */
+  --color-alert-text-hover: #fca5a5; /* red-300 */
 
- 
+  /* button color */
+  --color-navbar-button: #e0f2fe; /*sky-100*/
+  --color-navbar-button-hover: #bae6fd; /*sky-200*/
+
+  /* background */
+  --color-header-background: #bae6fd;
+
+  /* fonts size */
+  --text-h1: 24px;
+  --text-h2: 20px;
+  --text-medium: 18px;
+
+  /* font weight */
+  --font-weight-light: 200px;
+  --font-weight-extra: 500;
 }
-
-
 
 @layer utilities {
   .text-balance {
@@ -49,6 +59,7 @@
   body {
     font-family: var(--font-inter), Arial, Helvetica, sans-serif;
     font-size: 16px;
+    font-weight: 400;
     margin: auto;
     width: 100%;
     min-width: 375px;

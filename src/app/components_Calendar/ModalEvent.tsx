@@ -106,11 +106,11 @@ export const ModalEvent = ({
       <div className=" p-4 rounded-lg shadow-lg min-w-[300px] bg-white mx-auto">
         <div className="flex ">
           {isNew ? (
-            <h1 className="flex-1 text-center  text-black-text mb-6">
+            <h1 className="flex-1 text-center  text-h2 mb-6">
               Create event
             </h1>
           ) : (
-            <h1 className="flex-1 text-center  text-black-text mb-6">
+            <h1 className="flex-1 text-center  text-main mb-6">
               Update event
             </h1>
           )}
@@ -125,7 +125,7 @@ export const ModalEvent = ({
           <textarea
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-black-text placeholder:text-gray resize-none overflow-hidden min-h-[40px]"
+            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px]"
             onInput={(e) => {
               e.currentTarget.style.height = "auto";
               e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
@@ -139,7 +139,7 @@ export const ModalEvent = ({
               onChange={(date) => setStartDay(date)}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-black-text"
+              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
             />
             <DatePicker
               selected={startTime}
@@ -151,7 +151,7 @@ export const ModalEvent = ({
               timeIntervals={5}
               timeCaption="Время"
               placeholderText="Select the time"
-              className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-black-text"
+              className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
             />
           </div>
           <div className="flex flex-1 mb-2 gap-2">
@@ -160,7 +160,7 @@ export const ModalEvent = ({
               onChange={(date) => setEndDay(date)}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-black-text"
+              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
             />
             <DatePicker
               selected={endTime}
@@ -172,17 +172,17 @@ export const ModalEvent = ({
               timeIntervals={5}
               timeCaption="Time"
               placeholderText="Select the time"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-black-text"
+              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
             />
             </div>
           </div>
           <div className="flex justify-between mb-8 ">
             <div className="flex items-center">
-              <label className="flex text-black-text mr-2">All day event</label>
+              <label className="flex text-main mr-2">All day event</label>
               <input type="checkbox" name="allDay" />
             </div>
             <div className="flex items-center">
-              <label className="mr-2">Add Task</label>
+              <label className="mr-2 text-main">Add Task</label>
               <input  type="checkbox" name="addTask" onChange={() => router.push('/task')}  />
             </div>
           </div>
