@@ -9,7 +9,7 @@
   font-size: 12px;
 }
 
-@media (max-width: 510px) {
+@media (max-width: 585px) {
   .fc {
     font-size: 10px;
   }
@@ -20,6 +20,13 @@
   }
 }
 
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 1.5em;
+    
+    
+}
+
+  
 /* .fc-event-title {
     flex-grow: 1;
     flex-shrink: 1;

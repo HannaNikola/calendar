@@ -178,8 +178,7 @@ export const CalendarEl = () => {
           height="auto"
           eventClassNames={() => "bg-sky-700 text-white w-full"}
           contentHeight="auto"
-          aspectRatio={1.5}
-
+          aspectRatio={1.2}
           businessHours={[
             {
               daysOfWeek: [1, 2, 3],
