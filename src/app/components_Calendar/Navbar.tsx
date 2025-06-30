@@ -17,7 +17,7 @@ export const Navbar = ({className}: NavbarProps) => {
           Calendar
         </Link>
       </li>
-      <li className=" flex pl-[40px] pr-[120px] py-[5px] bg-navbar-button transition-colors duration-500 hover:bg-navbar-button-hover rounded-sm mb-2 items-center shadow-sm">
+      <li className=" flex pl-[40px] pr-[100px] py-[5px] bg-navbar-button transition-colors duration-500 hover:bg-navbar-button-hover rounded-sm mb-2 items-center shadow-sm">
         <BookOpenCheck size={20} />
         <Link className="ml-3 text-main" href="/task">
           Your Task
