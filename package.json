@@ -21,6 +21,7 @@
     "@lottiefiles/dotlottie-react": "^0.14.2",
     "@reduxjs/toolkit": "^2.8.0",
     "axios": "^1.8.4",
+    "class-variance-authority": "^0.7.1",
     "formik": "^2.4.6",
     "fullcalendar": "^6.1.17",
     "lottie-react": "^2.4.1",

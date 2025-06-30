@@ -6,12 +6,11 @@ import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CalendarEvent } from "../types/typesApi";
 import "flatpickr/dist/themes/airbnb.css";
-
 import DatePicker from "react-datepicker";
-
 import "react-datepicker/dist/react-datepicker.css";
 import "../components_Calendar/calendar.css";
 import { useRouter } from "next/navigation";
+import { Button } from "@/app/shared/ui/Button";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -38,7 +37,7 @@ export const ModalEvent = ({
   const [endDay, setEndDay] = useState<Date | null>(null);
   const isNew = type === "new";
 
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     setTitle(type === "new" ? "" : selectedEvent?.title || "");
@@ -95,7 +94,6 @@ export const ModalEvent = ({
     }
   };
 
-
   if (!isOpen) return null;
 
   return (
@@ -106,13 +104,9 @@ export const ModalEvent = ({
       <div className=" p-4 rounded-lg shadow-lg min-w-[300px] bg-white mx-auto">
         <div className="flex ">
           {isNew ? (
-            <h1 className="flex-1 text-center  text-h2 mb-6">
-              Create event
-            </h1>
+            <h1 className="flex-1 text-center  text-h2 mb-6">Create event</h1>
           ) : (
-            <h1 className="flex-1 text-center  text-main mb-6">
-              Update event
-            </h1>
+            <h1 className="flex-1 text-center  text-main mb-6">Update event</h1>
           )}
 
           <button className="flex" onClick={onClose}>
@@ -134,46 +128,46 @@ export const ModalEvent = ({
 
           <div className="mb-4">
             <div className="flex flex-1  mb-2 gap-2">
-            <DatePicker
-              selected={startDay}
-              onChange={(date) => setStartDay(date)}
-              dateFormat="dd-MM-yyyy"
-              placeholderText="Select the day"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
-            />
-            <DatePicker
-              selected={startTime}
-              onChange={(date) => setStartTime(date)}
-              showTimeSelect
-              showTimeSelectOnly
-              dateFormat="HH:mm"
-              timeFormat="HH:mm"
-              timeIntervals={5}
-              timeCaption="Время"
-              placeholderText="Select the time"
-              className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
-            />
-          </div>
-          <div className="flex flex-1 mb-2 gap-2">
-           <DatePicker
-              selected={endDay}
-              onChange={(date) => setEndDay(date)}
-              dateFormat="dd-MM-yyyy"
-              placeholderText="Select the day"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
-            />
-            <DatePicker
-              selected={endTime}
-              onChange={(date) => setEndTime(date)}
-              showTimeSelect
-              showTimeSelectOnly
-              dateFormat="HH:mm"
-              timeFormat="HH:mm"
-              timeIntervals={5}
-              timeCaption="Time"
-              placeholderText="Select the time"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
-            />
+              <DatePicker
+                selected={startDay}
+                onChange={(date) => setStartDay(date)}
+                dateFormat="dd-MM-yyyy"
+                placeholderText="Select the day"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
+              />
+              <DatePicker
+                selected={startTime}
+                onChange={(date) => setStartTime(date)}
+                showTimeSelect
+                showTimeSelectOnly
+                dateFormat="HH:mm"
+                timeFormat="HH:mm"
+                timeIntervals={5}
+                timeCaption="Время"
+                placeholderText="Select the time"
+                className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
+              />
+            </div>
+            <div className="flex flex-1 mb-2 gap-2">
+              <DatePicker
+                selected={endDay}
+                onChange={(date) => setEndDay(date)}
+                dateFormat="dd-MM-yyyy"
+                placeholderText="Select the day"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
+              />
+              <DatePicker
+                selected={endTime}
+                onChange={(date) => setEndTime(date)}
+                showTimeSelect
+                showTimeSelectOnly
+                dateFormat="HH:mm"
+                timeFormat="HH:mm"
+                timeIntervals={5}
+                timeCaption="Time"
+                placeholderText="Select the time"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
+              />
             </div>
           </div>
           <div className="flex justify-between mb-8 ">
@@ -183,38 +177,45 @@ export const ModalEvent = ({
             </div>
             <div className="flex items-center">
               <label className="mr-2 text-main">Add Task</label>
-              <input  type="checkbox" name="addTask" onChange={() => router.push('/task')}  />
+              <input
+                type="checkbox"
+                name="addTask"
+                onChange={() => router.push("/task")}
+              />
             </div>
           </div>
         </div>
 
         <div className="flex flex-row justify-between">
           {isNew && (
-            <button
-              onClick={handleSubmit}
-              className="w-[50px] text-sky-dark hover:text-dark-text-hover"
+            <Button
+              variant="default"
+              size="default"
               type="submit"
+              onClick={handleSubmit}
             >
               Save
-            </button>
+            </Button>
           )}
 
           {!isNew && (
             <>
-              <button
-                onClick={handleSubmit}
-                className="w-[50px] text-sky-dark hover:text-dark-text-hover"
+              <Button
                 type="submit"
+                variant="default"
+                size="default"
+                onClick={handleSubmit}
               >
                 Update
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="alert"
+                size="default"
+                type="submit"
                 onClick={handleDeleteEvent}
-                type="button"
-                className="w-[50px] text-alert-text hover:text-alert-hover"
               >
                 Delete
-              </button>
+              </Button>
             </>
           )}
         </div>
