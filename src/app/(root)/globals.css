@@ -11,7 +11,7 @@
   /* border color */
   --color-grey-border: #6b7280; /* gray-500 */
   --color-sky-dark-border:#082f49; /*sky-950*/
-  --color-alert-border: #b91c1c; /* red-700 */
+  --color-alert-border: #FF0000; /* red-700 */
   
 
   /* hover */
@@ -30,7 +30,7 @@
   --color-sky-dark: #082f49; /*sky-950*/
   --color-dark-text-hover: #bae6fd; /*sky-200*/
   --color-alert-text: #b91c1c; /* red-700 */
-  --color-alert-text-hover: #fca5a5; /* red-300 */
+  --color-alert-text-hover: #FF0000; /* red-300 */
 
   /* button color */
   --color-navbar-button: #e0f2fe; /*sky-100*/
