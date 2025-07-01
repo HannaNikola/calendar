@@ -37,6 +37,7 @@ export const ModalEvent = ({
   const [endTime, setEndTime] = useState<Date | null>(null);
   const [startDay, setStartDay] = useState<Date | null>(null);
   const [endDay, setEndDay] = useState<Date | null>(null);
+  const [allDay, setAllDay] = useState(false)
   const isNew = type === "new";
 
   const router = useRouter();
@@ -87,7 +88,7 @@ export const ModalEvent = ({
       title,
       start,
       end,
-      allDay: false,
+      allDay,
     };
 
     console.log(eventData);
@@ -191,7 +192,8 @@ export const ModalEvent = ({
           <div className="flex justify-between mb-8 ">
             <div className="flex items-center">
               <label className="flex text-main mr-2">All day event</label>
-              <input type="checkbox" name="allDay" />
+              <input type="checkbox" name="allDay"
+              onChange={(e)=> setAllDay(e.target.checked)} />
             </div>
             <div className="flex items-center">
               <label className="mr-2 text-main">Add Task</label>
@@ -241,3 +243,41 @@ export const ModalEvent = ({
     </div>
   );
 };
+
+
+
+
+
+// import { toast } from 'react-toastify';
+
+// export const handleYupError = (error: unknown) => {
+//   if (error instanceof Error) {
+//     toast.error(error.message);
+//   } else {
+//     toast.error("Unknown validation error.");
+//   }
+// };
+
+// import { handleYupError } from '@/utils/handleYupError';
+
+// const handleSubmit = async () => {
+//   try {
+//     await EventSchema.validate({ title });
+
+//     const start = combineDateTime(startDay, startTime);
+//     const end = combineDateTime(endDay, endTime);
+
+//     const eventData: CalendarEvent = {
+//       ...selectedEvent,
+//       title,
+//       start,
+//       end,
+//       allDay: false,
+//     };
+
+//     isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
+//     toast.success(isNew ? 'Event created' : 'Event updated');
+//   } catch (error) {
+//     handleYupError(error);
+//   }
+// };
