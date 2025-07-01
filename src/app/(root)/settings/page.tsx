@@ -5,7 +5,7 @@ import { Test } from "@/app/components_settings/test";
 export default function Settings(){
 
      return (
-        <div className="flex" >
+        <div className="flex flex-col sm:flex-row" >
           <Navbar/>
           <Test/>
          

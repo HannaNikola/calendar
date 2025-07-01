@@ -11,11 +11,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../components_Calendar/calendar.css";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/shared/ui/Button";
+import { toast, ToastContainer } from 'react-toastify';
+
+
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
-    .min(2, "short")
-    .max(30, "long")
+    .max(70, 'Title must be less than 100 characters')
     .required("title can`t be empty"),
 });
 
@@ -68,7 +70,11 @@ export const ModalEvent = ({
     return combined;
   };
 
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
+    try{
+      await EventSchema.validate({title})
+
     const start = combineDateTime(startDay, startTime);
     const end = combineDateTime(endDay, endTime);
 
@@ -86,7 +92,17 @@ export const ModalEvent = ({
 
     console.log(eventData);
     isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
+    } catch(error ){
+      if(typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string'){
+        toast.error(error.message);
+      } else {
+        toast.error("An unknown error occurred.");
+      }
+      
+    }
+    
   };
+
 
   const handelOverlowClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -116,7 +132,9 @@ export const ModalEvent = ({
         </div>
 
         <div className="flex flex-col ">
+          <ToastContainer/>
           <textarea
+            required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px]"
