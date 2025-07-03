@@ -6,7 +6,7 @@ import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
@@ -56,7 +56,7 @@ export const CalendarEl = () => {
       title: event.title,
       start: event.start ?? new Date(),
       end: event.end ?? new Date(),
-      allDay: event.allDay,
+      allDay: event.allDay ?? false,
     };
 
     setModalType("update");
@@ -79,6 +79,7 @@ export const CalendarEl = () => {
       allDay: eventData.allDay ?? false,
       addTask: eventData.addTask ?? false,
     };
+
     dispatch(addEventApi(formattedEvent));
     setModalOpen(false);
   };
@@ -103,6 +104,7 @@ export const CalendarEl = () => {
     id: event._id,
     start: event.start ? new Date(event.start) : new Date(),
     end: event.end ? new Date(event.end) : new Date(),
+    allDay: event.allDay ?? false,
   }));
 
   const handleMouseEnter = ({ el, event }: any) => {
@@ -156,7 +158,7 @@ export const CalendarEl = () => {
           views={{
             dayGridMonth: { buttonText: "Month" },
             timeGridWeek: { buttonText: "Week" },
-            timeGridDay: { buttonText: "Day" },
+            timeGridDay: { buttonText: "Day", typy: "block" },
 
             listYear: {
               type: "list",

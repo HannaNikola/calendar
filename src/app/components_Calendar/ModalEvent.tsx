@@ -11,13 +11,11 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../components_Calendar/calendar.css";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/shared/ui/Button";
-import { toast, ToastContainer } from 'react-toastify';
-
-
+import { toast, ToastContainer } from "react-toastify";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
-    .max(70, 'Title must be less than 100 characters')
+    .max(70, "Title must be less than 100 characters")
     .required("title can`t be empty"),
 });
 
@@ -37,7 +35,7 @@ export const ModalEvent = ({
   const [endTime, setEndTime] = useState<Date | null>(null);
   const [startDay, setStartDay] = useState<Date | null>(null);
   const [endDay, setEndDay] = useState<Date | null>(null);
-  const [allDay, setAllDay] = useState(false)
+  const [allDay, setAllDay] = useState(false);
   const isNew = type === "new";
 
   const router = useRouter();
@@ -49,6 +47,7 @@ export const ModalEvent = ({
       const end = new Date(selectedEvent.end || "");
       setStartDay(start);
       setEndDay(end);
+      setAllDay(selectedEvent.allDay ?? false);
       setStartTime(new Date(1970, 0, 1, start.getHours(), start.getMinutes()));
       setEndTime(new Date(1970, 0, 1, end.getHours(), end.getMinutes()));
     } else if (slotStart && slotEnd) {
@@ -71,39 +70,40 @@ export const ModalEvent = ({
     return combined;
   };
 
-
   const handleSubmit = async () => {
-    try{
-      await EventSchema.validate({title})
+    try {
+      await EventSchema.validate({ title });
 
-    const start = combineDateTime(startDay, startTime);
-    const end = combineDateTime(endDay, endTime);
+      const start = combineDateTime(startDay, startTime);
+      const end = combineDateTime(endDay, endTime);
 
-    if (!start || !end) {
-      return;
-    }
+      if (!start || !end) {
+        return;
+      }
 
-    const eventData: CalendarEvent = {
-      ...selectedEvent,
-      title,
-      start,
-      end,
-      allDay,
-    };
+      const eventData: CalendarEvent = {
+        ...selectedEvent,
+        title,
+        start,
+        end,
+        allDay,
+      };
 
-    console.log(eventData);
-    isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
-    } catch(error ){
-      if(typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string'){
+      console.log(eventData);
+      isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
+    } catch (error) {
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "message" in error &&
+        typeof error.message === "string"
+      ) {
         toast.error(error.message);
       } else {
         toast.error("An unknown error occurred.");
       }
-      
     }
-    
   };
-
 
   const handelOverlowClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -133,7 +133,7 @@ export const ModalEvent = ({
         </div>
 
         <div className="flex flex-col ">
-          <ToastContainer/>
+          <ToastContainer />
           <textarea
             required
             value={title}
@@ -192,8 +192,12 @@ export const ModalEvent = ({
           <div className="flex justify-between mb-8 ">
             <div className="flex items-center">
               <label className="flex text-main mr-2">All day event</label>
-              <input type="checkbox" name="allDay"
-              onChange={(e)=> setAllDay(e.target.checked)} />
+              <input
+                type="checkbox"
+                name="allDay"
+                checked={allDay}
+                onChange={(e) => setAllDay(e.target.checked)}
+              />
             </div>
             <div className="flex items-center">
               <label className="mr-2 text-main">Add Task</label>
@@ -243,10 +247,6 @@ export const ModalEvent = ({
     </div>
   );
 };
-
-
-
-
 
 // import { toast } from 'react-toastify';
 

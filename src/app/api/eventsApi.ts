@@ -37,22 +37,18 @@ axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 export const fetchEventsApi = createAsyncThunk(
   "allEvents/fetchAll",
   async (_, thunkAPI) => {
-
-      try {
-        const response = await axios.get("/api/events");
-        console.log(response)
-        return response.data;
-      } catch (error) {
-        const err = error as AxiosError;
-        console.error("Fetch error:", err);
-        return thunkAPI.rejectWithValue(
-          err.response?.data || "Something went wrong"
-        );
-
-      }
-
+    try {
+      const response = await axios.get("/api/events");
+      console.log("api response", response);
+      return response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      console.error("Fetch error:", err);
+      return thunkAPI.rejectWithValue(
+        err.response?.data || "Something went wrong"
+      );
     }
-
+  }
 );
 
 export const addEventApi = createAsyncThunk(
@@ -72,8 +68,13 @@ export const addEventApi = createAsyncThunk(
         ...newEvent,
         start: newEvent.start.toISOString(),
         end: newEvent.end.toISOString(),
+        allDay: Boolean(newEvent.allDay),
+
+        addTask: newEvent.addTask,
       };
-      const response = await axios.post("/api/events", newEvent);
+      console.log("payloud", payload);
+      const response = await axios.post("/api/events", payload);
+      console.log("addApievent", response);
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -85,29 +86,10 @@ export const addEventApi = createAsyncThunk(
   }
 );
 
-// export const updateEventApi = createAsyncThunk(
-//   "eventsData/updateEvent",
-//   async (payload: { id: string; eventData: CalendarEvent }, thunkApi) => {
-//     try {
-//       const response = await axios.patch(
-//         `/api/events/${payload.id}`,
-//         payload.eventData
-//       );
-//       return response.data;
-//     } catch (error) {
-//       const err = error as AxiosError;
-//       return thunkApi.rejectWithValue(
-//         err.response?.data || "Something went wrong"
-//       );
-//     }
-//   }
-// );
-
 export const updateEventApi = createAsyncThunk(
   "eventsData/updateEvent",
   async (payload: { id: string; eventData: CalendarEvent }, thunkApi) => {
     try {
-      
       const { _id, ...sanitizedEventData } = payload.eventData;
 
       const response = await axios.put(

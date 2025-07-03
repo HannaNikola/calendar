@@ -22,27 +22,7 @@
 
 .fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 1.5em;
-    
-    
 }
-
-  
-/* .fc-event-title {
-    flex-grow: 1;
-    flex-shrink: 1;
-    font-weight: 700;
-    min-width: 0px;
-    overflow: hidden;
-    border: 0,5 px solid transparent;
-    border-radius: 20 px;
-    background-color: #3788d8;
-}
-.fc-event-time {
-   border: 0,5 px solid transparent;
-    border-radius: 5 px;
-    background-color: #3788d8;
-    margin: 0 !important;
-} */
 
 /* style for calendar DatePicker */
 
