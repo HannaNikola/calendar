@@ -136,8 +136,8 @@ export const CalendarEl = () => {
   };
 
   return (
-    <section className="flex items-center justify-center p-4 ">
-      <div className=" flex w-full m-0">
+    <section className="flex items-center justify-center">
+      <div className=" flex w-full m-0 border border-gray-light-border bg-white p-5 rounded-tl-[50px] ">
         <FullCalendar
           eventMouseEnter={handleMouseEnter}
           eventDrop={handelEventDrop}

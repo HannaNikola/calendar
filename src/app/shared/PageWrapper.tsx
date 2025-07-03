@@ -6,7 +6,7 @@ interface IProps {
 }
 export function PageWrapper({children, className} : PropsWithChildren<IProps>){
 return (
-    <div className={`flex  min-w-[375px] flex-col lg:flex-row px-5 py-10  ${className || ""}`}>
+    <div className={`flex  min-w-[375px] flex-col lg:flex-row px-5 py-10 bg-gray-light-background  ${className || ""}`}>
     {children}
   </div>
 

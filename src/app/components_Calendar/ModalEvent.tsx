@@ -70,6 +70,8 @@ export const ModalEvent = ({
     return combined;
   };
 
+  
+
   const handleSubmit = async () => {
     try {
       await EventSchema.validate({ title });

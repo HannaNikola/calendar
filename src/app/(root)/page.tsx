@@ -4,11 +4,11 @@ import { PageWrapper } from "@/app/shared/PageWrapper";
 
 export default function Home() {
   return (
-    <div className="flex">
-      <PageWrapper>
+    <div className="flex flex-col lg:flex-row">
+      {/* <PageWrapper> */}
         <Navbar />
         <CalendarEl />
-      </PageWrapper>
+      {/* </PageWrapper> */}
     </div>
   );
 }
