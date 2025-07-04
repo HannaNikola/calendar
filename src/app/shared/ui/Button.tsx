@@ -9,15 +9,16 @@ import { cn } from '../utils/cn'
   {
     variants: {
       variant: {
-        default: ' text-sky-dark hover:text-sky-hover-medium border rounded rounded-2xl border-sky-dark-border hover:border-sky-hover-medium',
+        default: ' text-sky-dark hover:text-sky-hover-medium   rounded-2xl border-sky-dark-border hover:border-sky-hover-medium',
         outline: '',
-        alert: 'text-alert-text hover:text-alert-hover border rounded rounded-2xl border-alert-border hover:border-alert-hover'
+        alert: 'text-alert-text hover:text-alert-hover  rounded-2xl border-alert-border hover:border-alert-hover',
+        rounded:' text-white text-h2 hover:text-black  rounded-lg border-transparent bg-grey-button  hover:bg-gray-hover',
       },
       size: {
         default: 'w-[90px] px-4 py-1 ',
         small: '',
         medium: '',
-        large: '',
+        large: 'w-[260px] px-8 py-6 ',
       },
     },
     defaultVariants: {

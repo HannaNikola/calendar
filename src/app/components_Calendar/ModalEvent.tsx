@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import * as Yup from "yup";
 import { EventModalProps } from "@/app/types/typesModal";

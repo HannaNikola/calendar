@@ -20,6 +20,7 @@
   --color-sky-hover-medium: #bae6fd; /*sky-200*/
   --color-sky-hover-dark:#082f49; /*sky-950*/
   --color-alert-hover: #fca5a5; /* red-300 */
+  --color-gray-hover:  #6b6b6b; /* gray-light */
 
   /* input color */
   --color-input-light: #e0f2fe; /*sky-100*/
@@ -37,10 +38,11 @@
   --color-navbar-button: #e0f2fe; /*sky-100*/
   --color-navbar-button-hover: #bae6fd; /*sky-200*/
   --color-alert-button: #fca5a5; /* red-300 */
+  --color-grey-button:  #808080; /*gray-200*/
 
   /* background */
   --color-header-background: #bae6fd;
-  --color-gray-light-background: #f3f4f6; /* gray-50 */
+  --color-gray-light-background: #f3f4f6; /* gray-100 */
 
   /* fonts size */
   --text-h1: 24px;
@@ -71,6 +73,6 @@
     margin: auto;
     width: 100%;
     min-width: 375px;
-    height: 100%;
+    min-height: 100%;
   }
 }

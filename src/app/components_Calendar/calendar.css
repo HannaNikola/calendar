@@ -4,6 +4,11 @@
   background-color: #808080 !important;
   border-color: transparent !important;
   color: var(--fc-button-text-color);
+  
+}
+.fc .fc-button-primary:hover {
+  background-color: #6b6b6b !important; 
+  border-color: transparent !important;
 }
 .fc {
   font-size: 12px;

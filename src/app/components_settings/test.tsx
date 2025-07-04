@@ -14,8 +14,8 @@ export const Test = ()=>{
      <DotLottieReact
       src="https://lottie.host/ffc0444c-c99d-4337-b3c9-47b71cbd4033/s04ymTMzCO.lottie"
       loop
-      autoplay
-    />
+      autoplay 
+     />
   </div>
     )
 }
