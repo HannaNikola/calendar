@@ -9,7 +9,7 @@
   --color-gray-500: #6b7280;
 
   /* border color */
-  --color-gray-light-border: #f9fafb; /* gray-50 */
+  --color-gray-light-border: #f3f4f6; /* gray-100 */
   --color-grey-border: #6b7280; /* gray-500 */
   --color-sky-dark-border:#082f49; /*sky-950*/
   --color-alert-border: #FF0000; /* red-700 */
@@ -40,7 +40,7 @@
 
   /* background */
   --color-header-background: #bae6fd;
-  --color-gray-light-background: #f9fafb; /* gray-50 */
+  --color-gray-light-background: #f3f4f6; /* gray-50 */
 
   /* fonts size */
   --text-h1: 24px;
