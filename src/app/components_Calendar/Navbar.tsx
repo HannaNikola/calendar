@@ -13,8 +13,9 @@ type NavbarProps = {
 
 export const Navbar = ({ className }: NavbarProps) => {
   return (
-    <section className="flex flex-col-reverse lg:flex-col ">
-      <div className="w-full flex justify-center items-center mb-3 ">
+    <section className="flex flex-col-reverse  lg:flex-col ">
+      
+      <div className="w-full flex max-lg:justify-center max-lg:items-center mb-3 ">
         <EddEventButton/>
         </div>
     <ul className="flex flex-row lg:flex-col w-full lg:w-auto mb-[20px] gap-2 lg:mr-4">
@@ -37,6 +38,7 @@ export const Navbar = ({ className }: NavbarProps) => {
     </Link>
   </li>
 </ul>
+
     </section>
   );
 };

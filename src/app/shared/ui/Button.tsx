@@ -12,13 +12,13 @@ import { cn } from '../utils/cn'
         default: ' text-black hover:bg-navbar-button-hover bg-navbar-button   rounded-2xl border-sky-dark-border hover:border-sky-hover-medium shadow-lg',
         outline: '',
         alert: 'text-alert-text hover:bg-alert-button-hover bg-alert-button  rounded-2xl border-alert-border hover:border-alert-hover shadow-lg',
-        rounded:' text-white text-h2 hover:text-black  rounded-lg border-transparent bg-grey-button  hover:bg-gray-hover shadow-lg',
+        rounded:' text-white text-h2 hover:text-black  rounded-lg border-transparent bg-grey-button  hover:bg-gray-hover shadow-lg transition-colors duration-300',
       },
       size: {
         default: 'w-[90px] px-4 py-1 ',
         small: '',
         medium: '',
-        large: 'w-[260px] px-7 py-6 ',
+        large: 'w-[260px] px-4 py-5 ',
       },
     },
     defaultVariants: {
