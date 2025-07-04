@@ -140,7 +140,7 @@ export const ModalEvent = ({
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px]"
+            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px] shadow-lg"
             onInput={(e) => {
               e.currentTarget.style.height = "auto";
               e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
@@ -154,7 +154,7 @@ export const ModalEvent = ({
                 onChange={(date) => setStartDay(date)}
                 dateFormat="dd-MM-yyyy"
                 placeholderText="Select the day"
-                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
               />
               <DatePicker
                 selected={startTime}
@@ -166,7 +166,7 @@ export const ModalEvent = ({
                 timeIntervals={5}
                 timeCaption="Время"
                 placeholderText="Select the time"
-                className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
+                className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
               />
             </div>
             <div className="flex flex-1 mb-2 gap-2">
@@ -175,7 +175,7 @@ export const ModalEvent = ({
                 onChange={(date) => setEndDay(date)}
                 dateFormat="dd-MM-yyyy"
                 placeholderText="Select the day"
-                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
               />
               <DatePicker
                 selected={endTime}
@@ -187,7 +187,7 @@ export const ModalEvent = ({
                 timeIntervals={5}
                 timeCaption="Time"
                 placeholderText="Select the time"
-                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
               />
             </div>
           </div>
