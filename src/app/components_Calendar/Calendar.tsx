@@ -6,10 +6,11 @@ import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
+import { openModal, closeModal } from "@/app/store/redux/modalReducer";
 import {
   addEventApi,
   deleteEventApi,
@@ -17,22 +18,16 @@ import {
   updateEventApi,
 } from "@/app/api/eventsApi";
 import { ModalEvent } from "./ModalEvent";
-import { ModalType } from "@/app/types/typesModal";
 import { EventClickArg, EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
 export const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
-
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
-    null
-  );
-  const [slot, setSlot] = useState({ start: new Date(), end: new Date() });
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<ModalType>("new");
-
   const { events } = useSelector((state: RootState) => state.eventData);
+
+  const { isModalOpen, modalType, selectedEvent, slotStart, slotEnd } =
+    useSelector((state: RootState) => state.modal);
 
   useEffect(() => {
     dispatch(fetchEventsApi());
@@ -42,70 +37,88 @@ export const CalendarEl = () => {
     const start = arg.date;
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
-    setModalType("new");
-    setSelectedEvent(null);
-    setSlot({ start, end });
-    setModalOpen(true);
+    dispatch(
+      openModal({
+        type: "new",
+        // slotStart: start.toISOString(),
+        // slotEnd: end.toISOString(),
+        slotStart: start, 
+      slotEnd: end,
+      })
+    );
   };
 
   const handleSelectEvent = (arg: EventClickArg) => {
     const event = arg.event;
 
-    const calendarEvent: CalendarEvent = {
-      _id: event.id,
-      title: event.title,
-      start: event.start ?? new Date(),
-      end: event.end ?? new Date(),
-      allDay: event.allDay ?? false,
-    };
-
-    setModalType("update");
-    setSelectedEvent(calendarEvent);
-    setSlot({
-      start: new Date(calendarEvent.start || new Date()),
-      end: new Date(calendarEvent.end || new Date()),
-    });
-    setModalOpen(true);
+    dispatch(
+    openModal({
+      type: "update",
+      selectedEvent: {
+        _id: event.id,
+        title: event.title,
+        start: event.start ?? new Date(),
+        end: event.end ?? new Date(),
+        allDay: event.allDay ?? false,
+      },
+      slotStart: event.start ?? null,
+      slotEnd: event.end ?? null,
+    })
+  );
   };
+
+  // const handelAddEvent = (eventData: CalendarEvent) => {
+  //   if (!eventData.start || !eventData.end) {
+  //     return;
+  //   }
+  //   dispatch(addEventApi(eventData));
+  //   dispatch(closeModal());
+  // };
+
 
   const handelAddEvent = (eventData: CalendarEvent) => {
-    if (!eventData.start || !eventData.end) {
-      return;
-    }
-    const formattedEvent = {
-      ...eventData,
-      start: new Date(eventData.start),
-      end: new Date(eventData.end),
-      allDay: eventData.allDay ?? false,
-      addTask: eventData.addTask ?? false,
-    };
+  if (!eventData.start || !eventData.end) return;
 
-    dispatch(addEventApi(formattedEvent));
-    setModalOpen(false);
+  const payload = {
+    title: eventData.title,
+    start: new Date(eventData.start), // приведение к Date
+    end: new Date(eventData.end),
+    allDay: eventData.allDay ?? false,
+    addTask: eventData.addTask ?? false,
   };
 
+  dispatch(addEventApi(payload));
+  dispatch(closeModal());
+};
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     const eventId = eventData._id;
     if (!eventId) return;
 
     dispatch(updateEventApi({ id: eventId, eventData }));
-    setModalOpen(false);
+    dispatch(closeModal());
   };
 
   const handleDeleteEvent = () => {
     if (!selectedEvent?._id) return;
 
     dispatch(deleteEventApi(selectedEvent._id));
-    setModalOpen(false);
+    dispatch(closeModal());
   };
 
+  // const parsedEvents = events.map((event) => ({
+  //   ...event,
+  //   id: event._id,
+  //   start: new Date(event.start),
+  //   end: new Date(event.end),
+  //   allDay: event.allDay ?? false,
+  // }));
   const parsedEvents = events.map((event) => ({
-    ...event,
-    id: event._id,
-    start: event.start ? new Date(event.start) : new Date(),
-    end: event.end ? new Date(event.end) : new Date(),
-    allDay: event.allDay ?? false,
-  }));
+  ...event,
+  id: event._id,
+  start: event.start ? new Date(event.start) : new Date(), 
+  end: event.end ? new Date(event.end) : new Date(),
+  allDay: event.allDay ?? false,
+}));
 
   const handleMouseEnter = ({ el, event }: any) => {
     const time = event.start?.toLocaleTimeString([], {
@@ -197,10 +210,10 @@ export const CalendarEl = () => {
 
         <ModalEvent
           type={modalType}
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          slotStart={slot.start}
-          slotEnd={slot.end}
+          isOpen={isModalOpen}
+          onClose={() => dispatch(closeModal())}
+          slotStart={slotStart}
+          slotEnd={slotEnd}
           selectedEvent={selectedEvent}
           handelAddEvent={handelAddEvent}
           handelUpdateEvent={handelUpdateEvent}

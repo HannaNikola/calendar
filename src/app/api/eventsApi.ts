@@ -4,7 +4,6 @@ import { CalendarEvent } from "../types/typesApi";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
-
 export const fetchEventsApi = createAsyncThunk(
   "allEvents/fetchAll",
   async (_, thunkAPI) => {
@@ -77,6 +76,9 @@ export const updateEventApi = createAsyncThunk(
     }
   }
 );
+
+
+
 
 export const deleteEventApi = createAsyncThunk<string, string>(
   "eventsData/deleteEvent",

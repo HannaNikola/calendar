@@ -5,9 +5,12 @@ import {
   deleteEventApi,
   updateEventApi,
 } from "@/app/api/eventsApi";
-import { EventState } from "@/app/types/typesApi";
+import { EventStateProps } from "@/app/types/typesApi";
 
-const initialState: EventState = {
+
+
+
+const initialState: EventStateProps = {
   events: [],
   status: "idle",
   error: null,
