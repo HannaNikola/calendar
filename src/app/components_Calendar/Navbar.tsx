@@ -15,9 +15,9 @@ export const Navbar = ({ className }: NavbarProps) => {
   return (
     <section className="flex flex-col-reverse  lg:flex-col ">
       
-      <div className="w-full flex max-lg:justify-center max-lg:items-center mb-3 ">
+      {/* <div className="w-full flex max-lg:justify-center max-lg:items-center mb-3 ">
         <EddEventButton/>
-        </div>
+        </div> */}
     <ul className="flex flex-row lg:flex-col w-full lg:w-auto mb-[20px] gap-2 lg:mr-4">
   <li className="flex max-lg:flex-1 items-center px-2 py-2 lg:w-[260px] lg:px-4 bg-navbar-button hover:bg-navbar-button-hover rounded-sm shadow-sm transition-colors duration-300">
     <CalendarDays size={18} className="shrink-0" />

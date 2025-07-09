@@ -48,6 +48,19 @@ export const CalendarEl = () => {
     );
   };
 
+//   const handleSelectSlot = (arg: DateClickArg) => {
+//   const start = arg.date;
+//   const end = new Date(start.getTime() + 60 * 60 * 1000);
+
+//   dispatch(
+//     openModal({
+//       type: "new",
+//       slotStart: start,
+//       slotEnd: end,    
+//     })
+//   );
+// };
+
   const handleSelectEvent = (arg: EventClickArg) => {
     const event = arg.event;
 
@@ -81,7 +94,7 @@ export const CalendarEl = () => {
 
   const payload = {
     title: eventData.title,
-    start: new Date(eventData.start), // приведение к Date
+    start: new Date(eventData.start), 
     end: new Date(eventData.end),
     allDay: eventData.allDay ?? false,
     addTask: eventData.addTask ?? false,
@@ -90,6 +103,8 @@ export const CalendarEl = () => {
   dispatch(addEventApi(payload));
   dispatch(closeModal());
 };
+
+
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     const eventId = eventData._id;
     if (!eventId) return;
@@ -225,3 +240,5 @@ export const CalendarEl = () => {
 };
 
 export default CalendarEl;
+
+

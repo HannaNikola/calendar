@@ -4,10 +4,8 @@ import Navbar from "@/app/components_Calendar/Navbar";
 export default function Home() {
   return (
     <div className="flex flex-col lg:flex-row">
-      {/* <PageWrapper> */}
-        <Navbar />
-        <CalendarEl />
-      {/* </PageWrapper> */}
+      <Navbar />
+      <CalendarEl />
     </div>
   );
 }

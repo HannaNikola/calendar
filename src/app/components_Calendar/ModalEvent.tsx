@@ -1,4 +1,4 @@
-// "use client";
+
 
 import * as Yup from "yup";
 import { EventModalProps } from "@/app/types/typesModal";
@@ -67,6 +67,8 @@ export const ModalEvent = ({
 
     setAllDay(selectedEvent?.allDay ?? false);
   }, [selectedEvent, slotStart, slotEnd]);
+
+  
 
   const combineDateTime = (
     date: Date | null,
@@ -259,4 +261,6 @@ export const ModalEvent = ({
       </div>
     );
   };
+
+
 
