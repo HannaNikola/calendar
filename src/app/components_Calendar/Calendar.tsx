@@ -24,7 +24,7 @@ import "tippy.js/dist/tippy.css";
 
 export const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { events } = useSelector((state: RootState) => state.eventData);
+  const { events, status } = useSelector((state: RootState) => state.eventData);
 
   const { isModalOpen, modalType, selectedEvent, slotStart, slotEnd } =
     useSelector((state: RootState) => state.modal);
@@ -42,42 +42,42 @@ export const CalendarEl = () => {
         type: "new",
         // slotStart: start.toISOString(),
         // slotEnd: end.toISOString(),
-        slotStart: start, 
-      slotEnd: end,
+        slotStart: start,
+        slotEnd: end,
       })
     );
   };
 
-//   const handleSelectSlot = (arg: DateClickArg) => {
-//   const start = arg.date;
-//   const end = new Date(start.getTime() + 60 * 60 * 1000);
+  //   const handleSelectSlot = (arg: DateClickArg) => {
+  //   const start = arg.date;
+  //   const end = new Date(start.getTime() + 60 * 60 * 1000);
 
-//   dispatch(
-//     openModal({
-//       type: "new",
-//       slotStart: start,
-//       slotEnd: end,    
-//     })
-//   );
-// };
+  //   dispatch(
+  //     openModal({
+  //       type: "new",
+  //       slotStart: start,
+  //       slotEnd: end,
+  //     })
+  //   );
+  // };
 
   const handleSelectEvent = (arg: EventClickArg) => {
     const event = arg.event;
 
     dispatch(
-    openModal({
-      type: "update",
-      selectedEvent: {
-        _id: event.id,
-        title: event.title,
-        start: event.start ?? new Date(),
-        end: event.end ?? new Date(),
-        allDay: event.allDay ?? false,
-      },
-      slotStart: event.start ?? null,
-      slotEnd: event.end ?? null,
-    })
-  );
+      openModal({
+        type: "update",
+        selectedEvent: {
+          _id: event.id,
+          title: event.title,
+          start: event.start ?? new Date(),
+          end: event.end ?? new Date(),
+          allDay: event.allDay ?? false,
+        },
+        slotStart: event.start ?? null,
+        slotEnd: event.end ?? null,
+      })
+    );
   };
 
   // const handelAddEvent = (eventData: CalendarEvent) => {
@@ -88,22 +88,20 @@ export const CalendarEl = () => {
   //   dispatch(closeModal());
   // };
 
-
   const handelAddEvent = (eventData: CalendarEvent) => {
-  if (!eventData.start || !eventData.end) return;
+    if (!eventData.start || !eventData.end) return;
 
-  const payload = {
-    title: eventData.title,
-    start: new Date(eventData.start), 
-    end: new Date(eventData.end),
-    allDay: eventData.allDay ?? false,
-    addTask: eventData.addTask ?? false,
+    const payload = {
+      title: eventData.title,
+      start: new Date(eventData.start),
+      end: new Date(eventData.end),
+      allDay: eventData.allDay ?? false,
+      addTask: eventData.addTask ?? false,
+    };
+
+    dispatch(addEventApi(payload));
+    dispatch(closeModal());
   };
-
-  dispatch(addEventApi(payload));
-  dispatch(closeModal());
-};
-
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     const eventId = eventData._id;
@@ -128,12 +126,12 @@ export const CalendarEl = () => {
   //   allDay: event.allDay ?? false,
   // }));
   const parsedEvents = events.map((event) => ({
-  ...event,
-  id: event._id,
-  start: event.start ? new Date(event.start) : new Date(), 
-  end: event.end ? new Date(event.end) : new Date(),
-  allDay: event.allDay ?? false,
-}));
+    ...event,
+    id: event._id,
+    start: event.start ? new Date(event.start) : new Date(),
+    end: event.end ? new Date(event.end) : new Date(),
+    allDay: event.allDay ?? false,
+  }));
 
   const handleMouseEnter = ({ el, event }: any) => {
     const time = event.start?.toLocaleTimeString([], {
@@ -164,82 +162,87 @@ export const CalendarEl = () => {
   };
 
   return (
-   
-    <section className="flex  items-center justify-center">
-      <div className=" flex w-full h-full m-0 border border-gray-light-border bg-white p-5 rounded-tl-[50px] ">
-        <FullCalendar
-          eventMouseEnter={handleMouseEnter}
-          eventDrop={handelEventDrop}
-          plugins={[
-            dayGridPlugin,
-            timeGridPlugin,
-            interactionPlugin,
-            listPlugin,
-            multiMonthPlugin,
-          ]}
-          initialView="dayGridMonth"
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right:
-              "dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear",
-          }}
-          views={{
-            dayGridMonth: { buttonText: "Month" },
-            timeGridWeek: { buttonText: "Week" },
-            timeGridDay: { buttonText: "Day", typy: "block" },
+    <section className="flex w-full h-full items-center justify-center ">
+      {status === "loading" ? (
+        <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+          <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
+        </div>
+      ) : (
+        <div className=" bg-wite flex w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
+          <FullCalendar
+            eventMouseEnter={handleMouseEnter}
+            eventDrop={handelEventDrop}
+            plugins={[
+              dayGridPlugin,
+              timeGridPlugin,
+              interactionPlugin,
+              listPlugin,
+              multiMonthPlugin,
+            ]}
+            initialView="dayGridMonth"
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right:
+                "dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear",
+            }}
+            views={{
+              dayGridMonth: { buttonText: "Month" },
+              timeGridWeek: { buttonText: "Week" },
+              timeGridDay: { buttonText: "Day", typy: "block" },
 
-            listYear: {
-              type: "list",
-              duration: { years: 1 },
-              buttonText: "Year List",
-            },
-            multiMonthYear: {
-              type: "multiMonth",
-              duration: { months: 12 },
-              buttonText: "Year",
-              multiMonthMinWidth: 200,
-            },
-          }}
-          events={parsedEvents}
-          editable={true}
-          selectable={true}
-          dateClick={handleSelectSlot}
-          eventClick={handleSelectEvent}
-          height="auto"
-          eventClassNames={() => "bg-sky-700 text-white w-full"}
-          contentHeight="auto"
-          aspectRatio={1.2}
-          businessHours={[
-            {
-              daysOfWeek: [1, 2, 3],
-              startTime: "08:00",
-              endTime: "18:00",
-            },
-            {
-              daysOfWeek: [4, 5],
-              startTime: "10:00",
-              endTime: "16:00",
-            },
-          ]}
-        />
+              listYear: {
+                type: "list",
+                duration: { years: 1 },
+                buttonText: "Year List",
+              },
+              multiMonthYear: {
+                type: "multiMonth",
+                duration: { months: 12 },
+                buttonText: "Year",
+                multiMonthMinWidth: 200,
+              },
+            }}
+            events={parsedEvents}
+            editable={true}
+            selectable={true}
+            dateClick={handleSelectSlot}
+            eventClick={handleSelectEvent}
+            //  height="100%"
+            height="auto"
+            contentHeight="100%"
+            expandRows={true}
+            eventClassNames={() => "bg-sky-700 text-white w-full h-full"}
+            aspectRatio={1.2}
+            businessHours={[
+              {
+                daysOfWeek: [1, 2, 3],
+                startTime: "08:00",
+                endTime: "18:00",
+              },
+              {
+                daysOfWeek: [4, 5],
+                startTime: "10:00",
+                endTime: "16:00",
+              },
+            ]}
+          />
 
-        <ModalEvent
-          type={modalType}
-          isOpen={isModalOpen}
-          onClose={() => dispatch(closeModal())}
-          slotStart={slotStart}
-          slotEnd={slotEnd}
-          selectedEvent={selectedEvent}
-          handelAddEvent={handelAddEvent}
-          handelUpdateEvent={handelUpdateEvent}
-          handleDeleteEvent={handleDeleteEvent}
-        />
-      </div>
+          <ModalEvent
+            type={modalType}
+            isOpen={isModalOpen}
+            onClose={() => dispatch(closeModal())}
+            slotStart={slotStart}
+            slotEnd={slotEnd}
+            selectedEvent={selectedEvent}
+            handelAddEvent={handelAddEvent}
+            handelUpdateEvent={handelUpdateEvent}
+            handleDeleteEvent={handleDeleteEvent}
+          />
+        </div>
+      )}
     </section>
   );
 };
 
 export default CalendarEl;
-
-

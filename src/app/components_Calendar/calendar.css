@@ -12,6 +12,7 @@
 }
 .fc {
   font-size: 12px;
+  
 }
 
 @media (max-width: 585px) {
@@ -27,6 +28,7 @@
 
 .fc .fc-toolbar.fc-header-toolbar {
     margin-bottom: 1.5em;
+   
 }
 
 /* style for calendar DatePicker */
