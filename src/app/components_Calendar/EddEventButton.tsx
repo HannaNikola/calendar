@@ -47,8 +47,8 @@ type AddEventButtonProps = {
 const AddEventButton = ({ onAddClick }: AddEventButtonProps) => {
     const dispatch = useDispatch<AppDispatch>();
     
-    const { isModalOpen, modalType, selectedEvent, slotStart, slotEnd } =
-        useSelector((state: RootState) => state.modal);
+    // const { isModalOpen, modalType, selectedEvent, slotStart, slotEnd } =
+    //     useSelector((state: RootState) => state.modal);
 
     const handleAddClick = () => {
         const now = new Date();

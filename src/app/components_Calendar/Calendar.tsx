@@ -40,26 +40,11 @@ export const CalendarEl = () => {
     dispatch(
       openModal({
         type: "new",
-        // slotStart: start.toISOString(),
-        // slotEnd: end.toISOString(),
         slotStart: start,
         slotEnd: end,
       })
     );
   };
-
-  //   const handleSelectSlot = (arg: DateClickArg) => {
-  //   const start = arg.date;
-  //   const end = new Date(start.getTime() + 60 * 60 * 1000);
-
-  //   dispatch(
-  //     openModal({
-  //       type: "new",
-  //       slotStart: start,
-  //       slotEnd: end,
-  //     })
-  //   );
-  // };
 
   const handleSelectEvent = (arg: EventClickArg) => {
     const event = arg.event;
@@ -79,14 +64,6 @@ export const CalendarEl = () => {
       })
     );
   };
-
-  // const handelAddEvent = (eventData: CalendarEvent) => {
-  //   if (!eventData.start || !eventData.end) {
-  //     return;
-  //   }
-  //   dispatch(addEventApi(eventData));
-  //   dispatch(closeModal());
-  // };
 
   const handelAddEvent = (eventData: CalendarEvent) => {
     if (!eventData.start || !eventData.end) return;
@@ -118,13 +95,6 @@ export const CalendarEl = () => {
     dispatch(closeModal());
   };
 
-  // const parsedEvents = events.map((event) => ({
-  //   ...event,
-  //   id: event._id,
-  //   start: new Date(event.start),
-  //   end: new Date(event.end),
-  //   allDay: event.allDay ?? false,
-  // }));
   const parsedEvents = events.map((event) => ({
     ...event,
     id: event._id,
