@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { LogOut } from "lucide-react";
-import Navbar from "./Navbar";
 
 export default function Header() {
   return (
