@@ -12,6 +12,7 @@ import "../components_Calendar/calendar.css";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/shared/ui/Button";
 import { toast, ToastContainer } from "react-toastify";
+import { useEventHandlers } from "../hooks/useEventHandlers";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -21,14 +22,8 @@ const EventSchema = Yup.object().shape({
 
 export const ModalEvent = ({
   type = "new",
-  selectedEvent,
   isOpen,
   onClose,
-  handleDeleteEvent,
-  handelAddEvent,
-  handelUpdateEvent,
-  slotStart,
-  slotEnd,
 }: EventModalProps) => {
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
@@ -37,7 +32,14 @@ export const ModalEvent = ({
   const [endDay, setEndDay] = useState<Date | null>(null);
   const [allDay, setAllDay] = useState(false);
   const isNew = type === "new";
-
+const {
+    slotStart,
+    slotEnd,
+    handelAddEvent,
+    handleDeleteEvent,
+    selectedEvent,
+    handelUpdateEvent
+  } = useEventHandlers();
   const router = useRouter();
 
   useEffect(() => {
@@ -101,6 +103,7 @@ export const ModalEvent = ({
 
       console.log(eventData);
       isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
+
     } catch (error) {
       if (
         typeof error === "object" &&

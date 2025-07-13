@@ -11,23 +11,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
 import { openModal, closeModal } from "@/app/store/redux/modalReducer";
-import {
-  addEventApi,
-  deleteEventApi,
-  fetchEventsApi,
-  updateEventApi,
-} from "@/app/api/eventsApi";
+import { useEventHandlers } from "../hooks/useEventHandlers";
 import { ModalEvent } from "./ModalEvent";
 import { EventClickArg, EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
+import { fetchEventsApi } from "../api/eventsApi";
 
 export const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { events, status } = useSelector((state: RootState) => state.eventData);
-
-  const { isModalOpen, modalType, selectedEvent, slotStart, slotEnd } =
-    useSelector((state: RootState) => state.modal);
+  const {
+    isModalOpen,
+    modalType,
+    slotStart,
+    slotEnd,
+    closeModal,
+    handelAddEvent,
+    handleDeleteEvent,
+    selectedEvent,
+    handelUpdateEvent,
+  } = useEventHandlers();
 
   useEffect(() => {
     dispatch(fetchEventsApi());
@@ -63,36 +67,6 @@ export const CalendarEl = () => {
         slotEnd: event.end ?? null,
       })
     );
-  };
-
-  const handelAddEvent = (eventData: CalendarEvent) => {
-    if (!eventData.start || !eventData.end) return;
-
-    const payload = {
-      title: eventData.title,
-      start: new Date(eventData.start),
-      end: new Date(eventData.end),
-      allDay: eventData.allDay ?? false,
-      addTask: eventData.addTask ?? false,
-    };
-
-    dispatch(addEventApi(payload));
-    dispatch(closeModal());
-  };
-
-  const handelUpdateEvent = (eventData: CalendarEvent) => {
-    const eventId = eventData._id;
-    if (!eventId) return;
-
-    dispatch(updateEventApi({ id: eventId, eventData }));
-    dispatch(closeModal());
-  };
-
-  const handleDeleteEvent = () => {
-    if (!selectedEvent?._id) return;
-
-    dispatch(deleteEventApi(selectedEvent._id));
-    dispatch(closeModal());
   };
 
   const parsedEvents = events.map((event) => ({

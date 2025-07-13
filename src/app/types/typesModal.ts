@@ -7,8 +7,8 @@ export interface EventModalProps {
   type?: ModalType;
   onClose: () => void;
   handelAddEvent: (eventData: CalendarEvent) => void;
-  handelUpdateEvent: (eventData: CalendarEvent) => void;
-  handleDeleteEvent: () => void;
+  handelUpdateEvent?: (eventData: CalendarEvent) => void;
+  handleDeleteEvent?: () => void;
   slotStart?: Date | null;
   slotEnd?: Date | null;
   selectedEvent?: CalendarEvent | null;
