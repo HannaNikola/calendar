@@ -18,9 +18,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Provider store={store}>
-          <Header />
+          <Header/>
           <PageWrapper>
-            <Navbar />
+            <Navbar/>
             {children}
           </PageWrapper>
         </Provider>
