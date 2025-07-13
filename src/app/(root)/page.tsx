@@ -1,11 +1,7 @@
-import CalendarEl from "@/app/components_Calendar/Calendar";
-import Navbar from "@/app/components_Calendar/Navbar";
+
+import { redirect } from "next/navigation";
+
 
 export default function Home() {
-  return (
-    <div className="flex flex-col lg:flex-row">
-      <Navbar />
-      <CalendarEl />
-    </div>
-  );
+  redirect("/calendar");
 }

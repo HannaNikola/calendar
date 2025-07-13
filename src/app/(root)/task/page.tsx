@@ -5,7 +5,6 @@ import Navbar from "@/app/components_Calendar/Navbar";
 export default function Task() {
   return (
     <div className="flex flex-col lg:flex-row">
-      <Navbar />
       <TaskEl />
     </div>
   );
