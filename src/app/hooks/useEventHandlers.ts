@@ -2,13 +2,50 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { CalendarEvent } from "../types/typesApi";
 import { addEventApi, deleteEventApi, updateEventApi } from "../api/eventsApi";
-import { closeModal } from "../store/redux/modalReducer";
+import { DateClickArg } from "@fullcalendar/interaction/index.js";
+import { EventClickArg } from "@fullcalendar/core/index.js";
+import { openModal, closeModal } from "@/app/store/redux/modalReducer";
+
+
+
 
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { selectedEvent, isModalOpen, modalType, slotStart, slotEnd } =
     useSelector((state: RootState) => state.modal);
 
+
+    const handleSelectSlot = (arg: DateClickArg) => {
+    const start = arg.date;
+    const end = new Date(start.getTime() + 60 * 60 * 1000);
+
+    dispatch(
+      openModal({
+        type: "new",
+        slotStart: start,
+        slotEnd: end,
+      })
+    );
+  };
+
+  const handleSelectEvent = (arg: EventClickArg) => {
+    const event = arg.event;
+
+    dispatch(
+      openModal({
+        type: "update",
+        selectedEvent: {
+          _id: event.id,
+          title: event.title,
+          start: event.start ?? new Date(),
+          end: event.end ?? new Date(),
+          allDay: event.allDay ?? false,
+        },
+        slotStart: event.start ?? null,
+        slotEnd: event.end ?? null,
+      })
+    );
+  };
   const handelAddEvent = (eventData: CalendarEvent) => {
     if (!eventData.start || !eventData.end) return;
 
@@ -46,6 +83,8 @@ export const useEventHandlers = () => {
     slotStart,
     slotEnd,
     closeModal: () => dispatch(closeModal()),
+    handleSelectEvent,
+    handleSelectSlot,
     handelAddEvent,
     handelUpdateEvent,
     handleDeleteEvent,

@@ -4,11 +4,9 @@ import { CalendarDays } from "lucide-react";
 import { BookOpenCheck } from "lucide-react";
 import EddEventButton from "./EddEventButton";
 
-type NavbarProps = {
-  className?: string;
-};
 
-export const Navbar = ({ className }: NavbarProps) => {
+
+export const Navbar = () => {
   return (
     <section className="flex flex-col-reverse  lg:flex-col ">
       <div className="w-full flex max-lg:justify-center max-lg:items-center mb-3 ">
