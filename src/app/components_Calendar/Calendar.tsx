@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import { useEffect } from "react";
+import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
@@ -49,6 +49,7 @@ export const CalendarEl = () => {
     allDay: event.allDay ?? false,
   }));
 
+  
 
   const handleMouseEnter = ({ el, event }: any) => {
     const time = event.start?.toLocaleTimeString([], {
@@ -81,9 +82,10 @@ export const CalendarEl = () => {
   return (
     <section className="flex w-full h-full items-center justify-center ">
       {status === "loading" ? (
-        <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <div className="fixed inset-0 flex items-center justify-center  z-50">
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
         </div>
+        
       ) : (
         <div className=" bg-wite flex w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
           <FullCalendar
@@ -160,6 +162,7 @@ export const CalendarEl = () => {
       )}
     </section>
   );
+
 };
 
-export default CalendarEl;
+export default CalendarEl

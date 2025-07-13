@@ -40,7 +40,7 @@ const {
     selectedEvent,
     handelUpdateEvent
   } = useEventHandlers();
-  const router = useRouter();
+   const router = useRouter();
 
   useEffect(() => {
     setTitle(selectedEvent?.title ?? "");
