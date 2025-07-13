@@ -2,6 +2,7 @@ import Image from "next/image";
 import { LogOut } from "lucide-react";
 
 export default function Header() {
+  console.log("Header rendered")
   return (
     <section className="w-full  bg-header-background ">
     <div className=" h-[100px] flex  py-5 px-5 shadow-sm">

@@ -5,6 +5,9 @@ import "./globals.css";
 import { PageWrapper } from "@/app/shared/PageWrapper";
 import { Provider } from "react-redux";
 import { store } from "@/app/store/store";
+import Navbar from "../components_Calendar/Navbar";
+
+
 
 export default function RootLayout({
   children,
@@ -14,11 +17,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        <PageWrapper>
-          <Provider store={store}>{children}</Provider>
-        </PageWrapper>
+        <Provider store={store}>
+          <Header />
+          <PageWrapper>
+            <Navbar />
+            {children}
+          </PageWrapper>
+        </Provider>
       </body>
     </html>
   );
 }
+
+
