@@ -13,11 +13,8 @@ const AddEventButton = () => {
   const {
     isModalOpen,
     modalType,
-    slotStart,
-    slotEnd,
     closeModal,
     handelAddEvent,
-    handleDeleteEvent,
   } = useEventHandlers();
 
   const handleAddClick = () => {

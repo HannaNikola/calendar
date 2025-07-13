@@ -2,7 +2,7 @@
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
+import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
@@ -10,13 +10,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
-import { openModal, closeModal } from "@/app/store/redux/modalReducer";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { ModalEvent } from "./ModalEvent";
-import { EventClickArg, EventDropArg } from "@fullcalendar/core/index.js";
+import {EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { fetchEventsApi } from "../api/eventsApi";
+
+
 
 export const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -29,6 +30,8 @@ export const CalendarEl = () => {
     closeModal,
     handelAddEvent,
     handleDeleteEvent,
+    handleSelectEvent,
+    handleSelectSlot,
     selectedEvent,
     handelUpdateEvent,
   } = useEventHandlers();
@@ -37,37 +40,6 @@ export const CalendarEl = () => {
     dispatch(fetchEventsApi());
   }, [dispatch]);
 
-  const handleSelectSlot = (arg: DateClickArg) => {
-    const start = arg.date;
-    const end = new Date(start.getTime() + 60 * 60 * 1000);
-
-    dispatch(
-      openModal({
-        type: "new",
-        slotStart: start,
-        slotEnd: end,
-      })
-    );
-  };
-
-  const handleSelectEvent = (arg: EventClickArg) => {
-    const event = arg.event;
-
-    dispatch(
-      openModal({
-        type: "update",
-        selectedEvent: {
-          _id: event.id,
-          title: event.title,
-          start: event.start ?? new Date(),
-          end: event.end ?? new Date(),
-          allDay: event.allDay ?? false,
-        },
-        slotStart: event.start ?? null,
-        slotEnd: event.end ?? null,
-      })
-    );
-  };
 
   const parsedEvents = events.map((event) => ({
     ...event,
@@ -76,6 +48,7 @@ export const CalendarEl = () => {
     end: event.end ? new Date(event.end) : new Date(),
     allDay: event.allDay ?? false,
   }));
+
 
   const handleMouseEnter = ({ el, event }: any) => {
     const time = event.start?.toLocaleTimeString([], {
