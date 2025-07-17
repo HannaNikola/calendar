@@ -6,18 +6,16 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import { useEffect} from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { ModalEvent } from "./ModalEvent";
-import {EventDropArg } from "@fullcalendar/core/index.js";
+import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { fetchEventsApi } from "../api/eventsApi";
-
-
 
 export const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,10 +34,22 @@ export const CalendarEl = () => {
     handelUpdateEvent,
   } = useEventHandlers();
 
+  const [showLouder, setShowLoader] = useState(false);
+
   useEffect(() => {
     dispatch(fetchEventsApi());
   }, [dispatch]);
 
+  useEffect(() => {
+    const timeout =
+      status === "loading"
+        ? setTimeout(() => setShowLoader(true), 1000)
+        : setShowLoader(false);
+
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [status]);
 
   const parsedEvents = events.map((event) => ({
     ...event,
@@ -48,8 +58,6 @@ export const CalendarEl = () => {
     end: event.end ? new Date(event.end) : new Date(),
     allDay: event.allDay ?? false,
   }));
-
-  
 
   const handleMouseEnter = ({ el, event }: any) => {
     const time = event.start?.toLocaleTimeString([], {
@@ -81,11 +89,10 @@ export const CalendarEl = () => {
 
   return (
     <section className="flex w-full h-full items-center justify-center ">
-      {status === "loading" ? (
+      {showLouder ? (
         <div className="fixed inset-0 flex items-center justify-center  z-50">
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
         </div>
-        
       ) : (
         <div className=" bg-wite flex w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
           <FullCalendar
@@ -162,7 +169,6 @@ export const CalendarEl = () => {
       )}
     </section>
   );
-
 };
 
-export default CalendarEl
+export default CalendarEl;
