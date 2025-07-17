@@ -26,6 +26,7 @@ const AddEventButton = () => {
         slotStart: now,
         slotEnd: end,
         selectedEvent: null,
+        addTask: false,
       })
     );
   };
