@@ -3,10 +3,9 @@ export interface CalendarEvent {
   title: string;
   allDay?: boolean;
   addTask?: boolean;
-  start?: Date | string;
-  end?: Date | string;
+  start?: string | Date | null;
+  end?: string | Date | null;
 }
-
 
 export interface EventStateProps {
   events: CalendarEvent[];

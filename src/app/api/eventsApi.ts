@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { CalendarEvent } from "../types/typesApi";
+import { toISOString } from "../utils/date";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
@@ -26,8 +27,8 @@ export const addEventApi = createAsyncThunk(
   async (
     newEvent: {
       title: string;
-      start: Date;
-      end: Date;
+      start: Date | string;
+      end: Date | string;
       allDay: boolean;
       addTask: boolean;
     },
@@ -36,8 +37,8 @@ export const addEventApi = createAsyncThunk(
     try {
       const payload = {
         ...newEvent,
-        start: newEvent.start.toISOString(),
-        end: newEvent.end.toISOString(),
+        start: toISOString(newEvent.start),
+        end: toISOString(newEvent.end),
         allDay: Boolean(newEvent.allDay),
 
         addTask: newEvent.addTask,
@@ -55,9 +56,6 @@ export const addEventApi = createAsyncThunk(
     }
   }
 );
-
-
-
 
 export const updateEventApi = createAsyncThunk(
   "eventsData/updateEvent",
@@ -79,9 +77,6 @@ export const updateEventApi = createAsyncThunk(
     }
   }
 );
-
-
-
 
 export const deleteEventApi = createAsyncThunk<string, string>(
   "eventsData/deleteEvent",

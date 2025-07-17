@@ -5,25 +5,23 @@ import { addEventApi, deleteEventApi, updateEventApi } from "../api/eventsApi";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
 import { EventClickArg } from "@fullcalendar/core/index.js";
 import { openModal, closeModal } from "@/app/store/redux/modalReducer";
-
-
-
+import { toDate } from "../utils/date";
 
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { selectedEvent, isModalOpen, modalType, slotStart, slotEnd } =
     useSelector((state: RootState) => state.modal);
 
-
-    const handleSelectSlot = (arg: DateClickArg) => {
+  const handleSelectSlot = (arg: DateClickArg) => {
     const start = arg.date;
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
     dispatch(
       openModal({
         type: "new",
-        slotStart: start,
-        slotEnd: end,
+        slotStart: start.toISOString(),
+        slotEnd: end.toISOString(),
+        addTask: false,
       })
     );
   };
@@ -37,12 +35,13 @@ export const useEventHandlers = () => {
         selectedEvent: {
           _id: event.id,
           title: event.title,
-          start: event.start ?? new Date(),
-          end: event.end ?? new Date(),
+          start: event.start?.toISOString() ?? new Date().toISOString(),
+          end: event.end?.toISOString() ?? new Date().toISOString(),
           allDay: event.allDay ?? false,
         },
-        slotStart: event.start ?? null,
-        slotEnd: event.end ?? null,
+        slotStart: event.start?.toISOString() ?? null,
+        slotEnd: event.end?.toISOString() ?? null,
+        addTask: false,
       })
     );
   };
@@ -79,9 +78,15 @@ export const useEventHandlers = () => {
   return {
     isModalOpen,
     modalType,
-    selectedEvent,
-    slotStart,
-    slotEnd,
+    selectedEvent: selectedEvent
+      ? {
+          ...selectedEvent,
+          start: toDate(selectedEvent.start),
+          end: toDate(selectedEvent.end),
+        }
+      : null,
+    slotStart: toDate(slotStart),
+    slotEnd: toDate(slotEnd),
     closeModal: () => dispatch(closeModal()),
     handleSelectEvent,
     handleSelectSlot,

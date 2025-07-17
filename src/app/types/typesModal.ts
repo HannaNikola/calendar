@@ -9,8 +9,8 @@ export interface EventModalProps {
   handelAddEvent: (eventData: CalendarEvent) => void;
   handelUpdateEvent?: (eventData: CalendarEvent) => void;
   handleDeleteEvent?: () => void;
-  slotStart?: Date | null;
-  slotEnd?: Date | null;
+  slotStart?: Date | string | null;
+  slotEnd?: Date | string | null;
   selectedEvent?: CalendarEvent | null;
 }
 
@@ -18,6 +18,7 @@ export interface ModalStateProps {
   isModalOpen: boolean;
   modalType: ModalType | undefined;
   selectedEvent: CalendarEvent | null;
-  slotStart?: Date | null;
-  slotEnd?: Date | null;
+  slotStart?: Date | string | null;
+  slotEnd?: Date | string | null;
+  addTask?: boolean;
 }
