@@ -94,7 +94,7 @@ export const CalendarEl = () => {
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
         </div>
       ) : (
-        <div className=" bg-wite flex w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
+        <div className=" bg-white flex w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
           <FullCalendar
             eventMouseEnter={handleMouseEnter}
             eventDrop={handelEventDrop}
