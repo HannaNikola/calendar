@@ -3,6 +3,26 @@ import { eventReducer } from "@/app/store/redux/eventReducer";
 import { modalReducer } from "@/app/store/redux/modalReducer";
 import logger from "redux-logger";
 
+// export const store = configureStore({
+//   reducer: {
+//     eventData: eventReducer,
+//     modal: modalReducer,
+//   },
+//   middleware: (getDefaultMiddleware) =>
+//     getDefaultMiddleware({
+//       serializableCheck: {
+//         ignoredActions: ["modal/openModal", "modal/closeModal"],
+//         ignoredPaths: [
+//           "modal.slotStart",
+//           "modal.slotEnd",
+//           "modal.selectedEvent",
+//         ],
+//       },
+//     }).concat(logger),
+//   devTools: process.env.NODE_ENV !== "production",
+// });
+
+
 export const store = configureStore({
   reducer: {
     eventData: eventReducer,
@@ -10,14 +30,6 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ["modal/openModal", "modal/closeModal"],
-        ignoredPaths: [
-          "modal.slotStart",
-          "modal.slotEnd",
-          "modal.selectedEvent",
-        ],
-      },
     }).concat(logger),
   devTools: process.env.NODE_ENV !== "production",
 });

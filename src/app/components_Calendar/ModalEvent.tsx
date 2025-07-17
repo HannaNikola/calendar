@@ -1,5 +1,3 @@
-
-
 import * as Yup from "yup";
 import { EventModalProps } from "@/app/types/typesModal";
 import { X } from "lucide-react";
@@ -13,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/app/shared/ui/Button";
 import { toast, ToastContainer } from "react-toastify";
 import { useEventHandlers } from "../hooks/useEventHandlers";
+import { toDate } from "../utils/date";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -32,30 +31,21 @@ export const ModalEvent = ({
   const [endDay, setEndDay] = useState<Date | null>(null);
   const [allDay, setAllDay] = useState(false);
   const isNew = type === "new";
-const {
+  const {
     slotStart,
     slotEnd,
     handelAddEvent,
     handleDeleteEvent,
     selectedEvent,
-    handelUpdateEvent
+    handelUpdateEvent,
   } = useEventHandlers();
-   const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     setTitle(selectedEvent?.title ?? "");
 
-    const start = selectedEvent?.start
-      ? new Date(selectedEvent.start)
-      : slotStart
-        ? new Date(slotStart)
-        : null;
-
-    const end = selectedEvent?.end
-      ? new Date(selectedEvent.end)
-      : slotEnd
-        ? new Date(slotEnd)
-        : null;
+    const start = toDate(selectedEvent?.start ?? slotStart);
+    const end = toDate(selectedEvent?.end ?? slotEnd);
 
     if (start) {
       setStartDay(start);
@@ -69,8 +59,6 @@ const {
 
     setAllDay(selectedEvent?.allDay ?? false);
   }, [selectedEvent, slotStart, slotEnd]);
-
-  
 
   const combineDateTime = (
     date: Date | null,
@@ -103,7 +91,6 @@ const {
 
       console.log(eventData);
       isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
-
     } catch (error) {
       if (
         typeof error === "object" &&
@@ -126,144 +113,137 @@ const {
 
   if (!isOpen) return null;
 
-  
+  return (
+    <div
+      onClick={handelOverlowClick}
+      className=" flex fixed inset-0  bg-black/50  items-center justify-center z-50 shadow-2xs p-4"
+    >
+      <div className=" p-4 rounded-lg shadow-lg min-w-[300px] bg-white mx-auto">
+        <div className="flex ">
+          {isNew ? (
+            <h1 className="flex-1 text-center  text-h2 mb-6">Create event</h1>
+          ) : (
+            <h1 className="flex-1 text-center  text-main mb-6">Update event</h1>
+          )}
 
-    return (
-      <div
-        onClick={handelOverlowClick}
-        className=" flex fixed inset-0  bg-black/50  items-center justify-center z-50 shadow-2xs p-4"
-      >
-        <div className=" p-4 rounded-lg shadow-lg min-w-[300px] bg-white mx-auto">
-          <div className="flex ">
-            {isNew ? (
-              <h1 className="flex-1 text-center  text-h2 mb-6">Create event</h1>
-            ) : (
-              <h1 className="flex-1 text-center  text-main mb-6">
-                Update event
-              </h1>
-            )}
+          <button className="flex" onClick={onClose}>
+            {" "}
+            <X size={15} />
+          </button>
+        </div>
 
-            <button className="flex" onClick={onClose}>
-              {" "}
-              <X size={15} />
-            </button>
-          </div>
+        <div className="flex flex-col ">
+          <ToastContainer />
+          <textarea
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px] shadow-lg"
+            onInput={(e) => {
+              e.currentTarget.style.height = "auto";
+              e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+            }}
+          />
 
-          <div className="flex flex-col ">
-            <ToastContainer />
-            <textarea
-              required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px] shadow-lg"
-              onInput={(e) => {
-                e.currentTarget.style.height = "auto";
-                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-              }}
-            />
-
-            <div className="mb-4">
-              <div className="flex flex-1  mb-2 gap-2">
-                <DatePicker
-                  selected={startDay}
-                  onChange={(date) => setStartDay(date)}
-                  dateFormat="dd-MM-yyyy"
-                  placeholderText="Select the day"
-                  className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
-                />
-                <DatePicker
-                  selected={startTime}
-                  onChange={(date) => setStartTime(date)}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  dateFormat="HH:mm"
-                  timeFormat="HH:mm"
-                  timeIntervals={5}
-                  timeCaption="Время"
-                  placeholderText="Select the time"
-                  className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
-                />
-              </div>
-              <div className="flex flex-1 mb-2 gap-2">
-                <DatePicker
-                  selected={endDay}
-                  onChange={(date) => setEndDay(date)}
-                  dateFormat="dd-MM-yyyy"
-                  placeholderText="Select the day"
-                  className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
-                />
-                <DatePicker
-                  selected={endTime}
-                  onChange={(date) => setEndTime(date)}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  dateFormat="HH:mm"
-                  timeFormat="HH:mm"
-                  timeIntervals={5}
-                  timeCaption="Time"
-                  placeholderText="Select the time"
-                  className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
-                />
-              </div>
+          <div className="mb-4">
+            <div className="flex flex-1  mb-2 gap-2">
+              <DatePicker
+                selected={startDay}
+                onChange={(date) => setStartDay(date)}
+                dateFormat="dd-MM-yyyy"
+                placeholderText="Select the day"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              />
+              <DatePicker
+                selected={startTime}
+                onChange={(date) => setStartTime(date)}
+                showTimeSelect
+                showTimeSelectOnly
+                dateFormat="HH:mm"
+                timeFormat="HH:mm"
+                timeIntervals={5}
+                timeCaption="Время"
+                placeholderText="Select the time"
+                className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              />
             </div>
-            <div className="flex justify-between mb-8 ">
-              <div className="flex items-center">
-                <label className="flex text-main mr-2">All day event</label>
-                <input
-                  type="checkbox"
-                  name="allDay"
-                  checked={allDay}
-                  onChange={(e) => setAllDay(e.target.checked)}
-                />
-              </div>
-              <div className="flex items-center">
-                <label className="mr-2 text-main">Add Task</label>
-                <input
-                  type="checkbox"
-                  name="addTask"
-                  onChange={() => router.push("/task")}
-                />
-              </div>
+            <div className="flex flex-1 mb-2 gap-2">
+              <DatePicker
+                selected={endDay}
+                onChange={(date) => setEndDay(date)}
+                dateFormat="dd-MM-yyyy"
+                placeholderText="Select the day"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              />
+              <DatePicker
+                selected={endTime}
+                onChange={(date) => setEndTime(date)}
+                showTimeSelect
+                showTimeSelectOnly
+                dateFormat="HH:mm"
+                timeFormat="HH:mm"
+                timeIntervals={5}
+                timeCaption="Time"
+                placeholderText="Select the time"
+                className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              />
             </div>
           </div>
-
-          <div className="flex flex-row justify-between">
-            {isNew && (
-              <Button
-                variant="default"
-                size="default"
-                type="submit"
-                onClick={handleSubmit}
-              >
-                Save
-              </Button>
-            )}
-
-            {!isNew && (
-              <>
-                <Button
-                  type="submit"
-                  variant="default"
-                  size="default"
-                  onClick={handleSubmit}
-                >
-                  Update
-                </Button>
-                <Button
-                  variant="alert"
-                  size="default"
-                  type="submit"
-                  onClick={handleDeleteEvent}
-                >
-                  Delete
-                </Button>
-              </>
-            )}
+          <div className="flex justify-between mb-8 ">
+            <div className="flex items-center">
+              <label className="flex text-main mr-2">All day event</label>
+              <input
+                type="checkbox"
+                name="allDay"
+                checked={allDay}
+                onChange={(e) => setAllDay(e.target.checked)}
+              />
+            </div>
+            <div className="flex items-center">
+              <label className="mr-2 text-main">Add Task</label>
+              <input
+                type="checkbox"
+                name="addTask"
+                onChange={() => router.push("/task")}
+              />
+            </div>
           </div>
         </div>
+
+        <div className="flex flex-row justify-between">
+          {isNew && (
+            <Button
+              variant="default"
+              size="default"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Save
+            </Button>
+          )}
+
+          {!isNew && (
+            <>
+              <Button
+                type="submit"
+                variant="default"
+                size="default"
+                onClick={handleSubmit}
+              >
+                Update
+              </Button>
+              <Button
+                variant="alert"
+                size="default"
+                type="submit"
+                onClick={handleDeleteEvent}
+              >
+                Delete
+              </Button>
+            </>
+          )}
+        </div>
       </div>
-    );
-  };
-
-
-
+    </div>
+  );
+};
