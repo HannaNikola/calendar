@@ -6,9 +6,12 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { openModal } from "../store/redux/modalReducer";
 import { useEventHandlers } from "../hooks/useEventHandlers";
+import { useScreenType } from "../hooks/useScreenType";
 
 const AddEventButton = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const screenType = useScreenType();
 
   const {
     isModalOpen,
@@ -31,9 +34,12 @@ const AddEventButton = () => {
     );
   };
 
+  const variant = screenType === "desktop" ? "rounded" : "transper";
+  const size = screenType === "desktop" ? "large" : "small";
+
   return (
     <div>
-      <Button onClick={handleAddClick} variant="rounded" size="large">
+      <Button onClick={handleAddClick} variant={variant} size={size}>
         <Plus size={20} className="mr-1" />
         Add
       </Button>
