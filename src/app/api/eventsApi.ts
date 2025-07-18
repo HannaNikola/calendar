@@ -83,8 +83,6 @@ export const deleteEventApi = createAsyncThunk<string, string>(
   async (id: string, thunkApi) => {
     try {
       const response = await axios.delete(`/api/events/${id}`);
-      console.log(response.data.id);
-      console.log("id", response);
       return response.data.data._id;
     } catch (error) {
       const err = error as AxiosError;
