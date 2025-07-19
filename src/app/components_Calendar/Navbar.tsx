@@ -12,7 +12,7 @@ export const Navbar: FC<AdaptiveProps> = () => {
   const screenType = useScreenType();
 
   return (
-    <section className="flex w-full max-lg:flex-row-reverse lg:flex-col  ">
+    <section className="flex w-full max-lg:flex-row-reverse lg:flex-col">
       <div className=" flex  lg:mb-3  ">
         <EddEventButton  />
       </div>
@@ -22,7 +22,7 @@ export const Navbar: FC<AdaptiveProps> = () => {
           className="flex max-lg:flex-1 items-center px-2 py-2 max-lg:h-[40px] lg:w-[260px] lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
         >
           <CalendarDays size={18} className="shrink-0 ml-1" />
-          <span className="max-sm:hidden ml-2 text-main text-sm whitespace-nowrap ">
+          <span className="max-sm:hidden ml-2 text-main text-sm whitespace-nowrap">
             Calendar
           </span>
         </Link>
