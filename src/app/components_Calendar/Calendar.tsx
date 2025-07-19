@@ -95,7 +95,7 @@ export const CalendarEl = () => {
         </div>
       ) : (
         <div className=" bg-white flex w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
-          <FullCalendar
+         <FullCalendar
             eventMouseEnter={handleMouseEnter}
             eventDrop={handelEventDrop}
             plugins={[
@@ -120,7 +120,7 @@ export const CalendarEl = () => {
               listYear: {
                 type: "list",
                 duration: { years: 1 },
-                buttonText: "Year List",
+                buttonText: "List",
               },
               multiMonthYear: {
                 type: "multiMonth",
@@ -153,6 +153,8 @@ export const CalendarEl = () => {
               },
             ]}
           />
+
+          
 
           <ModalEvent
             type={modalType}
