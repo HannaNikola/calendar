@@ -12,7 +12,7 @@ export const Navbar: FC<AdaptiveProps> = () => {
   const screenType = useScreenType();
 
   return (
-    <section className="flex w-full max-lg:flex-row-reverse lg:flex-col">
+    <section className="flex w-full max-lg:flex-row-reverse lg:flex-col lg:max-w-[290px]">
       <div className=" flex  lg:mb-3  ">
         <EddEventButton  />
       </div>
