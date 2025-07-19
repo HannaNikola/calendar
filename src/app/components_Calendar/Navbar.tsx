@@ -14,25 +14,25 @@ export const Navbar: FC<AdaptiveProps> = () => {
   return (
     <section className="flex w-full max-lg:flex-row-reverse lg:flex-col  ">
       <div className=" flex  lg:mb-3  ">
-        <EddEventButton />
+        <EddEventButton  />
       </div>
-      <nav className="flex flex-row w-full gap-2 lg:w-auto lg:flex-col lg:mr-4">
+      <nav className="flex flex-row w-full sm:gap-2 lg:w-auto lg:flex-col lg:mr-4">
         <Link
           href="/calendar"
-          className="flex max-lg:flex-1 items-center max-lg:h-[40px] lg:w-[260px] lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
+          className="flex max-lg:flex-1 items-center px-2 py-2 max-lg:h-[40px] lg:w-[260px] lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
         >
-          <CalendarDays size={20} className="shrink-0 ml-2" />
-          <span className="ml-2 text-main text-sm whitespace-nowrap truncate px-2 py-2">
+          <CalendarDays size={18} className="shrink-0 sm:ml-1" />
+          <span className="ml-2 text-main text-sm whitespace-nowrap ">
             Calendar
           </span>
         </Link>
 
         <Link
           href="/task"
-          className="flex max-lg:flex-1 items-center max-lg:h-[40px] lg:w-[260px] lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
+          className="flex max-lg:flex-1 items-center px-2 py-2 max-lg:h-[40px] lg:w-[260px] lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
         >
-          <BookOpenCheck size={18} className="shrink-0 ml-2" />
-          <span className="ml-2 text-main text-sm whitespace-nowrap truncate px-2 py-2">
+          <BookOpenCheck size={18} className="shrink-0 sm:ml-1" />
+          <span className="ml-2 text-main text-sm whitespace-nowrap ">
             Your Task
           </span>
         </Link>
@@ -41,8 +41,8 @@ export const Navbar: FC<AdaptiveProps> = () => {
           href="/settings"
           className="flex max-lg:flex-1 items-center px-2 py-2 max-lg:h-[40px] lg:w-[260px]  lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm  sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
         >
-          <Cog size={18} className="shrink-0 ml-2" />
-          <span className="ml-2 text-main text-sm whitespace-nowrap truncate">
+          <Cog size={18} className="shrink-0 sm:ml-1" />
+          <span className="ml-2 text-main text-sm whitespace-nowrap ">
             Settings
           </span>
         </Link>

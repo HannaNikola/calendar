@@ -88,7 +88,7 @@ export const CalendarEl = () => {
   };
 
   return (
-    <section className="flex w-full h-full items-center justify-center ">
+    <section className="flex w-full h-full items-center justify-center max-sm:mt-[70px] max-lg:mt-[100px]">
       {showLouder ? (
         <div className="fixed inset-0 flex items-center justify-center  z-50">
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />

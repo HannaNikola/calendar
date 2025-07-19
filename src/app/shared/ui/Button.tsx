@@ -10,7 +10,7 @@ import { cn } from '../utils/cn'
     variants: {
       variant: {
         default: ' text-black hover:bg-navbar-button-hover bg-navbar-button   rounded-2xl border-sky-dark-border hover:border-sky-hover-medium shadow-lg',
-        transper: 'text-black',
+        transper: 'text-black text-main text-sm whitespace-nowrap',
         alert: 'text-alert-text hover:bg-alert-button-hover bg-alert-button  rounded-2xl border-alert-border hover:border-alert-hover shadow-lg',
         rounded:' text-white text-h2 hover:text-black  rounded-lg border-transparent bg-grey-button  hover:bg-gray-hover shadow-lg transition-colors duration-300',
       },
