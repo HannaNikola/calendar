@@ -21,8 +21,8 @@ export const Navbar: FC<AdaptiveProps> = () => {
           href="/calendar"
           className="flex max-lg:flex-1 items-center px-2 py-2 max-lg:h-[40px] lg:w-[260px] lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
         >
-          <CalendarDays size={18} className="shrink-0 sm:ml-1" />
-          <span className="ml-2 text-main text-sm whitespace-nowrap ">
+          <CalendarDays size={18} className="shrink-0 ml-1" />
+          <span className="max-sm:hidden ml-2 text-main text-sm whitespace-nowrap ">
             Calendar
           </span>
         </Link>
@@ -31,8 +31,8 @@ export const Navbar: FC<AdaptiveProps> = () => {
           href="/task"
           className="flex max-lg:flex-1 items-center px-2 py-2 max-lg:h-[40px] lg:w-[260px] lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
         >
-          <BookOpenCheck size={18} className="shrink-0 sm:ml-1" />
-          <span className="ml-2 text-main text-sm whitespace-nowrap ">
+          <BookOpenCheck size={18} className="shrink-0 ml-1" />
+          <span className=" max-sm:hidden ml-2 text-main text-sm whitespace-nowrap ">
             Your Task
           </span>
         </Link>
@@ -41,8 +41,8 @@ export const Navbar: FC<AdaptiveProps> = () => {
           href="/settings"
           className="flex max-lg:flex-1 items-center px-2 py-2 max-lg:h-[40px] lg:w-[260px]  lg:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover lg:rounded-sm  sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
         >
-          <Cog size={18} className="shrink-0 sm:ml-1" />
-          <span className="ml-2 text-main text-sm whitespace-nowrap ">
+          <Cog size={18} className="shrink-0 ml-1" />
+          <span className="max-sm:hidden ml-2 text-main text-sm whitespace-nowrap ">
             Settings
           </span>
         </Link>
