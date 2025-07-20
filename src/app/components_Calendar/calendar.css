@@ -1,18 +1,55 @@
 /* style for fullCalendar */
 
-.fc .fc-button-primary {
-  background-color: #808080 !important;
-  border-color: transparent !important;
-  color: var(--fc-button-text-color);
+:root {
+  /* button */
+  --fc-button-text-color: #fff;
+  --fc-button-bg-color: #808080;
+  --fc-button-border-color: #808080;
+  --fc-button-hover-bg-color: #6b6b6b;
+  --fc-button-hover-border-color: #6b6b6b;
+  --fc-button-active-bg-color: #6b7280;
+  --fc-button-active-border-color: #6b7280;
+  /* event color */
+  --fc-event-bg-color: #3788d8;
+  --fc-event-border-color: #3788d8;
+  --fc-event-text-color: #fff;
+  --fc-event-selected-overlay-color: #3788d8;
+  --fc-daygrid-event-dot-width: 5px;
+  /* event list */
+  --fc-list-event-hover-bg-color: #2a76c0;
+  --fc-list-event-dot-width: 10px;
 }
-.fc .fc-button-primary:hover {
-  background-color: #6b6b6b !important;
-  border-color: transparent !important;
+
+
+
+/* hover event*/
+.fc-event:hover {
+  background-color: #2a76c0 !important;
+  border-color: #2a76c0 !important;
 }
+
+/* active event*/
+.fc-event.fc-event-selected {
+  background-color: #1a5ca8 !important;
+  border-color: #1a5ca8 !important;
+}
+
+/* event multimonth */
+.fc .fc-multimonth-multicol .fc-daygrid-more-link{
+   background-color: #3788d8 !important;
+  border-color: #3788d8 !important;
+}
+
+
+/* CHECK!!!! */
+
+/* calendar styles */
 .fc {
   font-size: 12px;
   width: 100%;
 }
+
+ 
 
 .fc-header-toolbar {
   flex-direction: row;
@@ -39,6 +76,9 @@
     width: 100%;
   }
 }
+
+
+
 
 /* style for calendar DatePicker */
 
