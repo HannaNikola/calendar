@@ -4,31 +4,40 @@
   background-color: #808080 !important;
   border-color: transparent !important;
   color: var(--fc-button-text-color);
-  
 }
 .fc .fc-button-primary:hover {
-  background-color: #6b6b6b !important; 
+  background-color: #6b6b6b !important;
   border-color: transparent !important;
 }
 .fc {
   font-size: 12px;
-  
+  width: 100%;
+}
+
+.fc-header-toolbar {
+  flex-direction: row;
+  width: 100%;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+  margin-bottom: 1.5em;
 }
 
 @media (max-width: 585px) {
   .fc {
     font-size: 10px;
   }
-
   .fc-header-toolbar {
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
   }
 }
 
-.fc .fc-toolbar.fc-header-toolbar {
-    margin-bottom: 1.5em;
-   
+@media (min-width: 1024px) {
+  .fc {
+    width: 100%;
+  }
 }
 
 /* style for calendar DatePicker */
