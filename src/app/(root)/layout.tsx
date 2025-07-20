@@ -15,6 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const screenType = useScreenType();
+
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
@@ -22,7 +23,11 @@ export default function RootLayout({
           <Header />
           <main className="flex flex-1">
             <PageWrapper>
-              {screenType === "desktop" && <Navbar />}
+              {screenType === "desktop" && (
+                <div className="max-lg:hidden">
+                  <Navbar />
+                </div>
+              )}
               {children}
             </PageWrapper>
           </main>

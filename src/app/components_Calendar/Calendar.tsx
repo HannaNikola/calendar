@@ -95,7 +95,67 @@ export const CalendarEl = () => {
         </div>
       ) : (
         <div className=" bg-white flex w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
-         <FullCalendar
+         {/* <FullCalendar
+            eventMouseEnter={handleMouseEnter}
+            eventDrop={handelEventDrop}
+            plugins={[
+              dayGridPlugin,
+              timeGridPlugin,
+              interactionPlugin,
+              listPlugin,
+              multiMonthPlugin,
+            ]}
+            initialView="dayGridMonth"
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right:
+                "dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear",
+            }}
+            views={{
+              dayGridMonth: { buttonText: "Month" },
+              timeGridWeek: { buttonText: "Week" },
+              timeGridDay: { buttonText: "Day", typy: "block" },
+
+              listYear: {
+                type: "list",
+                duration: { years: 1 },
+                buttonText: "List",
+              },
+              multiMonthYear: {
+                type: "multiMonth",
+                duration: { months: 12 },
+                buttonText: "Year",
+                multiMonthMinWidth: 200,
+              },
+            }}
+            events={parsedEvents}
+            editable={true}
+            selectable={true}
+            dateClick={handleSelectSlot}
+            eventClick={handleSelectEvent}
+            //  height="100%"
+            height="auto"
+            contentHeight="100%"
+            expandRows={true}
+            eventClassNames={() => "bg-sky-700 text-white w-full h-full"}
+            aspectRatio={1.2}
+            businessHours={[
+              {
+                daysOfWeek: [1, 2, 3],
+                startTime: "08:00",
+                endTime: "18:00",
+              },
+              {
+                daysOfWeek: [4, 5],
+                startTime: "10:00",
+                endTime: "16:00",
+              },
+            ]}
+          /> */}
+
+          
+<FullCalendar
             eventMouseEnter={handleMouseEnter}
             eventDrop={handelEventDrop}
             plugins={[
@@ -154,7 +214,7 @@ export const CalendarEl = () => {
             ]}
           />
 
-          
+
 
           <ModalEvent
             type={modalType}
