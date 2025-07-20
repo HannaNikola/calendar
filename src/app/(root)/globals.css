@@ -45,6 +45,10 @@
   --color-header-background: #bae6fd;
   --color-gray-light-background: #f3f4f6; /* gray-100 */
 
+  /* event color */
+  --color-event: #3788d8;
+  --color-hover-event: #2a76c0;
+
   /* fonts size */
   --text-h1: 24px;
   --text-h2: 20px;
