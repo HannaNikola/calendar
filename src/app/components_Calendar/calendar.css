@@ -63,6 +63,7 @@
 @media (max-width: 585px) {
   .fc {
     font-size: 10px;
+    width: 100%;
   }
   .fc-header-toolbar {
     flex-direction: column;
@@ -75,10 +76,15 @@
   .fc {
     width: 100%;
   }
+  
 }
 
+/* check */
 
-
+.fc-view-listYear .fc-list-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+}
 
 /* style for calendar DatePicker */
 
