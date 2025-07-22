@@ -7,6 +7,7 @@ import { AppDispatch } from "../store/store";
 import { openModal } from "../store/redux/modalReducer";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { useScreenType } from "../hooks/useScreenType";
+import { toISOString } from "../utils/date";
 
 const AddEventButton = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,8 +27,8 @@ const AddEventButton = () => {
     dispatch(
       openModal({
         type: "new",
-        slotStart: now,
-        slotEnd: end,
+        slotStart: toISOString(now),
+    slotEnd: toISOString(end),
         selectedEvent: null,
         addTask: false,
       })
