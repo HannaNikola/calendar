@@ -88,13 +88,15 @@ export const CalendarEl = () => {
   };
 
   return (
-    <section className="flex w-full h-full items-center justify-center ">
+    <section className="flex  w-full h-full items-center justify-center ">
       {showLouder ? (
         <div className="fixed inset-0 flex items-center justify-center  z-50">
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
         </div>
       ) : (
-        <div className=" bg-white flex w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
+
+        <div className=" bg-white flex   w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
+
           <FullCalendar
             eventMouseEnter={handleMouseEnter}
             eventDrop={handelEventDrop}
@@ -102,7 +104,7 @@ export const CalendarEl = () => {
               dayGridPlugin,
               timeGridPlugin,
               interactionPlugin,
-              listPlugin,
+              // listPlugin,
               multiMonthPlugin,
             ]}
             initialView="dayGridMonth"
@@ -110,18 +112,19 @@ export const CalendarEl = () => {
               left: "prev,next today",
               center: "title",
               right:
-                "dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear",
+                // "dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear",
+                "dayGridMonth,timeGridWeek,timeGridDay,multiMonthYear",
             }}
             views={{
               dayGridMonth: { buttonText: "Month" },
               timeGridWeek: { buttonText: "Week" },
               timeGridDay: { buttonText: "Day", typy: "block" },
 
-              listYear: {
-                type: "list",
-                duration: { years: 1 },
-                buttonText: "List",
-              },
+              // listYear: {
+              //   type: "list",
+              //   duration: { years: 1 },
+              //   buttonText: "List",
+              // },
               multiMonthYear: {
                 type: "multiMonth",
                 duration: { months: 12 },
@@ -155,7 +158,7 @@ export const CalendarEl = () => {
             ]}
           />
 
-
+ 
 
           <ModalEvent
             type={modalType}
