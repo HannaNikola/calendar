@@ -79,12 +79,6 @@
   
 }
 
-/* check */
-
-.fc-view-listYear .fc-list-table {
-  width: 100% !important;
-  table-layout: fixed !important;
-}
 
 /* style for calendar DatePicker */
 

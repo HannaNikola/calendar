@@ -11,7 +11,10 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/app/shared/ui/Button";
 import { toast, ToastContainer } from "react-toastify";
 import { useEventHandlers } from "../hooks/useEventHandlers";
-import { toDate } from "../utils/date";
+import { toDate} from "../utils/date";
+
+
+
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -42,23 +45,32 @@ export const ModalEvent = ({
   const router = useRouter();
 
   useEffect(() => {
+    const now = new Date();
+    const start = toDate(selectedEvent?.start ?? slotStart ?? now);
+    const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
+
+    if (!start) return;
     setTitle(selectedEvent?.title ?? "");
+    setAllDay(selectedEvent?.allDay ?? false);
 
-    const start = toDate(selectedEvent?.start ?? slotStart);
-    const end = toDate(selectedEvent?.end ?? slotEnd);
+    setStartDay(start);
+    setStartTime(new Date(1970, 0, 1, start.getHours(), start.getMinutes()));
 
-    if (start) {
-      setStartDay(start);
-      setStartTime(new Date(1970, 0, 1, start.getHours(), start.getMinutes()));
-    }
-
-    if (end) {
+    if (isNew) {
+      setEndDay(start);
+      const oneHourLater = new Date(
+        1970,
+        0,
+        1,
+        start.getHours() + 1,
+        start.getMinutes()
+      );
+      setEndTime(oneHourLater);
+    } else if (end) {
       setEndDay(end);
       setEndTime(new Date(1970, 0, 1, end.getHours(), end.getMinutes()));
     }
-
-    setAllDay(selectedEvent?.allDay ?? false);
-  }, [selectedEvent, slotStart, slotEnd]);
+  }, [selectedEvent, slotStart, slotEnd, isNew]);
 
   const combineDateTime = (
     date: Date | null,
@@ -68,6 +80,37 @@ export const ModalEvent = ({
     const result = new Date(date);
     result.setHours(time.getHours(), time.getMinutes(), 0, 0);
     return result;
+  };
+
+  const handleStartDayChange = (date: Date | null) => {
+    setStartDay(date);
+
+    if (date && isNew) {
+      setEndDay(date);
+    }
+  };
+
+  const handleStartTimeChange = (time: Date | null) => {
+    setStartTime(time);
+    if (time && isNew) {
+      const oneHourLater = new Date(
+        1970,
+        0,
+        1,
+        time.getHours() + 1,
+        time.getMinutes()
+      );
+      setEndTime(oneHourLater);
+    }
+  };
+
+  const handleEndDayChange = (date: Date | null) => {
+    setEndDay(date);
+    if (date && startTime) {
+      setEndTime(
+        new Date(1970, 0, 1, startTime.getHours() + 1, startTime.getMinutes())
+      );
+    }
   };
 
   const handleSubmit = async () => {
@@ -149,14 +192,14 @@ export const ModalEvent = ({
             <div className="flex flex-1  mb-2 gap-2">
               <DatePicker
                 selected={startDay}
-                onChange={(date) => setStartDay(date)}
+                onChange={handleStartDayChange}
                 dateFormat="dd-MM-yyyy"
                 placeholderText="Select the day"
                 className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
               />
               <DatePicker
                 selected={startTime}
-                onChange={(date) => setStartTime(date)}
+                onChange={handleStartTimeChange}
                 showTimeSelect
                 showTimeSelectOnly
                 dateFormat="HH:mm"
@@ -170,7 +213,7 @@ export const ModalEvent = ({
             <div className="flex flex-1 mb-2 gap-2">
               <DatePicker
                 selected={endDay}
-                onChange={(date) => setEndDay(date)}
+                onChange={handleEndDayChange}
                 dateFormat="dd-MM-yyyy"
                 placeholderText="Select the day"
                 className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
