@@ -4,7 +4,6 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -94,9 +93,7 @@ export const CalendarEl = () => {
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
         </div>
       ) : (
-
         <div className=" bg-white flex   w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
-
           <FullCalendar
             eventMouseEnter={handleMouseEnter}
             eventDrop={handelEventDrop}
@@ -142,8 +139,10 @@ export const CalendarEl = () => {
             height="auto"
             contentHeight="100%"
             expandRows={true}
-             eventClassNames={() => "bg-event hover:bg-hover-event text-white w-full h-full"}
-             aspectRatio={1.2}
+            eventClassNames={() =>
+              "bg-event hover:bg-hover-event text-white w-full h-full"
+            }
+            aspectRatio={1.2}
             businessHours={[
               {
                 daysOfWeek: [1, 2, 3],
@@ -156,9 +155,12 @@ export const CalendarEl = () => {
                 endTime: "16:00",
               },
             ]}
+            eventTimeFormat={{
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            }}
           />
-
- 
 
           <ModalEvent
             type={modalType}

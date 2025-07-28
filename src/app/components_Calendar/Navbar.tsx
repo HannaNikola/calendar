@@ -9,7 +9,7 @@ import { useScreenType } from "../hooks/useScreenType";
 
 
 export const Navbar: FC<AdaptiveProps> = () => {
-  const screenType = useScreenType();
+  // const screenType = useScreenType();
 
   return (
     <section className="flex w-full max-lg:flex-row-reverse lg:flex-col lg:max-w-[290px]">

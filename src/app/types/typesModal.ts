@@ -10,8 +10,8 @@ export interface EventModalProps {
   handelAddEvent: (eventData: CalendarEvent) => void;
   handelUpdateEvent?: (eventData: CalendarEvent) => void;
   handleDeleteEvent?: () => void;
-  slotStart?: Date | string | null;
-  slotEnd?: Date | string | null;
+  slotStart?: Date | string | null ;
+  slotEnd?: Date | string | null ;
   selectedEvent?: CalendarEvent | null;
 }
 

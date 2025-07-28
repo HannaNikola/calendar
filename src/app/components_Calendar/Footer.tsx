@@ -3,7 +3,7 @@ import { AdaptiveProps } from "../types/typesAdaptive";
 import Navbar from "./Navbar";
 import { useScreenType } from "../hooks/useScreenType";
 
-export const Footer: FC<AdaptiveProps> = ({ type, position }) => {
+export const Footer: FC<AdaptiveProps> = () => {
   const screenType = useScreenType();
 
   return (
