@@ -4,7 +4,7 @@ import { CalendarEvent } from "../types/typesApi";
 import { addEventApi, deleteEventApi, updateEventApi } from "../api/eventsApi";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
 import { EventClickArg } from "@fullcalendar/core/index.js";
-import { openModal, closeModal } from "@/app/store/redux/modalReducer";
+import { openModal, closeModal } from "@/app/store/events/modalReducer";
 import { toDate } from "../utils/date";
 
 export const useEventHandlers = () => {
