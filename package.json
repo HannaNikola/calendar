@@ -24,6 +24,8 @@
     "class-variance-authority": "^0.7.1",
     "formik": "^2.4.6",
     "fullcalendar": "^6.1.17",
+    "fuse.js": "^7.1.0",
+    "lodash.debounce": "^4.0.8",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.487.0",
     "next": "15.2.4",
@@ -35,12 +37,14 @@
     "react-toastify": "^11.0.5",
     "redux": "^5.0.1",
     "redux-logger": "^3.0.6",
+    "tailwind-scrollbar-hide": "^4.0.0",
     "tippy.js": "^6.3.7",
     "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4.1.11",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^19.1.8",
     "@types/react-big-calendar": "^1.16.1",
