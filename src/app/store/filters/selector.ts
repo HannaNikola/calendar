@@ -1,6 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { CalendarEvent } from "@/app/types/typesApi";
 import Fuse from "fuse.js";
 
 
