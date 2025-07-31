@@ -53,7 +53,7 @@ export const Filter = () => {
     );
   };
   return (
-    <div onClick={(e) => e.stopPropagation()} className="relative w-full mb-4">
+    <div onClick={(e) => e.stopPropagation()} className="relative w-full ">
       <div
         className={`flex items-center gap-2 bg-input-light px-3 py-2 w-full
       ${query ? "rounded-t-3xl" : "rounded-3xl"}`}
