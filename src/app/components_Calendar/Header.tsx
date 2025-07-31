@@ -19,7 +19,7 @@ export default function Header() {
         < Filter/>
         {!hiddenElement && (
           <>
-          <div className="flex w-[30px] h-[30px] mx-6 border-[1] border-grey-border rounded-[50px] overflow-hidden ">
+          <div className="flex w-[40px] h-[30px] mx-2  md:mx-6 border-[1] border-grey-border rounded-[50px] overflow-hidden ">
           <Image
             src="/woman.jpg"
             width={30}
@@ -28,7 +28,7 @@ export default function Header() {
             className="flex object-cover"
           />
         </div>
-        <p className=" flex mr-4 text-main ">autor@gmail.com</p>
+        <p className=" mr-4 text-main hidden  sm:block">autor@gmail.com</p>
 
         <button className="flex items-center w-[80px] whitespace-nowrap  transition-colors duration-500 text-main   hover:text-sky-hover">
           Log out
