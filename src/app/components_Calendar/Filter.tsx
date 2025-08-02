@@ -80,7 +80,7 @@ export const Filter = () => {
       </div>
 
       {query && (
-        <ul className="absolute top-full left-0 w-full z-50 max-h-60 overflow-auto scrollbar-hide rounded-b-3xl bg-input-light shadow-lg text-sm">
+        <ul className="absolute top-full left-0 w-full max-sm:w-[370px] z-50 max-h-60 overflow-auto scrollbar-hide rounded-b-3xl bg-input-light shadow-lg text-sm">
           {filteredEvents.length > 0 ? (
             filteredEvents.map((event) => (
               <li
