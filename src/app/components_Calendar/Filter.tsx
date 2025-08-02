@@ -7,12 +7,13 @@ import { AppDispatch, RootState } from "../store/store";
 import {
   clearFilter,
   setFilterEntity,
+  setFilterFocus,
   setFilterQuery,
 } from "../store/filters/filterReducer";
 import { selectFilteredEvents } from "../store/filters/selector";
 import { CalendarEvent } from "../types/typesApi";
 import { openModal } from "../store/events/modalReducer";
-import { useEffect } from "react";
+import { useEffect} from "react";
 
 export const Filter = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,14 +21,16 @@ export const Filter = () => {
   const filteredEvents = useSelector(selectFilteredEvents);
 
   useEffect(() => {
-    const handleClickOutside = () => {
-      dispatch(clearFilter());
+    const handleClick = (e: MouseEvent) => {
+      if (document.activeElement?.tagName !== "INPUT") {
+        dispatch(clearFilter());
+        dispatch(setFilterFocus(false));
+      }
     };
 
-    document.addEventListener("click", handleClickOutside);
-
+    document.addEventListener("click", handleClick);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("click", handleClick);
     };
   }, [dispatch]);
 
@@ -39,6 +42,7 @@ export const Filter = () => {
 
   const handleClear = () => {
     dispatch(clearFilter());
+    dispatch(setFilterFocus(false));
   };
 
   const handleSelectEvent = (event: CalendarEvent) => {
@@ -52,16 +56,22 @@ export const Filter = () => {
       })
     );
   };
+
   return (
-    <div onClick={(e) => e.stopPropagation()} className="relative w-full ">
+    <div onClick={(e) => e.stopPropagation()} className="relative w-full">
       <div
-        className={`flex items-center gap-2 bg-input-light px-3 py-2 w-full
-      ${query ? "rounded-t-3xl" : "rounded-3xl"}`}
+        className={`flex items-center gap-2 bg-input-light px-3 py-2 w-full ${
+          query ? "rounded-t-3xl" : "rounded-3xl"
+        }`}
       >
         <Search size={20} />
         <input
           type="text"
           value={query}
+          onFocus={() => dispatch(setFilterFocus(true))}
+          onBlur={(e) => {
+            if (!e.target.value) dispatch(setFilterFocus(false));
+          }}
           onChange={handleChangeValue}
           placeholder="Search..."
           className="w-full bg-transparent outline-none text-sm text-gray-700 placeholder-gray-400"
@@ -89,4 +99,5 @@ export const Filter = () => {
     </div>
   );
 };
+
 export default Filter;
