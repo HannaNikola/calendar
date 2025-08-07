@@ -17,8 +17,8 @@ export default function RootLayout({
   const screenType = useScreenType();
 
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col">
+    <html lang="en" className="h-full w-full">
+      <body className="h-full w-full overflow-x-hidden flex flex-col ">
         <Provider store={store}>
           <Header />
           <main className="flex flex-1">
@@ -37,3 +37,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+

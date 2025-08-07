@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fullcalendar/core": "^6.1.17",
+    "@fullcalendar/adaptive": "^6.1.18",
+    "@fullcalendar/core": "^6.1.18",
     "@fullcalendar/daygrid": "^6.1.17",
     "@fullcalendar/interaction": "^6.1.17",
     "@fullcalendar/list": "^6.1.17",
     "@fullcalendar/multimonth": "^6.1.17",
-    "@fullcalendar/react": "^6.1.17",
+    "@fullcalendar/react": "^6.1.18",
     "@fullcalendar/resource": "^6.1.17",
     "@fullcalendar/resource-timeline": "^6.1.17",
     "@fullcalendar/timegrid": "^6.1.17",
