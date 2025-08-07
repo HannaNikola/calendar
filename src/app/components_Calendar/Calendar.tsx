@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { CalendarEvent } from "@/app/types/typesApi";
@@ -15,10 +15,22 @@ import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { fetchEventsApi } from "../api/eventsApi";
+import { useScreenType } from "../hooks/useScreenType";
+import { useCallback,  } from 'react';
+import { useCalendarLayout } from "../hooks/useCalendarLayout";
 
-export const CalendarEl = () => {
+
+
+
+
+type FullCalendarType = InstanceType<typeof FullCalendar>;
+
+
+
+const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { events, status } = useSelector((state: RootState) => state.eventData);
+  const screenType = useScreenType();
   const {
     isModalOpen,
     modalType,
@@ -33,21 +45,27 @@ export const CalendarEl = () => {
     handelUpdateEvent,
   } = useEventHandlers();
 
-  const [showLouder, setShowLoader] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+  const calendarRef = useRef<FullCalendarType | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { adjustCalendarLayout, isMobileWidth, calendarClasses } = useCalendarLayout(
+    calendarRef,
+    containerRef,
+    screenType
+  );
 
   useEffect(() => {
     dispatch(fetchEventsApi());
   }, [dispatch]);
 
   useEffect(() => {
-    const timeout =
-      status === "loading"
-        ? setTimeout(() => setShowLoader(true), 1000)
-        : setShowLoader(false);
-
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
+    if (status === "loading") {
+      const timeout = setTimeout(() => setShowLoader(true), 1000);
+      return () => clearTimeout(timeout);
+    } else {
+      setShowLoader(false);
+    }
   }, [status]);
 
   const parsedEvents = events.map((event) => ({
@@ -64,10 +82,7 @@ export const CalendarEl = () => {
       minute: "2-digit",
     });
     tippy(el, {
-      content: `
-      <strong>${event.title}</strong><br/>
-      ${time}
-    `,
+      content: `<strong>${event.title}</strong><br/>${time}`,
       allowHTML: true,
       placement: "top",
       theme: "gray",
@@ -75,8 +90,8 @@ export const CalendarEl = () => {
     });
   };
 
-  const handelEventDrop = (info: EventDropArg) => {
-    const updatedEvent: CalendarEvent = {
+  const handleEventDrop = (info: EventDropArg) => {
+    const updatedEvent = {
       _id: info.event.id,
       title: info.event.title,
       start: info.event.start!,
@@ -87,41 +102,46 @@ export const CalendarEl = () => {
   };
 
   return (
-    <section className="flex  w-full h-full items-center justify-center ">
-      {showLouder ? (
-        <div className="fixed inset-0 flex items-center justify-center  z-50">
+    <section className="flex flex-col w-full h-full">
+      {showLoader ? (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
         </div>
       ) : (
-        <div className=" bg-white flex   w-full h-full  m-0 border border-gray-light-border  p-5 rounded-tl-[50px] ">
+        <div
+          ref={containerRef}
+          className={`
+            bg-white py-5 px-4 flex-1
+            border border-gray-300 rounded-tl-[50px]
+            ${calendarClasses}
+          `}
+        >
           <FullCalendar
-            eventMouseEnter={handleMouseEnter}
-            eventDrop={handelEventDrop}
+            ref={calendarRef}
             plugins={[
               dayGridPlugin,
               timeGridPlugin,
               interactionPlugin,
-              // listPlugin,
               multiMonthPlugin,
             ]}
             initialView="dayGridMonth"
             headerToolbar={{
               left: "prev,next today",
               center: "title",
-              right:
-                // "dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear",
-                "dayGridMonth,timeGridWeek,timeGridDay,multiMonthYear",
+              right: "dayGridMonth,timeGridWeek,timeGridDay,multiMonthYear",
             }}
             views={{
-              dayGridMonth: { buttonText: "Month" },
-              timeGridWeek: { buttonText: "Week" },
-              timeGridDay: { buttonText: "Day", typy: "block" },
-
-              // listYear: {
-              //   type: "list",
-              //   duration: { years: 1 },
-              //   buttonText: "List",
-              // },
+              dayGridMonth: {
+                buttonText: "Month",
+                dayMaxEventRows: isMobileWidth ? 6 : 3,
+                fixedWeekCount: false,
+              },
+              timeGridWeek: { 
+                buttonText: "Week",
+              },
+              timeGridDay: { 
+                buttonText: "Day",
+              },
               multiMonthYear: {
                 type: "multiMonth",
                 duration: { months: 12 },
@@ -134,34 +154,27 @@ export const CalendarEl = () => {
             selectable={true}
             dateClick={handleSelectSlot}
             eventClick={handleSelectEvent}
-            stickyHeaderDates={"auto"}
-            //  height="100%"
-            height="auto"
-            contentHeight="100%"
+            eventMouseEnter={handleMouseEnter}
+            eventDrop={handleEventDrop}
+            stickyHeaderDates="auto"
+            height="100%"
+            contentHeight="auto"
             expandRows={true}
-            eventClassNames={() =>
-              "bg-event hover:bg-hover-event text-white w-full h-full"
-            }
-            aspectRatio={1.2}
-            businessHours={[
-              {
-                daysOfWeek: [1, 2, 3],
-                startTime: "08:00",
-                endTime: "18:00",
-              },
-              {
-                daysOfWeek: [4, 5],
-                startTime: "10:00",
-                endTime: "16:00",
-              },
-            ]}
+            eventClassNames="bg-event hover:bg-hover-event text-white"
+            datesSet={adjustCalendarLayout}
+            viewDidMount={adjustCalendarLayout}
+            windowResize={adjustCalendarLayout}
+            businessHours={{
+              daysOfWeek: [1, 2, 3],
+              startTime: "08:00",
+              endTime: "18:00",
+            }}
             eventTimeFormat={{
               hour: "2-digit",
               minute: "2-digit",
               hour12: false,
             }}
           />
-
           <ModalEvent
             type={modalType}
             isOpen={isModalOpen}
