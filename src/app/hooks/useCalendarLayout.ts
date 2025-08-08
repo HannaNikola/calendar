@@ -5,8 +5,6 @@ import { useScreenType } from './useScreenType';
 
 
 
-
-
 type FullCalendarApiRef = React.RefObject<{ getApi: () => any } | null>;
 type DivRef = React.RefObject<HTMLDivElement | null>;
 
