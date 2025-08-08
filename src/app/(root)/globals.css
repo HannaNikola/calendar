@@ -59,74 +59,23 @@
   --font-weight-extra: 500;
 }
 
-/* @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}  */
 
 
 
-/* @layer base {
-  * {
-
-    @apply box-border;
-  } 
-
-   body {
-    overflow-x: hidden;
-    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    margin: 0 auto;
-    width: 100%;
-    min-width: 375px;
-    height: 100%;
-  }
-
-
-  
- 
-} */
-
-
-
-
-
-/* @layer base {
-  html, body {
-    @apply box-border;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-  }
-
-  body {
-    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    margin: 0;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: none;
-  }
-} */
-
-
-
-
+/* 
 @layer base {
   html, body {
     @apply box-border;
     width: 100%;
     height: 100%;
-    overflow-x: hidden; /* 👈 важно */
+    overflow-x: hidden; 
     position: relative;
   }
 
 
   *, *::before, *::after {
     box-sizing: border-box;
-    max-width: 100vw; /* 👈 предотвращает горизонтальный скролл */
+    max-width: 100vw; 
   }  
 
   #__next {
@@ -140,5 +89,46 @@
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: none;
     touch-action: manipulation;
+  }
+} */
+
+
+
+
+@layer base {
+  html, body, #__next {
+    @apply w-full h-full box-border;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent; /* 👈 Убирает подсветку при тапе */
+    touch-action: pan-y; /* 👈 Разрешает только вертикальный скролл */
+  }
+
+  html {
+    /* Фикс для 100vh в iOS */
+    height: -webkit-fill-available;
+  }
+
+  body {
+    @apply overflow-x-hidden relative;
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased; 
+    overscroll-behavior-y: contain;
+  }
+
+  /* Фикс для input в iOS */
+  input, textarea, select {
+    @apply text-base; 
+    transform: scale(1); 
+  }
+
+  /* Отключает увеличение при фокусе */
+  @media screen and (max-width: 1024px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      font-size: 16px !important; 
+    }
   }
 }
