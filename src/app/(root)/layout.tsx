@@ -18,6 +18,14 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="h-full w-full">
+      <head>
+        
+        <meta 
+          name="viewport" 
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" 
+        />
+        
+      </head>
       <body className="h-full w-full overflow-x-hidden flex flex-col ">
         <Provider store={store}>
           <Header />
