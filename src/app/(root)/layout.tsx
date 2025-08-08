@@ -16,6 +16,7 @@ export default function RootLayout({
 }) {
   const screenType = useScreenType();
 
+
   return (
     <html lang="en" className="h-full w-full">
       <head>
@@ -29,11 +30,10 @@ export default function RootLayout({
 
       <body className="h-full w-full overflow-x-hidden flex flex-col ">
         <Provider store={store}>
-          {/* <div className="mb-[60px] overflow-x-hidden"> */}
-          <div className="mb-[60px]">
+          <div className=" overflow-x-hidden">
           <Header />
           </div>
-           <main className="flex-1 overflow-y-auto  max:lg:pb-[80px]"> 
+          <main className="flex-1 overflow-y-auto pt-[60px] max-lg:pb-[60px]"> 
             <PageWrapper>
               {screenType === "desktop" && (
                 <div className="max-lg:hidden">
@@ -49,4 +49,3 @@ export default function RootLayout({
     </html>
   );
 }
-
