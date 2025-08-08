@@ -29,8 +29,11 @@ export default function RootLayout({
 
       <body className="h-full w-full overflow-x-hidden flex flex-col ">
         <Provider store={store}>
+          {/* <div className="mb-[60px] overflow-x-hidden"> */}
+          <div className="mb-[60px]">
           <Header />
-          <main className="flex flex-1">
+          </div>
+           <main className="flex-1 overflow-y-auto  max:lg:pb-[80px]"> 
             <PageWrapper>
               {screenType === "desktop" && (
                 <div className="max-lg:hidden">
