@@ -4,15 +4,18 @@ import Filter from "./Filter";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
+
+
+
 export default function Header() {
   const query = useSelector((state: RootState) => state.filter.query);
   const isFocused = useSelector((state: RootState) => state.filter.isFocused);
 
   const shouldHide = isFocused || query.length > 0;
   return (
-    <section className="w-full  bg-header-background">
-      <div className="h-[60px] sm:h-[80px] flex  py-3 px-3 sm:py-5 sm:px-5 shadow-sm w-full">
-        <div className="flex ml-auto items-center justify-center w-full ">
+     <section className="w-full h-[60px] fixed top-0 left-0  bg-header-background z-50 shadow-sm"> 
+      <div className=" flex  py-3 px-3  ">
+         <div className="flex ml-auto items-center justify-center w-full ">
           <Filter />
           {!shouldHide && (
             <>
