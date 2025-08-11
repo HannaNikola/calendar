@@ -111,8 +111,8 @@ const CalendarEl = () => {
         <div
           ref={containerRef}
           className={`
-            bg-white py-5 px-4 flex-1
-            border border-gray-300 rounded-tl-[50px]
+            sm:bg-white py-5 sm:px-4 flex-1
+            sm:border sm:border-gray-300 sm:rounded-tl-[50px]
             ${calendarClasses}
           `}
         >
