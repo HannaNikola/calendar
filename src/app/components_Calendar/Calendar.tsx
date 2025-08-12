@@ -18,7 +18,7 @@ import { fetchEventsApi } from "../api/eventsApi";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCallback,  } from 'react';
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
-
+import listPlugin from '@fullcalendar/list';
 
 
 
@@ -110,9 +110,15 @@ const CalendarEl = () => {
       ) : (
         <div
           ref={containerRef}
+          // className={`
+          //   sm:bg-white py-5 sm:px-4 flex-1
+          //   sm:border sm:border-gray-300 sm:rounded-t-[50px]
+          //   ${calendarClasses}
+          // `}
+
           className={`
-            sm:bg-white py-5 sm:px-4 flex-1
-            sm:border sm:border-gray-300 sm:rounded-tl-[50px]
+            sm:px-4 flex-1
+            
             ${calendarClasses}
           `}
         >
@@ -147,7 +153,7 @@ const CalendarEl = () => {
                 duration: { months: 12 },
                 buttonText: "Year",
                 multiMonthMinWidth: 200,
-              },
+              }
             }}
             events={parsedEvents}
             editable={true}
@@ -165,7 +171,7 @@ const CalendarEl = () => {
             viewDidMount={adjustCalendarLayout}
             windowResize={adjustCalendarLayout}
             businessHours={{
-              daysOfWeek: [1, 2, 3],
+              daysOfWeek: [1, 2, 3, 4,5],
               startTime: "08:00",
               endTime: "18:00",
             }}

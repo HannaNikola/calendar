@@ -27,7 +27,7 @@
   --color-hover-input: #bae6fd; /*sky-200*/
 
   /* text color */
-  --color-main: #000000; /* black */
+  --color-main: #333333; /* black */
   --color-black-text: #000000; /* black */
   --color-sky-dark: #082f49; /*sky-950*/
   --color-dark-text-hover: #bae6fd; /*sky-200*/
@@ -57,6 +57,8 @@
   /* font weight */
   --font-weight-light: 200px;
   --font-weight-extra: 500;
+
+ 
 }
 
 
@@ -82,6 +84,7 @@
   body {
     @apply overflow-x-hidden relative;
     font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    color: #333333;
     -webkit-font-smoothing: antialiased; 
     overscroll-behavior-y: contain;
   }

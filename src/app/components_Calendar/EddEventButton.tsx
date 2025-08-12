@@ -40,8 +40,8 @@ const AddEventButton = () => {
 
   return (
     <div>
-      <Button onClick={handleAddClick} variant={variant} size={size}>
-        <Plus size={20} className="mr-1" />
+      <Button onClick={handleAddClick} variant={variant} size={size}  >
+        <Plus size={20} className="mr-1 text-main" />
         Add
       </Button>
 
