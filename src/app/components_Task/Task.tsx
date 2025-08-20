@@ -8,7 +8,7 @@ import { Button } from "../shared/ui/Button";
 
 export const TaskEl = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { todos, error } = useSelector((state: RootState) => state.todo);
+  const { todos} = useSelector((state: RootState) => state.todo);
 
   useEffect(() => {
     dispatch(fetchTodosApi());
@@ -18,7 +18,7 @@ export const TaskEl = () => {
     <div className="flex flex-col ">
       <ul className="flex flex-col w-full ">
         {todos.length === 0 ? (
-          <li>Don't have any task yet</li>
+          <li>Dont have any task yet</li>
         ) : (
           todos.map((item) => (
             <li

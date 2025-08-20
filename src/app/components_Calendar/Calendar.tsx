@@ -5,10 +5,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
-import { CalendarEvent } from "@/app/types/typesApi";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { ModalEvent } from "./ModalEvent";
 import { EventDropArg } from "@fullcalendar/core/index.js";
@@ -16,9 +15,8 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { fetchEventsApi } from "../api/eventsApi";
 import { useScreenType } from "../hooks/useScreenType";
-import { useCallback,  } from 'react';
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
-import listPlugin from '@fullcalendar/list';
+
 
 
 

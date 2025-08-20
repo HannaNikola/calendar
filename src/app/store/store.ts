@@ -4,7 +4,7 @@ import { modalReducer } from "@/app/store/events/modalReducer";
 import logger from "redux-logger";
 import { filterReduser } from "./filters/filterReducer";
 import { todoReducer } from "./todo/todoReducer";
-import { useDispatch } from "react-redux";
+
 
 
 export const store = configureStore({
