@@ -10,11 +10,11 @@ export const fetchEventsApi = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("/api/events");
-      console.log("api response", response);
+      // console.log("api response", response);
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
-      console.error("Fetch error:", err);
+      // console.error("Fetch error:", err);
       return thunkAPI.rejectWithValue(
         err.response?.data || "Something went wrong"
       );
@@ -43,13 +43,13 @@ export const addEventApi = createAsyncThunk(
 
         addTask: newEvent.addTask,
       };
-      console.log("payloud", payload);
+      // console.log("payloud", payload);
       const response = await axios.post("/api/events", payload);
-      console.log("addApievent", response);
+      // console.log("addApievent", response);
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
-      console.error("Fetch error:", err);
+      // console.error("Fetch error:", err);
       return thunkAPI.rejectWithValue(
         err.response?.data || "Something went wrong"
       );

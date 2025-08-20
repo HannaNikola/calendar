@@ -1,20 +1,54 @@
-'use client'
+"use client";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTodosApi } from "../api/todoApi";
+import { AppDispatch, RootState } from "../store/store";
+import { CircleCheckBig, Star, Trash2 } from "lucide-react";
+import { Button } from "../shared/ui/Button";
 
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+export const TaskEl = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { todos, error } = useSelector((state: RootState) => state.todo);
 
+  useEffect(() => {
+    dispatch(fetchTodosApi());
+  }, [dispatch]);
 
-export const TaskEl = ()=>{
-   
+  return (
+    <div className="flex flex-col ">
+      <ul className="flex flex-col w-full ">
+        {todos.length === 0 ? (
+          <li>Don't have any task yet</li>
+        ) : (
+          todos.map((item) => (
+            <li
+              key={item._id}
+              className="flex w-full  justify-between mb-2 border rounded-md border-grey-border px-3 py-3 "
+            >
+              <div className="flex flex-col mr-3 ">
+                {item.title}
+                <p>{item.description}</p>
+                <div className="flex mt-3">
+                  <Button variant={'default'} size={'small'} className="mr-3">Update</Button>
+                  <Button variant={'default'} size={'small'}>Remind</Button>
+                </div>
+              </div>
 
-    return(
-        
-    <div className="flex flex-col items-center py-20">
-    <h1 className="text-center text-2xl mb-6">Oops… This page isn’t ready yet</h1>
-   <DotLottieReact
-      src="https://lottie.host/ffc0444c-c99d-4337-b3c9-47b71cbd4033/s04ymTMzCO.lottie"
-      loop
-      autoplay
-    />
-  </div>
-    )
-}
+              <div className="flex max-lg:flex-col gap-3">
+                <button>
+                  <Star size={20} />
+                </button>
+                <button>
+                  <CircleCheckBig size={20} />
+                </button>
+                <button>
+                  <Trash2 size={20} />
+                </button>
+              </div>
+            </li>
+          ))
+        )}
+      </ul>
+    </div>
+  );
+};

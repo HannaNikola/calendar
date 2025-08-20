@@ -3,6 +3,8 @@ import { eventReducer } from "@/app/store/events/eventReducer";
 import { modalReducer } from "@/app/store/events/modalReducer";
 import logger from "redux-logger";
 import { filterReduser } from "./filters/filterReducer";
+import { todoReducer } from "./todo/todoReducer";
+import { useDispatch } from "react-redux";
 
 
 export const store = configureStore({
@@ -10,6 +12,7 @@ export const store = configureStore({
     eventData: eventReducer,
     modal: modalReducer,
     filter: filterReduser,
+    todo: todoReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -19,3 +22,5 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+

@@ -9,14 +9,14 @@ import { cn } from '../utils/cn'
   {
     variants: {
       variant: {
-        default: ' text-main hover:bg-navbar-button-hover bg-navbar-button   rounded-2xl border-sky-dark-border hover:border-sky-hover-medium shadow-lg',
+        default: ' text-main hover:bg-navbar-button-hover bg-navbar-button rounded-2xl border-sky-dark-border hover:border-sky-hover-medium shadow-sm',
         transper: 'text-main text-main text-sm whitespace-nowrap',
-        alert: 'text-alert-text hover:bg-alert-button-hover bg-alert-button  rounded-2xl border-alert-border hover:border-alert-hover shadow-lg',
-        rounded:' text-main text-h2 hover:text-white  rounded-lg border-transparent bg-grey-button  hover:bg-gray-hover shadow-lg transition-colors duration-300',
+        alert: 'text-alert-text hover:bg-alert-button-hover bg-alert-button  rounded-2xl border-alert-border hover:border-alert-hover shadow-sm',
+        rounded:' text-main text-h2 hover:text-white  rounded-lg border-transparent bg-grey-button  hover:bg-gray-hover shadow-sm transition-colors duration-300',
       },
       size: {
         default: 'w-[90px] px-4 py-1 ',
-        small: 'w-full flex-1 px-2 py-2 h-[40px]',
+        small: 'w-full flex-1 px-2 py-2 h-[20px]',
         medium: '',
         large: 'w-[260px] px-4 py-5 ',
       },

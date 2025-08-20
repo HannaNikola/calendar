@@ -35,11 +35,11 @@ export default function RootLayout({
           </div>
           <main className="flex-1 overflow-y-auto pt-[60px] max-lg:pb-[60px]"> 
             <PageWrapper>
-              {screenType === "desktop" && (
+              {screenType === "desktop" && ( 
                 <div className="max-lg:hidden">
-                  <Navbar />
-                </div>
-              )}
+                  <Navbar /> 
+                 </div> 
+               )}
               {children}
             </PageWrapper>
           </main>
