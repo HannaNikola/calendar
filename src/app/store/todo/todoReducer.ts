@@ -1,4 +1,4 @@
-import { fetchTodosApi } from "@/app/api/todoApi";
+import { addTodoApi, fetchTodosApi } from "@/app/api/todoApi";
 import { TodoStateProps } from "@/app/types/typesTodoApi";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -27,6 +27,17 @@ const todolSlice = createSlice({
         })
         .addCase(fetchTodosApi.rejected, (state, action)=>{
             state.status = "failed"
+            state.error = action.error.message || "Unknown error";
+        })
+        .addCase(addTodoApi.pending, (state)=>{
+            state.status = 'loading'
+        })
+        .addCase(addTodoApi.fulfilled, (state, action)=>{
+            state.status = 'succeeded'
+            state.todos = [...state.todos, action.payload]
+        })
+        .addCase(addTodoApi.rejected, (state, action)=>{
+            state.status = 'failed'
             state.error = action.error.message || "Unknown error";
         })
     }
