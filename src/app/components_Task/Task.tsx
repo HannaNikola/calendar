@@ -15,17 +15,17 @@ export const TaskEl = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col ">
-      <ul className="flex flex-col w-full ">
+    <div className="flex w-full flex-col ">
+      <ul className="flex  w-full flex-col  ">
         {todos.length === 0 ? (
           <li>Dont have any task yet</li>
         ) : (
           todos.map((item) => (
             <li
               key={item._id}
-              className="flex w-full  justify-between mb-2 border rounded-md border-grey-border px-3 py-3 "
+              className="flex  w-full  justify-between mb-2 border rounded-md border-grey-border px-3 py-3 "
             >
-              <div className="flex flex-col mr-3 ">
+              <div className="flex w-full flex-col mr-3 ">
                 {item.title}
                 <p>{item.description}</p>
                 <div className="flex mt-3">
