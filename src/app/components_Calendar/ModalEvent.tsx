@@ -7,14 +7,13 @@ import "flatpickr/dist/themes/airbnb.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../components_Calendar/calendar.css";
-import { useRouter } from "next/navigation";
 import { Button } from "@/app/shared/ui/Button";
 import { toast, ToastContainer } from "react-toastify";
 import { useEventHandlers } from "../hooks/useEventHandlers";
-import { toDate} from "../utils/date";
-
-
-
+import { toDate } from "../utils/date";
+import { useDispatch } from "react-redux";
+import { addTodoApi } from "../api/todoApi";
+import { AppDispatch } from "../store/store";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -27,12 +26,14 @@ export const ModalEvent = ({
   isOpen,
   onClose,
 }: EventModalProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
   const [startDay, setStartDay] = useState<Date | null>(null);
   const [endDay, setEndDay] = useState<Date | null>(null);
   const [allDay, setAllDay] = useState(false);
+  const [addTask, setAddTask] = useState(false);
   const isNew = type === "new";
   const {
     slotStart,
@@ -42,7 +43,6 @@ export const ModalEvent = ({
     selectedEvent,
     handelUpdateEvent,
   } = useEventHandlers();
-  const router = useRouter();
 
   useEffect(() => {
     const now = new Date();
@@ -130,10 +130,32 @@ export const ModalEvent = ({
         start,
         end,
         allDay,
+        addTask,
       };
 
-      console.log(eventData);
-      isNew ? handelAddEvent(eventData) : handelUpdateEvent(eventData);
+      const createdEvent = isNew
+        ? await handelAddEvent(eventData)
+        : await handelUpdateEvent(eventData);
+
+      if (addTask && createdEvent?._id) {
+        await dispatch(
+          addTodoApi({
+            title: createdEvent.title,
+            description: "",
+            isImportant: false,
+            isCompleted: false,
+            end: createdEvent.end,
+            allDay: createdEvent.allDay,
+            eventId: createdEvent._id,
+            repeat: "none",
+            reminder: {
+              triggerBefore: "none",
+              notifyAt: null,
+              notified: false,
+            },
+          })
+        );
+      }
     } catch (error) {
       if (
         typeof error === "object" &&
@@ -146,6 +168,10 @@ export const ModalEvent = ({
         toast.error("An unknown error occurred.");
       }
     }
+  };
+
+  const handelAddTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddTask(e.target.checked);
   };
 
   const handelOverlowClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -244,11 +270,7 @@ export const ModalEvent = ({
             </div>
             <div className="flex items-center">
               <label className="mr-2 text-main">Add Task</label>
-              <input
-                type="checkbox"
-                name="addTask"
-                onChange={() => router.push("/task")}
-              />
+              <input type="checkbox" name="addTask" onChange={handelAddTodo} />
             </div>
           </div>
         </div>
@@ -290,3 +312,5 @@ export const ModalEvent = ({
     </div>
   );
 };
+
+

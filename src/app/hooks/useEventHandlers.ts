@@ -45,6 +45,7 @@ export const useEventHandlers = () => {
       })
     );
   };
+
   const handelAddEvent = (eventData: CalendarEvent) => {
     if (!eventData.start || !eventData.end) return;
 
@@ -56,16 +57,22 @@ export const useEventHandlers = () => {
       addTask: eventData.addTask ?? false,
     };
 
-    dispatch(addEventApi(payload));
-    dispatch(closeModal());
+    return dispatch(addEventApi(payload))
+      .unwrap()
+      .finally(() => {
+        dispatch(closeModal());
+      });
   };
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     const eventId = eventData._id;
     if (!eventId) return;
 
-    dispatch(updateEventApi({ id: eventId, eventData }));
-    dispatch(closeModal());
+    return dispatch(updateEventApi({ id: eventId, eventData }))
+      .unwrap()
+      .finally(() => {
+        dispatch(closeModal());
+      });
   };
 
   const handleDeleteEvent = () => {
