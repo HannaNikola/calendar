@@ -4,7 +4,7 @@ import { Button } from "../shared/ui/Button";
 import { ModalEvent } from "./ModalEvent";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { openModal } from "../store/events/modalReducer";
+import { openModal } from "../store/events/modalEventReducer";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { useScreenType } from "../hooks/useScreenType";
 import { toISOString } from "../utils/date";

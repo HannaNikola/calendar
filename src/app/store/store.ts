@@ -1,16 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { eventReducer } from "@/app/store/events/eventReducer";
-import { modalReducer } from "@/app/store/events/modalReducer";
+import { modalEventReducer } from "@/app/store/events/modalEventReducer";
 import logger from "redux-logger";
 import { filterReduser } from "./filters/filterReducer";
 import { todoReducer } from "./todo/todoReducer";
+import { modalReducer } from "./sharedComponent/modalReducer";
 
 
 
 export const store = configureStore({
   reducer: {
     eventData: eventReducer,
-    modal: modalReducer,
+    modalEvent: modalEventReducer,
+    modal:modalReducer,
     filter: filterReduser,
     todo: todoReducer
   },

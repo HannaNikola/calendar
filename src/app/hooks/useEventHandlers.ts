@@ -4,13 +4,13 @@ import { CalendarEvent } from "../types/typesApi";
 import { addEventApi, deleteEventApi, updateEventApi } from "../api/eventsApi";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
 import { EventClickArg } from "@fullcalendar/core/index.js";
-import { openModal, closeModal } from "@/app/store/events/modalReducer";
+import { openModal, closeModal } from "@/app/store/events/modalEventReducer";
 import { toDate } from "../utils/date";
 
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { selectedEvent, isModalOpen, modalType, slotStart, slotEnd } =
-    useSelector((state: RootState) => state.modal);
+    useSelector((state: RootState) => state.modalEvent);
 
   const handleSelectSlot = (arg: DateClickArg) => {
     const start = arg.date;

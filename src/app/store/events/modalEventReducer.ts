@@ -1,6 +1,6 @@
 import { CalendarEvent } from "@/app/types/typesApi";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ModalStateProps } from "@/app/types/typesModal";
+import { ModalStateProps } from "@/app/types/typesModalEvent";
 import { toISOString } from "@/app/utils/date";
 
 const initialState: ModalStateProps = {
@@ -12,7 +12,7 @@ const initialState: ModalStateProps = {
   addTask: false,
 };
 
-const modalSlice = createSlice({
+const modalEventSlice = createSlice({
   name: "modal",
   initialState,
 
@@ -43,5 +43,5 @@ const modalSlice = createSlice({
   },
 });
 
-export const { closeModal, openModal } = modalSlice.actions;
-export const modalReducer = modalSlice.reducer;
+export const { closeModal, openModal } = modalEventSlice.actions;
+export const modalEventReducer = modalEventSlice.reducer;
