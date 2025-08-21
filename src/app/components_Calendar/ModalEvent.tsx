@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { EventModalProps } from "@/app/types/typesModal";
+import { EventModalProps } from "@/app/types/typesModalEvent";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CalendarEvent } from "../types/typesApi";

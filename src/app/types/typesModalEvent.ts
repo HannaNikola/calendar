@@ -1,11 +1,11 @@
 import { CalendarEvent } from "./typesApi";
 
-export type ModalType = "new" | "update";
+export type ModalEventType = "new" | "update";
 
 
 export interface EventModalProps {
   isOpen: boolean;
-  type?: ModalType;
+  type?: ModalEventType;
   onClose: () => void;
   handelAddEvent: (eventData: CalendarEvent) => void;
   handelUpdateEvent?: (eventData: CalendarEvent) => void;
@@ -17,7 +17,7 @@ export interface EventModalProps {
 
 export interface ModalStateProps {
   isModalOpen: boolean;
-  modalType: ModalType | undefined;
+  modalType: ModalEventType | undefined;
   selectedEvent: CalendarEvent | null;
   slotStart?: Date | string | null;
   slotEnd?: Date | string | null;

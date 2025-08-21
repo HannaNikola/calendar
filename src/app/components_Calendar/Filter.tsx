@@ -12,7 +12,7 @@ import {
 } from "../store/filters/filterReducer";
 import { selectFilteredEvents } from "../store/filters/selector";
 import { CalendarEvent } from "../types/typesApi";
-import { openModal } from "../store/events/modalReducer";
+import { openModal } from "../store/events/modalEventReducer";
 import { useEffect} from "react";
 
 export const Filter = () => {
