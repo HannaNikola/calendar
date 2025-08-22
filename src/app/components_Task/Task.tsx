@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
-import { CircleCheckBig, Star, Trash2 } from "lucide-react";
+import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
 import { ModalTodo } from "./ModalTodo";
 import { openElementModal, closeElementModal} from "../store/sharedComponent/modalReducer";
@@ -48,11 +48,11 @@ export const TaskEl = () => {
               className="flex  w-full  justify-between mb-2 border rounded-md border-grey-border px-3 py-3 "
             >
               <div className="flex w-full flex-col mr-3 ">
-                {item.title}
+                <p className="text-sky-dark">{item.title}</p>
                 <p>{item.description}</p>
-                <div className="flex mt-3">
+                <div className="flex items-end mt-auto">
                   <Button variant={'default'} size={'small'} className="mr-3">Update</Button>
-                  <Button variant={'default'} size={'small'}>Remind</Button>
+                  <button ><BellRing size={20}/></button>
                 </div>
               </div>
 

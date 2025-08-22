@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
+import { BellRing } from "lucide-react";
 
 interface ModalTodoProps {
   isOpen: boolean;
@@ -62,7 +63,7 @@ export const ModalTodo = ({
         />
         <div><div className="flex mt-3">
                           <Button variant={'default'} size={'small'} className="mr-3">Update</Button>
-                          <Button variant={'default'} size={'small'}>Remind</Button>
+                          <button ><BellRing size={20} /></button>
                         </div></div>
       </div>
     </ModalWrapper>
