@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
@@ -13,8 +13,18 @@ import { openElementModal, closeElementModal} from "../store/sharedComponent/mod
 
 export const TaskEl = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { todos} = useSelector((state: RootState) => state.todo);
+  const { todos, status} = useSelector((state: RootState) => state.todo);
   const {isOpen, type, selectedItem} = useSelector((state: RootState)=> state.modal)
+  const [showLoader, setShowLoader] = useState(false);
+
+  useEffect(() => {
+    if (status === "loading") {
+      const timeout = setTimeout(() => setShowLoader(true), 1000);
+      return () => clearTimeout(timeout);
+    } else {
+      setShowLoader(false);
+    }
+  }, [status]);
 
   useEffect(() => {
     dispatch(fetchTodosApi());
@@ -23,9 +33,13 @@ export const TaskEl = () => {
   return (
     
     <div className="flex w-full flex-col ">
-      <ul className="flex  w-full flex-col  ">
+       {showLoader ? (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
+        </div>
+      ) : (<ul className="flex  w-full flex-col  ">
         {todos.length === 0 ? (
-          <li>Dont have any task yet</li>
+          <li>You dont have any task yet...</li>
         ) : (
           todos.map((item) => (
             <li
@@ -56,7 +70,8 @@ export const TaskEl = () => {
             </li>
           ))
         )}
-      </ul>
+      </ul>)}
+      
       {type === 'todo' && (
         <ModalTodo
         isOpen={isOpen}

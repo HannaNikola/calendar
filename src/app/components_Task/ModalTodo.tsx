@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
+import { Button } from "../shared/ui/Button";
 
 interface ModalTodoProps {
   isOpen: boolean;
@@ -59,6 +60,10 @@ export const ModalTodo = ({
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
           }}
         />
+        <div><div className="flex mt-3">
+                          <Button variant={'default'} size={'small'} className="mr-3">Update</Button>
+                          <Button variant={'default'} size={'small'}>Remind</Button>
+                        </div></div>
       </div>
     </ModalWrapper>
   );
