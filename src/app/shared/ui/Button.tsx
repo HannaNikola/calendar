@@ -16,7 +16,7 @@ import { cn } from '../utils/cn'
       },
       size: {
         default: 'w-[90px] px-4 py-1 ',
-        small: ' px-2 py-2 h-[20px] w-[90px]',
+        small: ' px-3 py-3 h-[20px] w-[90px]',
         medium: '',
         large: 'w-[260px] px-4 py-5 ',
       },

@@ -51,7 +51,7 @@ export const TaskEl = () => {
                 <p className="text-sky-dark">{item.title}</p>
                 <p>{item.description}</p>
                 <div className="flex items-end mt-auto">
-                  <Button variant={'default'} size={'small'} className="mr-3">Update</Button>
+                  <Button variant={'default'} size={'small'} className="mr-3 text-small ">Update</Button>
                   <button ><BellRing size={20}/></button>
                 </div>
               </div>
