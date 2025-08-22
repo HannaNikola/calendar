@@ -5,16 +5,23 @@ import { fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
+import { ModalTodo } from "./ModalTodo";
+import { openElementModal, closeElementModal} from "../store/sharedComponent/modalReducer";
+
+
+
 
 export const TaskEl = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { todos} = useSelector((state: RootState) => state.todo);
+  const {isOpen, type, selectedItem} = useSelector((state: RootState)=> state.modal)
 
   useEffect(() => {
     dispatch(fetchTodosApi());
   }, [dispatch]);
 
   return (
+    
     <div className="flex w-full flex-col ">
       <ul className="flex  w-full flex-col  ">
         {todos.length === 0 ? (
@@ -23,6 +30,7 @@ export const TaskEl = () => {
           todos.map((item) => (
             <li
               key={item._id}
+              onClick={() => dispatch(openElementModal({ type: "todo", selectedItem: item }))}
               className="flex  w-full  justify-between mb-2 border rounded-md border-grey-border px-3 py-3 "
             >
               <div className="flex w-full flex-col mr-3 ">
@@ -49,6 +57,12 @@ export const TaskEl = () => {
           ))
         )}
       </ul>
+      {type === 'todo' && (
+        <ModalTodo
+        isOpen={isOpen}
+        onClose={() => dispatch(closeElementModal())}
+        selectedTodo={selectedItem}/>
+      )}
     </div>
   );
 };

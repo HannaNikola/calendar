@@ -8,7 +8,7 @@ interface ModalWrapperProps {
     withCloseButton?: boolean; 
 }
 
-export const ModalWrapper = ({isOpen, onClose, className,withCloseButton = true, children}: ModalWrapperProps)=>{
+export const ModalWrapper = ({isOpen, onClose, className, withCloseButton = true, children}: ModalWrapperProps)=>{
     if(!isOpen) return null;
 
     const handelOverlowClick = (e: React.MouseEvent<HTMLDivElement>) => {

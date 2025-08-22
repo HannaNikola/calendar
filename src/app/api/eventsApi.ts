@@ -10,7 +10,6 @@ export const fetchEventsApi = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("/api/events");
-      // console.log("api response", response);
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
