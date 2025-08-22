@@ -6,32 +6,32 @@ export type ModalMode = "new" | "update";
 interface ModalState {
   isOpen: boolean;
   type?: ModalType;
-  mode?: ModalMode;
+  mode?: ModalMode; 
   selectedItem: any | null;
 }
 
 const initialState: ModalState = {
   isOpen: false,
   type: undefined,
-  mode:undefined,
+  mode: undefined,
   selectedItem: null,
 };
 
-const modalSlice = createSlice({
-  name: "modal",
+const modalElementSlice = createSlice({
+  name: "modalElement",
   initialState,
 
   reducers: {
-    openModal: (
+    openElementModal: (
       state,
-      action: PayloadAction<{ type: ModalType; mode: ModalMode; selectedItem?: any }>
+      action: PayloadAction<{ type: ModalType; mode?: ModalMode; selectedItem?: any }>
     ) => {
       state.isOpen = true;
       state.type = action.payload.type;
-      state.mode = action.payload.mode;
+      state.mode = action.payload.mode; 
       state.selectedItem = action.payload.selectedItem ?? null;
     },
-    closeModal: (state) => {
+    closeElementModal: (state) => {
       state.isOpen = false;
       state.type = undefined;
       state.mode = undefined;
@@ -40,7 +40,5 @@ const modalSlice = createSlice({
   },
 });
 
-export const { openModal, closeModal } = modalSlice.actions;
-export const modalReducer = modalSlice.reducer;
-
-
+export const { openElementModal, closeElementModal } = modalElementSlice.actions;
+export const modalReducer = modalElementSlice.reducer;

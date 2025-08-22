@@ -8,7 +8,6 @@ export const fetchTodosApi = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await axios.get("/api/todo");
-      // console.log("response Api todo", response.data)
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -44,7 +43,6 @@ export const addTodoApi = createAsyncThunk(
         ...newTodo,
       };
       const response = await axios.post("/api/todo", payload);
-      console.log("addTodo", response.data);
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
