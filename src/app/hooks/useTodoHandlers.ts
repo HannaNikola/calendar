@@ -1,18 +1,25 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { deleteTodoApi } from "../api/todoApi";
+import { deleteTodoApi, updateTodotApi } from "../api/todoApi";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
+import { CalendarTodo } from "../types/typesTodoApi";
 
+export const useTodoHandlers = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { todos } = useSelector((state: RootState) => state.todo);
+  const { selectedItem, type } = useSelector((state: RootState) => state.modal);
 
+  const handelUpdateTodo = async (
+    todoId: string,
+    updatedFields: Partial<CalendarTodo>
+  ) => {
+    if (!todoId) return;
 
-export const useTodoHandlers =() =>{
-     const dispatch = useDispatch<AppDispatch>();
-      const { todos } = useSelector((state: RootState) => state.todo);
-    const { selectedItem, type } = useSelector((state:RootState)=>state.modal)
+    await dispatch(updateTodotApi({ id: todoId, todoData: updatedFields }));
+    dispatch(closeElementModal());
+  };
 
-      
-
-    const handeDeleteTodo = (todoId: string, closeModal = false) => {
+  const handeDeleteTodo = (todoId: string, closeModal = false) => {
     dispatch(deleteTodoApi(todoId));
 
     if (closeModal && type === "todo") {
@@ -20,7 +27,8 @@ export const useTodoHandlers =() =>{
     }
   };
 
-        return {
-           handeDeleteTodo 
-        }
-}
+  return {
+    handeDeleteTodo,
+    handelUpdateTodo,
+  };
+};

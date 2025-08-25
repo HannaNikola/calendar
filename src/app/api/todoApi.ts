@@ -57,9 +57,9 @@ export const addTodoApi = createAsyncThunk(
 
 export const updateTodotApi = createAsyncThunk(
     "todoData/updateTodo",
-    async(payload:{id:string; todoData:CalendarTodo}, thunkAPI)=>{
+    async(payload:{id:string; todoData:Partial<CalendarTodo> }, thunkAPI)=>{
         try{
-            const {_id, ...sanitizedTodoData } = payload.todoData;
+            const { ...sanitizedTodoData } = payload.todoData;
             const response = await axios.patch(
                 `/api/todo/${payload.id}`, sanitizedTodoData
             );
@@ -73,6 +73,7 @@ export const updateTodotApi = createAsyncThunk(
         }
     }
 )
+
 
 export const deleteTodoApi = createAsyncThunk<string,string>(
     "todoData/deleteTodo",

@@ -1,4 +1,5 @@
 "use client";
+import * as Yup from "yup";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +8,13 @@ import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
+import { CalendarTodo } from "../types/typesTodoApi";
+
+const TodoSchema = Yup.object().shape({
+  title: Yup.string()
+    .max(70, "Title must be less than 100 characters")
+    .required("title can`t be empty"),
+});
 
 interface ModalTodoProps {
   isOpen: boolean;
@@ -16,7 +24,7 @@ interface ModalTodoProps {
 }
 
 export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
-  const { handeDeleteTodo } = useTodoHandlers();
+  const { handeDeleteTodo, handelUpdateTodo } = useTodoHandlers();
   const dispatch = useDispatch<AppDispatch>();
   const { todos } = useSelector((state: RootState) => state.todo);
   const [title, setTitle] = useState("");
@@ -35,6 +43,19 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       setDescription(selectedItem.description);
     }
   }, [selectedItem]);
+
+  const handelTodoSubmit = async () => {
+    try {
+      await TodoSchema.validate({ title });
+
+      await handelUpdateTodo(selectedItem._id, {
+        title,
+        description,
+      });
+    } catch (error) {
+      console.error("Ошибка при апдейте тудушки", error);
+    }
+  };
 
   return (
     <ModalWrapper
@@ -64,7 +85,12 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
         />
         <div className="flex mt-3 justify-between items-center">
           <div className="flex  ">
-            <Button variant={"default"} size={"small"} className="mr-7">
+            <Button
+              onClick={handelTodoSubmit}
+              variant={"default"}
+              size={"small"}
+              className="mr-7"
+            >
               Update
             </Button>
             <button>
