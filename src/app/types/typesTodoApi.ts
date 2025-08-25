@@ -1,4 +1,4 @@
-export interface TodoProps {
+export interface CalendarTodo {
   _id?: string;
   title: string;
   description?: string;
@@ -16,7 +16,7 @@ export interface TodoProps {
 }
 
 export interface TodoStateProps {
-  todos: TodoProps[];
+  todos: CalendarTodo[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }

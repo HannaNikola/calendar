@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
+import { CalendarTodo } from "../types/typesTodoApi";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
@@ -52,3 +53,39 @@ export const addTodoApi = createAsyncThunk(
     }
   }
 );
+
+
+export const updateTodotApi = createAsyncThunk(
+    "todoData/updateTodo",
+    async(payload:{id:string; todoData:CalendarTodo}, thunkAPI)=>{
+        try{
+            const {_id, ...sanitizedTodoData } = payload.todoData;
+            const response = await axios.patch(
+                `/api/todo/${payload.id}`, sanitizedTodoData
+            );
+            console.log("updateTodo", response.data)
+            return response.data;
+        }catch(error){
+            const err = error as AxiosError;
+            return thunkAPI.rejectWithValue(
+               err.response?.data || "Something went wrong" 
+            )
+        }
+    }
+)
+
+export const deleteTodoApi = createAsyncThunk<string,string>(
+    "todoData/deleteTodo",
+    async(id:string, thunkAPI)=>{
+        try{
+            const response = await axios.delete(`/api/todo/${id}`);
+            console.log('delete', response.data._id)
+            return response.data.data._id
+        }catch(error){
+            const err = error as AxiosError;
+      return thunkAPI.rejectWithValue(
+        err.response?.data || "Something went wrong"
+      )
+        }
+    }
+)
