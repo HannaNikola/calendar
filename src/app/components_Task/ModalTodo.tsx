@@ -2,40 +2,40 @@
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodosApi } from "../api/todoApi";
+import { deleteTodoApi, fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
+import { useTodoHandlers } from "../hooks/useTodoHandlers";
 
 interface ModalTodoProps {
   isOpen: boolean;
   onClose: () => void;
   mode?: "new" | "update";
-  selectedTodo?: any;
+  selectedItem?: any;
 }
 
-export const ModalTodo = ({
-  isOpen,
-  onClose,
-  selectedTodo,
-}: ModalTodoProps) => {
+export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
+  const { handeDeleteTodo } = useTodoHandlers();
   const dispatch = useDispatch<AppDispatch>();
   const { todos } = useSelector((state: RootState) => state.todo);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const { selectedItem, type } = useSelector((state: RootState) => state.modal);
 
   useEffect(() => {
     dispatch(fetchTodosApi());
   }, [dispatch]);
 
   useEffect(() => {
-    if (selectedTodo?.title) {
-      setTitle(selectedTodo.title);
+    if (selectedItem?.title) {
+      setTitle(selectedItem.title);
     }
-    if (selectedTodo?.description) {
-      setDescription(selectedTodo.description);
+    if (selectedItem?.description) {
+      setDescription(selectedItem.description);
     }
-  }, [selectedTodo]);
+  }, [selectedItem]);
+
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -72,18 +72,22 @@ export const ModalTodo = ({
             </button>
           </div>
           <div className="flex gap-3">
-                <button>
-                  <Star size={20} />
-                </button>
-                <button>
-                  <CircleCheckBig size={20} />
-                </button>
-                <button>
-                  <Trash2 size={20} />
-                </button>
-              </div>
+            <button>
+              <Star size={20} />
+            </button>
+            <button>
+              <CircleCheckBig size={20} />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handeDeleteTodo(selectedItem._id, true);
+              }}
+            >
+              <Trash2 size={20} />
+            </button>
+          </div>
         </div>
-        
       </div>
     </ModalWrapper>
   );

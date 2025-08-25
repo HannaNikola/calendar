@@ -1,14 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {ModalState, ModalType, ModalMode } from "@/app/types/typesModal"
 
-export type ModalType = "event" | "todo";
-export type ModalMode = "new" | "update";
-
-interface ModalState {
-  isOpen: boolean;
-  type?: ModalType;
-  mode?: ModalMode; 
-  selectedItem: any | null;
-}
 
 const initialState: ModalState = {
   isOpen: false,
