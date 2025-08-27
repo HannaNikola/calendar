@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodosApi } from "../api/todoApi";
+import { fetchTodosApi, updateTodotApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
@@ -14,13 +14,16 @@ import { useTodoHandlers } from "../hooks/useTodoHandlers";
 
 export const TaskEl = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { handeDeleteTodo } = useTodoHandlers();
+  const { handeDeleteTodo , handelUpdateTodo } = useTodoHandlers();
+
   const { todos, status } = useSelector((state: RootState) => state.todo);
   const { isOpen, type, selectedItem } = useSelector(
     (state: RootState) => state.modal
   );
 
+
   const [showLoader, setShowLoader] = useState(false);
+
 
   useEffect(() => {
     if (status === "loading") {
@@ -74,8 +77,9 @@ export const TaskEl = () => {
                 </div>
 
                 <div className="flex max-lg:flex-col gap-3">
-                  <button>
-                    <Star size={20} />
+                  <button 
+                  >
+                    <Star size={20}  />
                   </button>
                   <button>
                     <CircleCheckBig size={20} />
@@ -107,3 +111,7 @@ export const TaskEl = () => {
     </div>
   );
 };
+
+
+
+
