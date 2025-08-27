@@ -44,33 +44,40 @@ export const ModalEvent = ({
     handelUpdateEvent,
   } = useEventHandlers();
 
+  
+
   useEffect(() => {
-    const now = new Date();
-    const start = toDate(selectedEvent?.start ?? slotStart ?? now);
-    const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
+  const now = new Date();
+  const start = toDate(selectedEvent?.start ?? slotStart ?? now);
+  const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
 
-    if (!start) return;
-    setTitle(selectedEvent?.title ?? "");
-    setAllDay(selectedEvent?.allDay ?? false);
+  if (!start) return;
+  
+  setTitle(selectedEvent?.title ?? "");
+  setAllDay(selectedEvent?.allDay ?? false);
+  setStartDay(start);
 
-    setStartDay(start);
+  
+  if (selectedEvent?.start) {
+    
     setStartTime(new Date(1970, 0, 1, start.getHours(), start.getMinutes()));
+  } else {
+    
+    setStartTime(new Date(1970, 0, 1, 9, 0));
+  }
 
-    if (isNew) {
-      setEndDay(start);
-      const oneHourLater = new Date(
-        1970,
-        0,
-        1,
-        start.getHours() + 1,
-        start.getMinutes()
-      );
-      setEndTime(oneHourLater);
-    } else if (end) {
-      setEndDay(end);
-      setEndTime(new Date(1970, 0, 1, end.getHours(), end.getMinutes()));
-    }
-  }, [selectedEvent, slotStart, slotEnd, isNew]);
+  if (isNew) {
+    setEndDay(start);
+    
+    setEndTime(new Date(1970, 0, 1, 10, 0));
+  } else if (end) {
+    setEndDay(end);
+    setEndTime(new Date(1970, 0, 1, end.getHours(), end.getMinutes()));
+  } else {
+   
+    setEndTime(new Date(1970, 0, 1, 10, 0));
+  }
+}, [selectedEvent, slotStart, slotEnd, isNew]);
 
   const combineDateTime = (
     date: Date | null,
