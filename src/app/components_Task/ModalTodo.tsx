@@ -58,11 +58,12 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   };
 
   return (
-    <ModalWrapper
-      isOpen={isOpen}
+   
+     <ModalWrapper
+     isOpen={isOpen}
       onClose={onClose}
       className="w-full lg:w-[700px]"
-    >
+    > 
       <div className="flex flex-col w-full">
         <textarea
           value={title}
@@ -97,6 +98,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
               <BellRing size={20} />
             </button>
           </div>
+          
           <div className="flex gap-3">
             <button>
               <Star size={20} />
@@ -115,6 +117,6 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
           </div>
         </div>
       </div>
-    </ModalWrapper>
+       </ModalWrapper> 
   );
 };
