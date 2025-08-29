@@ -3,12 +3,12 @@ import * as Yup from "yup";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTodoApi, favoriteTodoApi, fetchTodosApi } from "../api/todoApi";
+import { favoriteTodoApi, fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
-import { CalendarTodo } from "../types/typesTodoApi";
+
 
 const TodoSchema = Yup.object().shape({
   title: Yup.string()
@@ -53,7 +53,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
         description,
       });
     } catch (error) {
-      console.error("Ошибка при апдейте тудушки", error);
+      
     }
   };
 

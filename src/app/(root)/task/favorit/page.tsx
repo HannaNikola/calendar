@@ -1,4 +1,5 @@
-import { Test } from "@/app/components_settings/test";
+
+import { TodoImportant } from "@/app/components_Task/TodoImportant";
 import { BookOpenCheck, CircleCheck, Star } from "lucide-react";
 import Link from "next/link";
 
@@ -18,7 +19,7 @@ export default function Favorite() {
       </div>
 
       <div className="  flex  flex-col items-center justify-center py-10">
-        <Test />
+        <TodoImportant />
       </div>
     </div>
   );
