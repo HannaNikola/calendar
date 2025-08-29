@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTodoApi, fetchTodosApi } from "../api/todoApi";
+import { deleteTodoApi, favoriteTodoApi, fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
@@ -58,12 +58,11 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   };
 
   return (
-   
-     <ModalWrapper
-     isOpen={isOpen}
+    <ModalWrapper
+      isOpen={isOpen}
       onClose={onClose}
       className="w-full lg:w-[700px]"
-    > 
+    >
       <div className="flex flex-col w-full">
         <textarea
           value={title}
@@ -98,10 +97,23 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
               <BellRing size={20} />
             </button>
           </div>
-          
+
           <div className="flex gap-3">
-            <button>
-              <Star size={20} />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                dispatch(
+                  favoriteTodoApi({
+                    id: selectedItem._id,
+                    isImportant: !selectedItem.isImportant,
+                  })
+                );
+              }}
+            >
+              <Star
+                size={20}
+                className={selectedItem.isImportant ? "fill-amber-300" : "stroke-black"}
+              />
             </button>
             <button>
               <CircleCheckBig size={20} />
@@ -117,6 +129,6 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
           </div>
         </div>
       </div>
-       </ModalWrapper> 
+    </ModalWrapper>
   );
 };
