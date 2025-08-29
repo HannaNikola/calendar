@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTodosApi, updateTodotApi } from "../api/todoApi";
+import { favoriteTodoApi, fetchTodosApi, updateTodotApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
@@ -77,9 +77,12 @@ export const TaskEl = () => {
                 </div>
 
                 <div className="flex max-lg:flex-col gap-3">
-                  <button 
+                  <button onClick={(e)=>{
+                    e.stopPropagation();
+                    dispatch(favoriteTodoApi({ id: item._id, isImportant: !item.isImportant }))
+                  }}
                   >
-                    <Star size={20}  />
+                    <Star size={20} className={item.isImportant ? "fill-amber-300" : "stroke-black"} />
                   </button>
                   <button>
                     <CircleCheckBig size={20} />

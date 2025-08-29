@@ -1,5 +1,5 @@
 export interface CalendarTodo {
-  _id?: string;
+  _id: string;
   title: string;
   description?: string;
   isImportant?: boolean;
