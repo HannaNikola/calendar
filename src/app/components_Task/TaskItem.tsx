@@ -1,8 +1,8 @@
 
 import { useDispatch} from "react-redux";
-import { favoriteTodoApi} from "../api/todoApi";
+import { completedTodoApi, favoriteTodoApi} from "../api/todoApi";
 import { AppDispatch} from "../store/store";
-import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
+import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
 
 import {
@@ -54,8 +54,14 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
             className={item.isImportant ? "fill-amber-300" : "stroke-black"}
           />
         </button>
-        <button>
-          <CircleCheckBig size={20} />
+        <button  onClick={(e)=>{
+          e.stopPropagation()
+          if(item._id){
+           dispatch(completedTodoApi({id: item._id, isCompleted: !item.isCompleted})) 
+          }
+        }}>
+          {item.isCompleted ? (<CircleCheckBig size={20} />) :(<Circle />) }
+         
         </button>
         <button
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
