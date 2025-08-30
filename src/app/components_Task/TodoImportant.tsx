@@ -1,12 +1,18 @@
 "use client";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
 import { TaskItem } from "./TaskItem";
 import { useEffect, useState } from "react";
+import { ModalTodo } from "./ModalTodo";
+import { closeElementModal } from "../store/sharedComponent/modalReducer";
 
 export const TodoImportant = () => {
+   const dispatch = useDispatch<AppDispatch>();
   const { todos, status } = useSelector((state: RootState) => state.todo);
   const isImportantTodo = todos.filter((item) => item.isImportant);
+  const { isOpen, type, selectedItem } = useSelector(
+    (state: RootState) => state.modal
+  );
   const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
@@ -17,6 +23,8 @@ export const TodoImportant = () => {
       setShowLoader(false);
     }
   }, [status]);
+
+ 
 
   return (
     <div className="w-full">
@@ -31,6 +39,13 @@ export const TodoImportant = () => {
           ))}
         </ul>
       )}
+      {type === "todo" && (
+              <ModalTodo
+                isOpen={isOpen}
+                onClose={() => dispatch(closeElementModal())}
+                selectedItem={selectedItem}
+              />
+            )}
     </div>
   );
 };

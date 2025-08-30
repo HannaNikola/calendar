@@ -1,10 +1,14 @@
 'use client'
-import { useSelector } from "react-redux"
-import { RootState } from "../store/store"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "../store/store"
 import { useEffect, useState } from "react"
 import { TaskItem } from "./TaskItem"
+import { closeElementModal } from "../store/sharedComponent/modalReducer"
+import { ModalTodo } from "./ModalTodo"
 
 export const TodoCompleted = ()=>{
+   const dispatch = useDispatch<AppDispatch>();
+  const{isOpen, type, selectedItem} = useSelector((state:RootState)=> state.modal)
     const {todos, status} = useSelector((state:RootState)=> state.todo)
     const isCompletedTodo = todos.filter((item)=> item.isCompleted)
     const [showLoader, setShowLoader] = useState(false);
@@ -20,7 +24,8 @@ export const TodoCompleted = ()=>{
   }, [status]);
 
 
-   
+ 
+
     return (
         <div className="w-full">
             {showLoader ? (
@@ -34,7 +39,13 @@ export const TodoCompleted = ()=>{
                 </ul>
                 
             )}
-
+{type === "todo" && (
+              <ModalTodo
+                isOpen={isOpen}
+                onClose={() => dispatch(closeElementModal())}
+                selectedItem={selectedItem}
+              />
+            )}
         </div>
     )
 }
