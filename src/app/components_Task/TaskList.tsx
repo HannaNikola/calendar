@@ -31,18 +31,19 @@ export const TaskList = () => {
     dispatch(fetchTodosApi());
   }, [dispatch]);
 
+
   return (
     <>
       <div className="flex w-full flex-col ">
         {showLoader ? (
-          <div>Loading...</div>
+           <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
+        </div>
         ) : (
           <ul className="flex w-full flex-col">
-            {todos.length === 0 ? (
-              <li>You dont have any task yet...</li>
-            ) : (
+            {
               todos.map((item) => <TaskItem key={item._id} item={item} />)
-            )}
+            }
           </ul>
         )}
       </div>
