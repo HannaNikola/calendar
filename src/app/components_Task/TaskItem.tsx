@@ -1,34 +1,40 @@
-
-import { useDispatch} from "react-redux";
-import { completedTodoApi, favoriteTodoApi} from "../api/todoApi";
-import { AppDispatch} from "../store/store";
+import { useDispatch } from "react-redux";
+import { completedTodoApi, favoriteTodoApi } from "../api/todoApi";
+import { AppDispatch } from "../store/store";
 import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
 
-import {
-  openElementModal,
-} from "../store/sharedComponent/modalReducer";
+import { openElementModal } from "../store/sharedComponent/modalReducer";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { CalendarTodo } from "../types/typesTodoApi";
 import { useTodoExpired } from "../hooks/useTodoExpired";
-
+import { toDate } from "../utils/date";
 
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { handeDeleteTodo } = useTodoHandlers();
-  const expired = useTodoExpired(item.end)
+  const expired = useTodoExpired(item.end);
+  const colorBorder = expired
+    ? "border-red-400 bg-red-50"
+    : item.isImportant
+      ? "border-amber-300 bg-amber-50"
+      : "border-grey-border bg-sky-50 ";
+
+      const formattedEnd = item.end ? toDate(item.end)?.toLocaleDateString() : "—";
 
   return (
     <li
       onClick={() =>
         dispatch(openElementModal({ type: "todo", selectedId: item._id }))
       }
-            className={`flex w-full justify-between mb-2 border rounded-md border-grey-border px-3 py-3 ${expired ? "border-red-400" : "border-grey-border" } `}
->
+      className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder}`}
+    >
       <div className="flex w-full flex-col mr-3 ">
-        <p className="text-sky-dark">{item.title}</p>
+        <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
         <p className="text-small mb-3">{item.description}</p>
+        <p className={`mb-1 text-small text-alert-text ${expired ? 'text-red-500 ': 'text-green-700'}` }>Deadline:{formattedEnd}</p>
         <div className="flex items-end mt-auto">
+          
           <Button variant="default" size="small" className="mr-3 text-small">
             Update
           </Button>
@@ -56,14 +62,20 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
             className={item.isImportant ? "fill-amber-300" : "stroke-black"}
           />
         </button>
-        <button  onClick={(e)=>{
-          e.stopPropagation()
-          if(item._id){
-           dispatch(completedTodoApi({id: item._id, isCompleted: !item.isCompleted})) 
-          }
-        }}>
-          {item.isCompleted ? (<CircleCheckBig size={20} />) :(<Circle />) }
-         
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (item._id) {
+              dispatch(
+                completedTodoApi({
+                  id: item._id,
+                  isCompleted: !item.isCompleted,
+                })
+              );
+            }
+          }}
+        >
+          {item.isCompleted ? <CircleCheckBig size={20} /> : <Circle />}
         </button>
         <button
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {

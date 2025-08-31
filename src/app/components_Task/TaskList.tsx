@@ -7,7 +7,7 @@ import { ModalTodo } from "./ModalTodo";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 
 import { TaskItem } from "./TaskItem";
-import { useTodoExpired } from "../hooks/useTodoExpired";
+
 
 export const TaskList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,7 +32,7 @@ export const TaskList = () => {
   useEffect(() => {
     dispatch(fetchTodosApi());
   }, [dispatch]);
-
+const activeTodos = todos.filter((item) => !item.isCompleted);
 
   return (
     <>
@@ -44,7 +44,7 @@ export const TaskList = () => {
         ) : (
           <ul className="flex w-full flex-col">
             {
-              todos.map((item) => <TaskItem key={item._id} item={item} />)
+              activeTodos.map((item) => <TaskItem key={item._id} item={item} />)
             }
           </ul>
         )}
