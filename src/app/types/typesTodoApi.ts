@@ -19,4 +19,5 @@ export interface TodoStateProps {
   todos: CalendarTodo[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
+  
 }

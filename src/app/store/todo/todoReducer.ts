@@ -2,14 +2,18 @@ import { addTodoApi, fetchTodosApi, updateTodotApi, deleteTodoApi, favoriteTodoA
 import { TodoStateProps } from "@/app/types/typesTodoApi";
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
 const initialState: TodoStateProps = {
   todos: [],
   status: "idle",
   error: null,
+ 
 };
 
 const todolSlice = createSlice({
   name: "todos",
+  
   initialState,
 
   reducers: {},
