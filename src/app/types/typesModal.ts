@@ -7,5 +7,6 @@ export interface ModalState {
   isOpen: boolean;
   type?: ModalType;
   mode?: ModalMode; 
-  selectedItem: any | null;
+  selectedId: string | null;
+  
 }

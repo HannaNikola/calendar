@@ -8,7 +8,7 @@ import { ModalTodo } from "./ModalTodo"
 
 export const TodoCompleted = ()=>{
    const dispatch = useDispatch<AppDispatch>();
-  const{isOpen, type, selectedItem} = useSelector((state:RootState)=> state.modal)
+  const{isOpen, type, selectedId} = useSelector((state:RootState)=> state.modal)
     const {todos, status} = useSelector((state:RootState)=> state.todo)
     const isCompletedTodo = todos.filter((item)=> item.isCompleted)
     const [showLoader, setShowLoader] = useState(false);
@@ -43,7 +43,6 @@ export const TodoCompleted = ()=>{
               <ModalTodo
                 isOpen={isOpen}
                 onClose={() => dispatch(closeElementModal())}
-                selectedItem={selectedItem}
               />
             )}
         </div>

@@ -7,16 +7,18 @@ import { ModalTodo } from "./ModalTodo";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 
 import { TaskItem } from "./TaskItem";
+import { useTodoExpired } from "../hooks/useTodoExpired";
 
 export const TaskList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { todos, status } = useSelector((state: RootState) => state.todo);
-  const { isOpen, type, selectedItem } = useSelector(
+  const { isOpen, type, selectedId } = useSelector(
     (state: RootState) => state.modal
   );
 
   const [showLoader, setShowLoader] = useState(false);
+
 
   useEffect(() => {
     if (status === "loading") {
@@ -52,7 +54,6 @@ export const TaskList = () => {
         <ModalTodo
           isOpen={isOpen}
           onClose={() => dispatch(closeElementModal())}
-          selectedItem={selectedItem}
         />
       )}
     </>

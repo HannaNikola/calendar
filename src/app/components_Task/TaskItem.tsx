@@ -10,19 +10,21 @@ import {
 } from "../store/sharedComponent/modalReducer";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { CalendarTodo } from "../types/typesTodoApi";
+import { useTodoExpired } from "../hooks/useTodoExpired";
 
 
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { handeDeleteTodo } = useTodoHandlers();
+  const expired = useTodoExpired(item.end)
 
   return (
     <li
       onClick={() =>
-        dispatch(openElementModal({ type: "todo", selectedItem: item }))
+        dispatch(openElementModal({ type: "todo", selectedId: item._id }))
       }
-      className="flex w-full justify-between mb-2 border rounded-md border-grey-border px-3 py-3"
-    >
+            className={`flex w-full justify-between mb-2 border rounded-md border-grey-border px-3 py-3 ${expired ? "border-red-400" : "border-grey-border" } `}
+>
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark">{item.title}</p>
         <p className="text-small mb-3">{item.description}</p>

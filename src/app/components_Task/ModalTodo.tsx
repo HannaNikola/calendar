@@ -3,10 +3,10 @@ import * as Yup from "yup";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { favoriteTodoApi, fetchTodosApi } from "../api/todoApi";
+import { completedTodoApi, favoriteTodoApi, fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
-import { BellRing, CircleCheckBig, Star, Trash2 } from "lucide-react";
+import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 
 
@@ -20,7 +20,6 @@ interface ModalTodoProps {
   isOpen: boolean;
   onClose: () => void;
   mode?: "new" | "update";
-  selectedItem?: any;
 }
 
 export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
@@ -29,22 +28,28 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const { todos } = useSelector((state: RootState) => state.todo);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { selectedItem, type } = useSelector((state: RootState) => state.modal);
+const { selectedId, type } = useSelector((state: RootState) => state.modal);
+ const selectedItem = todos.find(todo => todo._id === selectedId);
+
 
   useEffect(() => {
     dispatch(fetchTodosApi());
   }, [dispatch]);
 
   useEffect(() => {
+    if (!selectedItem) return;
+
     if (selectedItem?.title) {
       setTitle(selectedItem.title);
     }
     if (selectedItem?.description) {
-      setDescription(selectedItem.description);
+      setDescription(selectedItem.description ?? "");
     }
   }, [selectedItem]);
 
+
   const handelTodoSubmit = async () => {
+    if (!selectedItem) return;
     try {
       await TodoSchema.validate({ title });
 
@@ -56,7 +61,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       
     }
   };
-
+ if (!selectedItem) return null;
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -104,6 +109,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
                 e.stopPropagation();
                 dispatch(
                   favoriteTodoApi({
+                   
                     id: selectedItem._id,
                     isImportant: !selectedItem.isImportant,
                   })
@@ -115,9 +121,15 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
                 className={selectedItem.isImportant ? "fill-amber-300" : "stroke-black"}
               />
             </button>
-            <button>
-              <CircleCheckBig size={20} />
-            </button>
+           <button  onClick={(e)=>{
+                     e.stopPropagation()
+                     if(selectedItem._id){
+                      dispatch(completedTodoApi({id: selectedItem._id, isCompleted: !selectedItem.isCompleted})) 
+                     }
+                   }}>
+                     {selectedItem.isCompleted ? (<CircleCheckBig size={20} />) :(<Circle size={20} />) }
+                    
+                   </button>
             <button
               onClick={(e) => {
                 e.stopPropagation();

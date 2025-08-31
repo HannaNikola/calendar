@@ -10,7 +10,7 @@ export const TodoImportant = () => {
    const dispatch = useDispatch<AppDispatch>();
   const { todos, status } = useSelector((state: RootState) => state.todo);
   const isImportantTodo = todos.filter((item) => item.isImportant);
-  const { isOpen, type, selectedItem } = useSelector(
+  const { isOpen, type, selectedId } = useSelector(
     (state: RootState) => state.modal
   );
   const [showLoader, setShowLoader] = useState(false);
@@ -43,7 +43,6 @@ export const TodoImportant = () => {
               <ModalTodo
                 isOpen={isOpen}
                 onClose={() => dispatch(closeElementModal())}
-                selectedItem={selectedItem}
               />
             )}
     </div>
