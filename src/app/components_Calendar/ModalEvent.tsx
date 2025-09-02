@@ -1,5 +1,7 @@
+"use client";
+
+
 import * as Yup from "yup";
-import { EventModalProps } from "@/app/types/typesModalEvent";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CalendarEvent } from "../types/typesApi";
@@ -11,9 +13,12 @@ import { Button } from "@/app/shared/ui/Button";
 import { toast, ToastContainer } from "react-toastify";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { toDate } from "../utils/date";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addTodoApi } from "../api/todoApi";
-import { AppDispatch } from "../store/store";
+import { AppDispatch, RootState } from "../store/store";
+import { ModalWrapper } from "../shared/ui/ModalWrapper";
+import { EventModalProps } from "../types/typesModalEvent";
+
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -21,12 +26,15 @@ const EventSchema = Yup.object().shape({
     .required("title can`t be empty"),
 });
 
-export const ModalEvent = ({
-  type = "new",
-  isOpen,
-  onClose,
-}: EventModalProps) => {
+
+
+
+export const ModalEvent = ({ onClose, slotStart, slotEnd }:EventModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { events } = useSelector((state: RootState) => state.eventData);
+  const{selectedId, type, mode, isOpen}=useSelector((state:RootState)=>state.modal) 
+  const selectedEvent = events.find(item => item._id === selectedId)
+
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
@@ -34,18 +42,16 @@ export const ModalEvent = ({
   const [endDay, setEndDay] = useState<Date | null>(null);
   const [allDay, setAllDay] = useState(false);
   const [addTask, setAddTask] = useState(false);
-  const isNew = type === "new";
+  const isNew = mode === "new";
+  
   const {
-    slotStart,
-    slotEnd,
     handelAddEvent,
     handleDeleteEvent,
-    selectedEvent,
     handelUpdateEvent,
   } = useEventHandlers();
 
   
-
+  
   useEffect(() => {
   const now = new Date();
   const start = toDate(selectedEvent?.start ?? slotStart ?? now);
@@ -161,7 +167,8 @@ export const ModalEvent = ({
               notified: false,
             },
           })
-        );
+        )
+       
       }
     } catch (error) {
       if (
@@ -181,21 +188,18 @@ export const ModalEvent = ({
     setAddTask(e.target.checked);
   };
 
-  const handelOverlowClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
+  
 
   if (!isOpen) return null;
 
   return (
-    <div
-      onClick={handelOverlowClick}
-      className=" flex fixed inset-0  bg-black/50  items-center justify-center z-50 shadow-2xs p-4"
-    >
-      <div className=" p-4 rounded-lg shadow-lg min-w-[300px] bg-white mx-auto">
-        <div className="flex ">
+    <ModalWrapper
+         isOpen={isOpen}
+         onClose={onClose}
+            
+         className=" min-w-[300px] p-4 shadow-lg rounded-lg"
+       >
+        <div className="flex">
           {isNew ? (
             <h1 className="flex-1 text-center  text-h2 mb-6">Create event</h1>
           ) : (
@@ -221,8 +225,8 @@ export const ModalEvent = ({
             }}
           />
 
-          <div className="mb-4">
-            <div className="flex flex-1  mb-2 gap-2">
+          <div className="mb-4 w-full">
+            <div className="flex flex-1  mb-2 gap-2 w-full">
               <DatePicker
                 selected={startDay}
                 onChange={handleStartDayChange}
@@ -315,9 +319,6 @@ export const ModalEvent = ({
             </>
           )}
         </div>
-      </div>
-    </div>
+    </ModalWrapper>
   );
 };
-
-

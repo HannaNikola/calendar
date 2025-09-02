@@ -3,6 +3,7 @@ import {ModalState, ModalType, ModalMode } from "@/app/types/typesModal"
 
 
 
+
 const initialState: ModalState = {
   isOpen: false,
   type: undefined,
