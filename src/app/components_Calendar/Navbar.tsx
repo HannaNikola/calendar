@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { Cog } from "lucide-react";
 import { CalendarDays } from "lucide-react";
@@ -6,16 +6,23 @@ import { BookOpenCheck } from "lucide-react";
 import EddEventButton from "./EddEventButton";
 import { AdaptiveProps } from "../types/typesAdaptive";
 import { FC } from "react";
-
-
+import { closeElementModal } from "../store/sharedComponent/modalReducer";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
+import { useEventHandlers } from "../hooks/useEventHandlers";
 
 export const Navbar: FC<AdaptiveProps> = () => {
-
+  const dispatch = useDispatch<AppDispatch>();
+  const { handelAddEvent } = useEventHandlers();
 
   return (
     <section className="flex w-full max-lg:flex-row-reverse lg:flex-col lg:max-w-[290px]">
       <div className=" flex  lg:mb-3  ">
-        <EddEventButton  />
+        <EddEventButton
+          onClose={() => dispatch(closeElementModal())}
+          handelAddEvent={handelAddEvent}
+          isOpen={false}
+        />
       </div>
       <nav className="flex flex-row w-full sm:gap-2 lg:w-auto lg:flex-col lg:mr-4">
         <Link
