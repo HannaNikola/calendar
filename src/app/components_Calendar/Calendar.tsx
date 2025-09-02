@@ -20,11 +20,7 @@ import { closeElementModal } from "../store/sharedComponent/modalReducer";
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
 
-// interface ModalTodoProps {
-//   isOpen: boolean;
-//   onClose: () => void;
-//   mode?: "new" | "update";
-// }
+
 const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { events, status } = useSelector((state: RootState) => state.eventData);
