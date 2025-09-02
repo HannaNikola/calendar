@@ -20,17 +20,18 @@ import { closeElementModal } from "../store/sharedComponent/modalReducer";
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
 
-
 const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { events, status } = useSelector((state: RootState) => state.eventData);
-  const{selectedId, type,mode, isOpen}=useSelector((state:RootState)=>state.modal)
- const [slotData, setSlotData] = useState<{ 
+  const { selectedId, type, mode, isOpen } = useSelector(
+    (state: RootState) => state.modal
+  );
+  const [slotData, setSlotData] = useState<{
     slotStart: Date | null;
     slotEnd: Date | null;
   }>({
     slotStart: null,
-    slotEnd: null
+    slotEnd: null,
   });
 
   const screenType = useScreenType();
@@ -63,15 +64,14 @@ const CalendarEl = () => {
     }
   }, [status]);
 
-   const handleSlotSelect = (arg: DateSelectArg) => {
+  const handleSlotSelect = (arg: DateSelectArg) => {
+    setSlotData({
+      slotStart: arg.start,
+      slotEnd: arg.end,
+    });
 
-  setSlotData({
-    slotStart: arg.start,
-    slotEnd: arg.end
-  });
-  
-  handleSelectSlot(arg);
-};
+    handleSelectSlot(arg);
+  };
   const parsedEvents = events.map((event) => ({
     ...event,
     id: event._id,
@@ -156,7 +156,7 @@ const CalendarEl = () => {
             events={parsedEvents}
             editable={true}
             selectable={true}
-            select={handleSlotSelect} 
+            select={handleSlotSelect}
             eventClick={handleSelectEvent}
             eventMouseEnter={handleMouseEnter}
             eventDrop={handleEventDrop}
@@ -183,13 +183,12 @@ const CalendarEl = () => {
             <ModalEvent
               isOpen={isOpen}
               onClose={() => dispatch(closeElementModal())}
-            slotStart={slotData.slotStart}
-          slotEnd={slotData.slotEnd}
-            selectedEvent={selectedEvent}
-            handelAddEvent={handelAddEvent}
-            handelUpdateEvent={handelUpdateEvent}
-            handleDeleteEvent={handleDeleteEvent}
-            
+              slotStart={slotData.slotStart}
+              slotEnd={slotData.slotEnd}
+              selectedEvent={selectedEvent}
+              handelAddEvent={handelAddEvent}
+              handelUpdateEvent={handelUpdateEvent}
+              handleDeleteEvent={handleDeleteEvent}
             />
           )}
         </div>
