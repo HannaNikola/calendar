@@ -10,31 +10,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { ModalEvent } from "./ModalEvent";
-import { EventDropArg } from "@fullcalendar/core/index.js";
+import { DateSelectArg, EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { fetchEventsApi } from "../api/eventsApi";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
-
-
-
-
+import { closeElementModal } from "../store/sharedComponent/modalReducer";
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
-
-
 
 const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { events, status } = useSelector((state: RootState) => state.eventData);
+  const { selectedId, type, mode, isOpen } = useSelector(
+    (state: RootState) => state.modal
+  );
+  const [slotData, setSlotData] = useState<{
+    slotStart: Date | null;
+    slotEnd: Date | null;
+  }>({
+    slotStart: null,
+    slotEnd: null,
+  });
+
   const screenType = useScreenType();
   const {
-    isModalOpen,
-    modalType,
-    slotStart,
-    slotEnd,
-    closeModal,
     handelAddEvent,
     handleDeleteEvent,
     handleSelectEvent,
@@ -47,11 +48,8 @@ const CalendarEl = () => {
   const calendarRef = useRef<FullCalendarType | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { adjustCalendarLayout, isMobileWidth, calendarClasses } = useCalendarLayout(
-    calendarRef,
-    containerRef,
-    screenType
-  );
+  const { adjustCalendarLayout, isMobileWidth, calendarClasses } =
+    useCalendarLayout(calendarRef, containerRef, screenType);
 
   useEffect(() => {
     dispatch(fetchEventsApi());
@@ -66,6 +64,14 @@ const CalendarEl = () => {
     }
   }, [status]);
 
+  const handleSlotSelect = (arg: DateSelectArg) => {
+    setSlotData({
+      slotStart: arg.start,
+      slotEnd: arg.end,
+    });
+
+    handleSelectSlot(arg);
+  };
   const parsedEvents = events.map((event) => ({
     ...event,
     id: event._id,
@@ -108,12 +114,6 @@ const CalendarEl = () => {
       ) : (
         <div
           ref={containerRef}
-          // className={`
-          //   sm:bg-white py-5 sm:px-4 flex-1
-          //   sm:border sm:border-gray-300 sm:rounded-t-[50px]
-          //   ${calendarClasses}
-          // `}
-
           className={`
             sm:px-4 flex-1
             
@@ -140,10 +140,10 @@ const CalendarEl = () => {
                 dayMaxEventRows: isMobileWidth ? 6 : 3,
                 fixedWeekCount: false,
               },
-              timeGridWeek: { 
+              timeGridWeek: {
                 buttonText: "Week",
               },
-              timeGridDay: { 
+              timeGridDay: {
                 buttonText: "Day",
               },
               multiMonthYear: {
@@ -151,12 +151,12 @@ const CalendarEl = () => {
                 duration: { months: 12 },
                 buttonText: "Year",
                 multiMonthMinWidth: 200,
-              }
+              },
             }}
             events={parsedEvents}
             editable={true}
             selectable={true}
-            dateClick={handleSelectSlot}
+            select={handleSlotSelect}
             eventClick={handleSelectEvent}
             eventMouseEnter={handleMouseEnter}
             eventDrop={handleEventDrop}
@@ -169,7 +169,7 @@ const CalendarEl = () => {
             viewDidMount={adjustCalendarLayout}
             windowResize={adjustCalendarLayout}
             businessHours={{
-              daysOfWeek: [1, 2, 3, 4,5],
+              daysOfWeek: [1, 2, 3, 4, 5],
               startTime: "08:00",
               endTime: "18:00",
             }}
@@ -179,17 +179,18 @@ const CalendarEl = () => {
               hour12: false,
             }}
           />
-          <ModalEvent
-            type={modalType}
-            isOpen={isModalOpen}
-            onClose={() => dispatch(closeModal())}
-            slotStart={slotStart}
-            slotEnd={slotEnd}
-            selectedEvent={selectedEvent}
-            handelAddEvent={handelAddEvent}
-            handelUpdateEvent={handelUpdateEvent}
-            handleDeleteEvent={handleDeleteEvent}
-          />
+          {type === "event" && (
+            <ModalEvent
+              isOpen={isOpen}
+              onClose={() => dispatch(closeElementModal())}
+              slotStart={slotData.slotStart}
+              slotEnd={slotData.slotEnd}
+              selectedEvent={selectedEvent}
+              handelAddEvent={handelAddEvent}
+              handelUpdateEvent={handelUpdateEvent}
+              handleDeleteEvent={handleDeleteEvent}
+            />
+          )}
         </div>
       )}
     </section>

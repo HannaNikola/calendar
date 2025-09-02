@@ -1,47 +1,42 @@
+
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { CalendarEvent } from "../types/typesApi";
 import { addEventApi, deleteEventApi, updateEventApi } from "../api/eventsApi";
-import { DateClickArg } from "@fullcalendar/interaction/index.js";
-import { EventClickArg } from "@fullcalendar/core/index.js";
-import { openModal, closeModal } from "@/app/store/events/modalEventReducer";
+import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
 import { toDate } from "../utils/date";
+import { closeElementModal, openElementModal } from "../store/sharedComponent/modalReducer";
 
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { selectedEvent, isModalOpen, modalType, slotStart, slotEnd } =
-    useSelector((state: RootState) => state.modalEvent);
+  const{events} = useSelector((state:RootState)=>state.eventData)
+  const{selectedId, type, mode, isOpen}=useSelector((state:RootState)=>state.modal)
+  const selectedEvent= useSelector((state:RootState)=> state.eventData.events.find(item => item._id === selectedId))
 
-  const handleSelectSlot = (arg: DateClickArg) => {
-    const start = arg.date;
-    const end = new Date(start.getTime() + 60 * 60 * 1000);
-
-    dispatch(
-      openModal({
-        type: "new",
-        slotStart: start.toISOString(),
-        slotEnd: end.toISOString(),
-        addTask: false,
-      })
-    );
+ const handleSelectSlot = (arg: DateSelectArg) => {
+  dispatch(
+    openElementModal({
+      mode: "new",
+      type: 'event',
+      selectedId: undefined
+    })
+  );
+  
+  return {
+    start: arg.start,
+    end: arg.end
   };
+};
+  
 
   const handleSelectEvent = (arg: EventClickArg) => {
-    const event = arg.event;
 
     dispatch(
-      openModal({
-        type: "update",
-        selectedEvent: {
-          _id: event.id,
-          title: event.title,
-          start: event.start?.toISOString() ?? new Date().toISOString(),
-          end: event.end?.toISOString() ?? new Date().toISOString(),
-          allDay: event.allDay ?? false,
-        },
-        slotStart: event.start?.toISOString() ?? null,
-        slotEnd: event.end?.toISOString() ?? null,
-        addTask: false,
+      openElementModal({
+        mode: "update",
+        type:'event',
+        selectedId: arg.event.id
+        
       })
     );
   };
@@ -60,7 +55,7 @@ export const useEventHandlers = () => {
     return dispatch(addEventApi(payload))
       .unwrap()
       .finally(() => {
-        dispatch(closeModal());
+        dispatch(closeElementModal());
       });
   };
 
@@ -68,10 +63,17 @@ export const useEventHandlers = () => {
     const eventId = eventData._id;
     if (!eventId) return;
 
-    return dispatch(updateEventApi({ id: eventId, eventData }))
+    const payload = {
+      title: eventData.title,
+      start: new Date(eventData.start!),
+      end: new Date(eventData.end!),
+      allDay: eventData.allDay,
+      addTask: eventData.addTask
+    };
+    return dispatch(updateEventApi({ id: eventId, eventData:payload }))
       .unwrap()
       .finally(() => {
-        dispatch(closeModal());
+        dispatch(closeElementModal());
       });
   };
 
@@ -79,12 +81,12 @@ export const useEventHandlers = () => {
     if (!selectedEvent?._id) return;
 
     dispatch(deleteEventApi(selectedEvent._id));
-    dispatch(closeModal());
+    dispatch(closeElementModal());
   };
 
   return {
-    isModalOpen,
-    modalType,
+    isOpen,
+    mode,
     selectedEvent: selectedEvent
       ? {
           ...selectedEvent,
@@ -92,9 +94,7 @@ export const useEventHandlers = () => {
           end: toDate(selectedEvent.end),
         }
       : null,
-    slotStart: toDate(slotStart),
-    slotEnd: toDate(slotEnd),
-    closeModal: () => dispatch(closeModal()),
+    closeModal: () => dispatch(closeElementModal()),
     handleSelectEvent,
     handleSelectSlot,
     handelAddEvent,
@@ -102,3 +102,5 @@ export const useEventHandlers = () => {
     handleDeleteEvent,
   };
 };
+
+

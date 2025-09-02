@@ -2,35 +2,31 @@
 import { Plus } from "lucide-react";
 import { Button } from "../shared/ui/Button";
 import { ModalEvent } from "./ModalEvent";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/store";
-import { openModal } from "../store/events/modalEventReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { useScreenType } from "../hooks/useScreenType";
-import { toISOString } from "../utils/date";
+import { EventModalProps } from "../types/typesModalEvent";
+import {
+  closeElementModal,
+  openElementModal,
+} from "../store/sharedComponent/modalReducer";
 
-const AddEventButton = () => {
+const AddEventButton = ({ onClose }: EventModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const screenType = useScreenType();
+  const { type, mode, isOpen } = useSelector((state: RootState) => state.modal);
 
-  const {
-    isModalOpen,
-    modalType,
-    closeModal,
-    handelAddEvent,
-  } = useEventHandlers();
+  const { handelAddEvent } = useEventHandlers();
 
   const handleAddClick = () => {
-    const now = new Date();
-    const end = new Date(now.getTime() + 60 * 60 * 1000);
+    // const now = new Date();
+    // const end = new Date(now.getTime() + 60 * 60 * 1000);
     dispatch(
-      openModal({
-        type: "new",
-        slotStart: toISOString(now),
-    slotEnd: toISOString(end),
-        selectedEvent: null,
-        addTask: false,
+      openElementModal({
+        mode: "new",
+        type: "event",
       })
     );
   };
@@ -40,17 +36,18 @@ const AddEventButton = () => {
 
   return (
     <div>
-      <Button onClick={handleAddClick} variant={variant} size={size}  >
+      <Button onClick={handleAddClick} variant={variant} size={size}>
         <Plus size={20} className="mr-1 text-main" />
         Add
       </Button>
 
-      <ModalEvent
-        type={modalType}
-        isOpen={isModalOpen}
-        onClose={() => dispatch(closeModal())}
-        handelAddEvent={handelAddEvent}
-      />
+      {type === "event" && (
+        <ModalEvent
+          isOpen={isOpen}
+          onClose={() => dispatch(closeElementModal())}
+          handelAddEvent={handelAddEvent}
+        />
+      )}
     </div>
   );
 };

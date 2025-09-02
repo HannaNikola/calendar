@@ -12,8 +12,8 @@ import {
 } from "../store/filters/filterReducer";
 import { selectFilteredEvents } from "../store/filters/selector";
 import { CalendarEvent } from "../types/typesApi";
-import { openModal } from "../store/events/modalEventReducer";
 import { useEffect} from "react";
+import { openElementModal } from "../store/sharedComponent/modalReducer";
 
 export const Filter = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,12 +47,13 @@ export const Filter = () => {
 
   const handleSelectEvent = (event: CalendarEvent) => {
     dispatch(
-      openModal({
-        type: "update",
-        selectedEvent: event,
-        slotStart: event.start,
-        slotEnd: event.end,
-        addTask: false,
+      openElementModal({
+        mode: "update",
+        type:'event'
+        // selectedEvent: event,
+        // slotStart: event.start,
+        // slotEnd: event.end,
+        // addTask: false,
       })
     );
   };

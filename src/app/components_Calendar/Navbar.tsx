@@ -1,3 +1,4 @@
+'use client'
 import Link from "next/link";
 import { Cog } from "lucide-react";
 import { CalendarDays } from "lucide-react";
