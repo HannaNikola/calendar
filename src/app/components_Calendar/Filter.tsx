@@ -15,10 +15,18 @@ import { CalendarEvent } from "../types/typesApi";
 import { useEffect} from "react";
 import { openElementModal } from "../store/sharedComponent/modalReducer";
 
+
 export const Filter = () => {
   const dispatch = useDispatch<AppDispatch>();
   const query = useSelector((state: RootState) => state.filter.query);
   const filteredEvents = useSelector(selectFilteredEvents);
+   const { selectedId, type, mode, isOpen } = useSelector(
+    (state: RootState) => state.modal
+  );
+    const { events } = useSelector((state: RootState) => state.eventData);
+  
+   const selectedEvent = events.find(item => item._id === selectedId)
+
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -46,14 +54,12 @@ export const Filter = () => {
   };
 
   const handleSelectEvent = (event: CalendarEvent) => {
+    
     dispatch(
       openElementModal({
         mode: "update",
-        type:'event'
-        // selectedEvent: event,
-        // slotStart: event.start,
-        // slotEnd: event.end,
-        // addTask: false,
+        type:'event',
+        selectedId: event?._id,
       })
     );
   };
@@ -102,3 +108,6 @@ export const Filter = () => {
 };
 
 export default Filter;
+
+
+
