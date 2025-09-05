@@ -46,7 +46,8 @@ export const ModalEvent = ({
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
     useEventHandlers();
 
-  useEffect(() => {
+
+useEffect(() => {
     const now = new Date();
     const start = toDate(selectedEvent?.start ?? slotStart ?? now);
     const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
@@ -58,22 +59,23 @@ export const ModalEvent = ({
     setStartDay(start);
 
     if (selectedEvent?.start) {
-      setStartTime(new Date(1970, 0, 1, start.getHours(), start.getMinutes()));
+      setStartTime(new Date( start.getHours(), start.getMinutes()));
     } else {
-      setStartTime(new Date(1970, 0, 1, 9, 0));
+      setStartTime(new Date());
     }
 
     if (isNew) {
       setEndDay(start);
 
-      setEndTime(new Date(1970, 0, 1, 10, 0));
+      setEndTime(new Date());
     } else if (end) {
       setEndDay(end);
-      setEndTime(new Date(1970, 0, 1, end.getHours(), end.getMinutes()));
+      setEndTime(new Date( end.getHours(), end.getMinutes()));
     } else {
-      setEndTime(new Date(1970, 0, 1, 10, 0));
+      setEndTime(new Date());
     }
   }, [selectedEvent, slotStart, slotEnd, isNew]);
+
 
   const combineDateTime = (
     date: Date | null,
@@ -93,7 +95,20 @@ export const ModalEvent = ({
     }
   };
 
-  const handleStartTimeChange = (time: Date | null) => {
+  // const handleStartTimeChange = (time: Date | null) => {
+  //   setStartTime(time);
+  //   if (time && isNew) {
+  //     const oneHourLater = new Date(
+  //       1970,
+  //       0,
+  //       1,
+  //       time.getHours() + 1,
+  //       time.getMinutes()
+  //     );
+  //     setEndTime(oneHourLater);
+  //   }
+  // };
+const handleStartTimeChange = (time: Date | null) => {
     setStartTime(time);
     if (time && isNew) {
       const oneHourLater = new Date(
@@ -106,12 +121,21 @@ export const ModalEvent = ({
       setEndTime(oneHourLater);
     }
   };
+  
+  // const handleEndDayChange = (date: Date | null) => {
+  //   setEndDay(date);
+  //   if (date && startTime) {
+  //     setEndTime(
+  //       new Date(1970, 0, 1, startTime.getHours() + 1, startTime.getMinutes())
+  //     );
+  //   }
+  // };
 
   const handleEndDayChange = (date: Date | null) => {
     setEndDay(date);
     if (date && startTime) {
       setEndTime(
-        new Date(1970, 0, 1, startTime.getHours() + 1, startTime.getMinutes())
+        new Date( startTime.getHours() + 1, startTime.getMinutes())
       );
     }
   };
