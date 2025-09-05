@@ -23,9 +23,7 @@ type FullCalendarType = InstanceType<typeof FullCalendar>;
 const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { events, status } = useSelector((state: RootState) => state.eventData);
-  const { selectedId, type, mode, isOpen } = useSelector(
-    (state: RootState) => state.modal
-  );
+  const { type, isOpen } = useSelector((state: RootState) => state.modal);
   const [slotData, setSlotData] = useState<{
     slotStart: Date | null;
     slotEnd: Date | null;
@@ -72,6 +70,7 @@ const CalendarEl = () => {
 
     handleSelectSlot(arg);
   };
+
   const parsedEvents = events.map((event) => ({
     ...event,
     id: event._id,

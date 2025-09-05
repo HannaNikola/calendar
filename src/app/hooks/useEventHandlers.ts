@@ -7,13 +7,28 @@ import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
 import { toDate } from "../utils/date";
 import { closeElementModal, openElementModal } from "../store/sharedComponent/modalReducer";
 
+
+
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
   const{events} = useSelector((state:RootState)=>state.eventData)
+
   const{selectedId, type, mode, isOpen}=useSelector((state:RootState)=>state.modal)
   const selectedEvent= useSelector((state:RootState)=> state.eventData.events.find(item => item._id === selectedId))
 
- const handleSelectSlot = (arg: DateSelectArg) => {
+//   const handleSelectSlot = (arg: DateSelectArg) => {
+//   dispatch(
+//     openElementModal({
+//       mode: "new",
+//       type: 'event',
+//       selectedId: undefined
+//     })
+//   );
+
+// };
+
+
+const handleSelectSlot = (arg: DateSelectArg) => {
   dispatch(
     openElementModal({
       mode: "new",
@@ -21,13 +36,12 @@ export const useEventHandlers = () => {
       selectedId: undefined
     })
   );
-  
   return {
     start: arg.start,
     end: arg.end
   };
 };
-  
+
 
   const handleSelectEvent = (arg: EventClickArg) => {
 
@@ -41,6 +55,8 @@ export const useEventHandlers = () => {
     );
   };
 
+
+  
   const handelAddEvent = (eventData: CalendarEvent) => {
     if (!eventData.start || !eventData.end) return;
 
@@ -102,5 +118,3 @@ export const useEventHandlers = () => {
     handleDeleteEvent,
   };
 };
-
-
