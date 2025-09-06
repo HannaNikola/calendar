@@ -2,7 +2,7 @@
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin  from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import { useEffect, useRef, useState } from "react";
@@ -10,13 +10,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { ModalEvent } from "./ModalEvent";
-import { DateSelectArg, EventDropArg } from "@fullcalendar/core/index.js";
+import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { fetchEventsApi } from "../api/eventsApi";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
-import { closeElementModal } from "../store/sharedComponent/modalReducer";
+import {
+  closeElementModal,
+} from "../store/sharedComponent/modalReducer";
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
 
@@ -37,7 +39,7 @@ const CalendarEl = () => {
     handelAddEvent,
     handleDeleteEvent,
     handleSelectEvent,
-    handleSelectSlot,
+    handleSlotAction,
     selectedEvent,
     handelUpdateEvent,
   } = useEventHandlers();
@@ -61,15 +63,6 @@ const CalendarEl = () => {
       setShowLoader(false);
     }
   }, [status]);
-
-  const handleSlotSelect = (arg: DateSelectArg) => {
-    setSlotData({
-      slotStart: arg.start,
-      slotEnd: arg.end,
-    });
-
-    handleSelectSlot(arg);
-  };
 
   const parsedEvents = events.map((event) => ({
     ...event,
@@ -155,7 +148,8 @@ const CalendarEl = () => {
             events={parsedEvents}
             editable={true}
             selectable={true}
-            select={handleSlotSelect}
+            select={(arg) => handleSlotAction(arg, setSlotData)}
+            dateClick={(arg) => handleSlotAction(arg, setSlotData)}
             eventClick={handleSelectEvent}
             eventMouseEnter={handleMouseEnter}
             eventDrop={handleEventDrop}
