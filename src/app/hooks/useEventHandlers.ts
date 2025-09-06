@@ -1,62 +1,72 @@
-
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { CalendarEvent } from "../types/typesApi";
 import { addEventApi, deleteEventApi, updateEventApi } from "../api/eventsApi";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
 import { toDate } from "../utils/date";
-import { closeElementModal, openElementModal } from "../store/sharedComponent/modalReducer";
+import {
+  closeElementModal,
+  openElementModal,
+} from "../store/sharedComponent/modalReducer";
+import { DateClickArg } from "@fullcalendar/interaction/index.js";
 
 
 
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const{events} = useSelector((state:RootState)=>state.eventData)
+  const { events } = useSelector((state: RootState) => state.eventData);
 
-  const{selectedId, type, mode, isOpen}=useSelector((state:RootState)=>state.modal)
-  const selectedEvent= useSelector((state:RootState)=> state.eventData.events.find(item => item._id === selectedId))
-
-//   const handleSelectSlot = (arg: DateSelectArg) => {
-//   dispatch(
-//     openElementModal({
-//       mode: "new",
-//       type: 'event',
-//       selectedId: undefined
-//     })
-//   );
-
-// };
-
-
-const handleSelectSlot = (arg: DateSelectArg) => {
-  dispatch(
-    openElementModal({
-      mode: "new",
-      type: 'event',
-      selectedId: undefined
-    })
+  const { selectedId, type, mode, isOpen } = useSelector(
+    (state: RootState) => state.modal
   );
-  return {
-    start: arg.start,
-    end: arg.end
-  };
-};
+  const selectedEvent = useSelector((state: RootState) =>
+    state.eventData.events.find((item) => item._id === selectedId)
+  );
 
+  const handleSlotAction = (
+    arg: DateSelectArg | DateClickArg,
+    setSlotData: React.Dispatch<
+      React.SetStateAction<{ slotStart: Date | null; slotEnd: Date | null }>
+    >
+  ) => {
+    let start: Date;
+    let end: Date;
 
-  const handleSelectEvent = (arg: EventClickArg) => {
+    if ("start" in arg) {
+     
+      start = arg.start;
+      end = arg.end ?? new Date(arg.start.getTime() + 60 * 60 * 1000);
+    } else {
+     
+      start = arg.date;
+      end = new Date(arg.date.getTime() + 60 * 60 * 1000);
+    }
+
+    setSlotData({
+      slotStart: start,
+      slotEnd: end,
+    });
 
     dispatch(
       openElementModal({
-        mode: "update",
-        type:'event',
-        selectedId: arg.event.id
-        
+        mode: "new",
+        type: "event",
+        selectedId: undefined,
       })
     );
   };
 
 
-  
+  const handleSelectEvent = (arg: EventClickArg) => {
+    dispatch(
+      openElementModal({
+        mode: "update",
+        type: "event",
+        selectedId: arg.event.id,
+      })
+    );
+  };
+
   const handelAddEvent = (eventData: CalendarEvent) => {
     if (!eventData.start || !eventData.end) return;
 
@@ -84,9 +94,9 @@ const handleSelectSlot = (arg: DateSelectArg) => {
       start: new Date(eventData.start!),
       end: new Date(eventData.end!),
       allDay: eventData.allDay,
-      addTask: eventData.addTask
+      addTask: eventData.addTask,
     };
-    return dispatch(updateEventApi({ id: eventId, eventData:payload }))
+    return dispatch(updateEventApi({ id: eventId, eventData: payload }))
       .unwrap()
       .finally(() => {
         dispatch(closeElementModal());
@@ -112,7 +122,7 @@ const handleSelectSlot = (arg: DateSelectArg) => {
       : null,
     closeModal: () => dispatch(closeElementModal()),
     handleSelectEvent,
-    handleSelectSlot,
+    handleSlotAction,
     handelAddEvent,
     handelUpdateEvent,
     handleDeleteEvent,
