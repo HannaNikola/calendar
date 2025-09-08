@@ -4,48 +4,45 @@ import { Search } from "lucide-react";
 import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
+import { usePathname } from "next/navigation";
 import {
   clearFilter,
   setFilterEntity,
   setFilterFocus,
   setFilterQuery,
 } from "../store/filters/filterReducer";
-import { selectFilteredEvents } from "../store/filters/selector";
-import { CalendarEvent } from "../types/typesApi";
+import {selectFilterResult } from "../store/filters/selector";
 import { useEffect} from "react";
 import { openElementModal } from "../store/sharedComponent/modalReducer";
 
-
 export const Filter = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const pathname = usePathname();
+
   const query = useSelector((state: RootState) => state.filter.query);
-  const filteredEvents = useSelector(selectFilteredEvents);
-   const { selectedId, type, mode, isOpen } = useSelector(
-    (state: RootState) => state.modal
-  );
-    const { events } = useSelector((state: RootState) => state.eventData);
-  
-   const selectedEvent = events.find(item => item._id === selectedId)
+  const entity = useSelector((state:RootState)=> state.filter.entity)
+  const result = useSelector(selectFilterResult)
+ 
 
 
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (document.activeElement?.tagName !== "INPUT") {
-        dispatch(clearFilter());
-        dispatch(setFilterFocus(false));
-      }
-    };
+useEffect(()=>{
+  if(pathname?.includes('/calendar')){
+    dispatch(setFilterEntity('event'))
 
-    document.addEventListener("click", handleClick);
-    return () => {
-      document.removeEventListener("click", handleClick);
-    };
-  }, [dispatch]);
+  } else if(pathname?.includes('/task')){
+    dispatch(setFilterEntity('todo'))
+
+  } else{
+    dispatch(setFilterEntity(null))
+  }
+},[pathname, dispatch])
+
+
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    dispatch(setFilterQuery(value));
-    dispatch(setFilterEntity("event"));
+    dispatch(setFilterQuery(e.target.value));
+    
   };
 
   const handleClear = () => {
@@ -53,15 +50,28 @@ export const Filter = () => {
     dispatch(setFilterFocus(false));
   };
 
-  const handleSelectEvent = (event: CalendarEvent) => {
-    
-    dispatch(
+  const handleSelectEvent = (item: any) => {
+    if(!item?._id) return
+
+    if(entity === "event"){
+      dispatch(
       openElementModal({
         mode: "update",
         type:'event',
-        selectedId: event?._id,
+        selectedId: item._id,
       })
     );
+    }
+    if (entity === 'todo'){
+      dispatch(
+        openElementModal({
+          mode: 'update',
+          type: 'todo',
+          selectedId: item._id
+        })
+      )
+    }
+    dispatch(clearFilter())
   };
 
   return (
@@ -88,14 +98,14 @@ export const Filter = () => {
 
       {query && (
         <ul className="absolute top-full left-0 w-full max-sm:w-[370px] z-50 max-h-60 overflow-auto scrollbar-hide rounded-b-3xl bg-input-light shadow-lg text-sm">
-          {filteredEvents.length > 0 ? (
-            filteredEvents.map((event) => (
+          {result.length > 0 ? (
+           result.map((item) => (
               <li
-                key={event._id}
-                onClick={() => handleSelectEvent(event)}
+                key={item._id}
+                onClick={() => handleSelectEvent(item)}
                 className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
               >
-                {event.title}
+                {item.title}
               </li>
             ))
           ) : (

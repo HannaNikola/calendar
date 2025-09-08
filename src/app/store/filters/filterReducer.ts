@@ -40,3 +40,6 @@ setFilterFocus(state, action: PayloadAction<boolean>) {
 export const {setFilterEntity, setFilterQuery, clearFilter, setFilterFocus} = FilterSlice.actions;
 export const filterReduser = FilterSlice.reducer;
 
+
+
+
