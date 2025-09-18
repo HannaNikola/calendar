@@ -5,14 +5,16 @@ import { TaskItem } from "./TaskItem";
 import { useEffect, useState } from "react";
 import { ModalTodo } from "./ModalTodo";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
+import { selectFilterResult } from "../store/filters/selector";
+import { CalendarTodo } from "../types/typesTodoApi";
+import { fetchTodosApi } from "../api/todoApi";
 
 export const TodoImportant = () => {
-   const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
   const { todos, status } = useSelector((state: RootState) => state.todo);
-  const isImportantTodo = todos.filter((item) => item.isImportant);
-  const { isOpen, type, selectedId } = useSelector(
-    (state: RootState) => state.modal
-  );
+  const { isOpen, type } = useSelector((state: RootState) => state.modal);
+  const query = useSelector((state: RootState) => state.filter.query);
+  const queryResult = useSelector(selectFilterResult);
   const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
@@ -24,7 +26,15 @@ export const TodoImportant = () => {
     }
   }, [status]);
 
- 
+  useEffect(() => {
+    dispatch(fetchTodosApi());
+  }, [dispatch]);
+
+  const importantTodos = todos.filter((todo) => todo.isImportant);
+
+  const activeTodos: CalendarTodo[] = query
+    ? (queryResult as CalendarTodo[])
+    : importantTodos;
 
   return (
     <div className="w-full">
@@ -34,17 +44,17 @@ export const TodoImportant = () => {
         </div>
       ) : (
         <ul>
-          {isImportantTodo.map((item) => (
+          {activeTodos.map((item) => (
             <TaskItem key={item._id} item={item} />
           ))}
         </ul>
       )}
       {type === "todo" && (
-              <ModalTodo
-                isOpen={isOpen}
-                onClose={() => dispatch(closeElementModal())}
-              />
-            )}
+        <ModalTodo
+          isOpen={isOpen}
+          onClose={() => dispatch(closeElementModal())}
+        />
+      )}
     </div>
   );
 };

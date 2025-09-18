@@ -6,7 +6,7 @@ export default function Task() {
   return (
     <div className="flex flex-col w-full ">
       <div className="flex flex-row gap-5 mb-3 justify-center">
-        <Link href="/task/favorit">
+        <Link href="/task/favorite">
           <Star className="fill-amber-300" />
         </Link>
         <Link href="/task/completed">

@@ -7,7 +7,7 @@ export default function Favorite() {
   return (
     <div className="w-full ">
       <div className="flex  gap-5 mt-2 justify-center">
-        <Link href="/task/favorit">
+        <Link href="/task/favorite">
           <Star size={20} className="fill-amber-300"/>
         </Link>
         <Link href="/task/completed">

@@ -4,7 +4,7 @@ type SelectedItem = { _id: string; title: string } | null;
 
 type FilterState = {
   query: string;
-  entity: "event" | "todo" | null;
+  entity: "event" | "todo" | "favorite" | "completed" | null;
   isFocused: boolean;
   selectedItem: { _id: string; title: string } | null;
 };
@@ -23,7 +23,7 @@ const FilterSlice = createSlice({
     setFilterQuery(state, action: PayloadAction<string>) {
       state.query = action.payload;
     },
-    setFilterEntity(state, action: PayloadAction<"event" | "todo" | null>) {
+    setFilterEntity(state, action: PayloadAction<"event" | "todo" | "favorite" | "completed" | null>) {
       state.entity = action.payload;
       state.selectedItem = null;
     },
