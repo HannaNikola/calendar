@@ -1,48 +1,86 @@
 "use client";
 
-import { Search } from "lucide-react";
-import { X } from "lucide-react";
+import React, { useEffect, useRef } from "react";
+import { Search, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
 import { usePathname } from "next/navigation";
+
 import {
-  clearFilter,
   setFilterEntity,
-  setFilterFocus,
   setFilterQuery,
+  setFilterFocus,
+  setSelectedItem,
+  clearFilter,
 } from "../store/filters/filterReducer";
-import {selectFilterResult } from "../store/filters/selector";
-import { useEffect} from "react";
+import { selectFilterResult } from "../store/filters/selector";
+import { RootState, AppDispatch } from "../store/store";
 import { openElementModal } from "../store/sharedComponent/modalReducer";
 
 export const Filter = () => {
   const dispatch = useDispatch<AppDispatch>();
   const pathname = usePathname();
 
-  const query = useSelector((state: RootState) => state.filter.query);
-  const entity = useSelector((state:RootState)=> state.filter.entity)
-  const result = useSelector(selectFilterResult)
- 
+  const query = useSelector((s: RootState) => s.filter.query);
+  const entity = useSelector((s: RootState) => s.filter.entity);
+  const isFocused = useSelector((s: RootState) => s.filter.isFocused);
+  const selectedItem = useSelector((s: RootState) => s.filter.selectedItem);
+  const result = useSelector(selectFilterResult);
+  const modalIsOpen = useSelector((s: RootState) => s.modal?.isOpen);
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-useEffect(()=>{
-  if(pathname?.includes('/calendar')){
-    dispatch(setFilterEntity('event'))
+  useEffect(() => {
+    if (!pathname) return;
+    const path = pathname.split("?")[0].toLowerCase();
 
-  } else if(pathname?.includes('/task')){
-    dispatch(setFilterEntity('todo'))
+    if (path.startsWith("/calendar")) {
+      dispatch(setFilterEntity("event"));
+    } else if (path.startsWith("/task") || path.startsWith("/tasks")) {
+      dispatch(setFilterEntity("todo"));
+    } else {
+      dispatch(setFilterEntity(null));
+    }
+  }, [pathname, dispatch]);
 
-  } else{
-    dispatch(setFilterEntity(null))
-  }
-},[pathname, dispatch])
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (containerRef.current && !containerRef.current.contains(target)) {
+        dispatch(setFilterFocus(false));
+      }
+    };
 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dispatch]);
 
+  useEffect(() => {
+    if (modalIsOpen) {
+      dispatch(setFilterFocus(false));
+    }
+  }, [modalIsOpen, dispatch]);
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
     dispatch(setFilterQuery(e.target.value));
-    
+  };
+
+  const handleSelectItem = (item: any) => {
+    if (!item?._id) return;
+
+    if (entity === "event") {
+      dispatch(setFilterFocus(false));
+      dispatch(
+        openElementModal({
+          mode: "update",
+          type: "event",
+          selectedId: item._id,
+        })
+      );
+
+      dispatch(clearFilter());
+    } else if (entity === "todo") {
+      dispatch(setSelectedItem({ _id: item._id, title: item.title }));
+    }
   };
 
   const handleClear = () => {
@@ -50,35 +88,15 @@ useEffect(()=>{
     dispatch(setFilterFocus(false));
   };
 
-  const handleSelectEvent = (item: any) => {
-    if(!item?._id) return
-
-    if(entity === "event"){
-      dispatch(
-      openElementModal({
-        mode: "update",
-        type:'event',
-        selectedId: item._id,
-      })
-    );
-    }
-    if (entity === 'todo'){
-      dispatch(
-        openElementModal({
-          mode: 'update',
-          type: 'todo',
-          selectedId: item._id
-        })
-      )
-    }
-    dispatch(clearFilter())
-  };
-
   return (
-    <div onClick={(e) => e.stopPropagation()} className="relative w-full">
+    <div
+      ref={containerRef}
+      className="relative w-full"
+      onClick={(e) => e.stopPropagation()}
+    >
       <div
         className={`flex items-center gap-2 bg-input-light px-3 py-2 w-full ${
-          query ? "rounded-t-3xl" : "rounded-3xl"
+          entity === "event" && query ? "rounded-t-3xl" : "rounded-3xl"
         }`}
       >
         <Search size={20} />
@@ -96,13 +114,13 @@ useEffect(()=>{
         <X onClick={handleClear} size={20} className="cursor-pointer" />
       </div>
 
-      {query && (
-        <ul className="absolute top-full left-0 w-full max-sm:w-[370px] z-50 max-h-60 overflow-auto scrollbar-hide rounded-b-3xl bg-input-light shadow-lg text-sm">
+      {isFocused && query && entity === "event" && (
+        <ul className="absolute top-full left-0 w-full max-sm:w-[370px] z-50 max-h-60 overflow-hidden scrollbar-hide rounded-b-3xl bg-input-light shadow-lg text-sm">
           {result.length > 0 ? (
-           result.map((item) => (
+            result.map((item) => (
               <li
                 key={item._id}
-                onClick={() => handleSelectEvent(item)}
+                onClick={() => handleSelectItem(item)}
                 className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
               >
                 {item.title}
@@ -118,6 +136,3 @@ useEffect(()=>{
 };
 
 export default Filter;
-
-
-

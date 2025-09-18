@@ -10,6 +10,7 @@ import { RootState } from "../store/store";
 export default function Header() {
   const query = useSelector((state: RootState) => state.filter.query);
   const isFocused = useSelector((state: RootState) => state.filter.isFocused);
+  
 
   const shouldHide = isFocused || query.length > 0;
   return (

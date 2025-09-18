@@ -3,7 +3,6 @@ import { completedTodoApi, favoriteTodoApi } from "../api/todoApi";
 import { AppDispatch } from "../store/store";
 import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
-
 import { openElementModal } from "../store/sharedComponent/modalReducer";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { CalendarTodo } from "../types/typesTodoApi";
@@ -20,7 +19,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
       ? "border-amber-300 bg-amber-50"
       : "border-grey-border bg-sky-50 ";
 
-      const formattedEnd = item.end ? toDate(item.end)?.toLocaleDateString() : "—";
+  const formattedEnd = item.end ? toDate(item.end)?.toLocaleDateString() : "—";
 
   return (
     <li
@@ -32,9 +31,12 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
         <p className="text-small mb-3">{item.description}</p>
-        <p className={`mb-1 text-small text-alert-text ${expired ? 'text-red-500 ': 'text-green-700'}` }>Deadline:{formattedEnd}</p>
+        <p
+          className={`mb-1 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
+        >
+          Deadline:{formattedEnd}
+        </p>
         <div className="flex items-end mt-auto">
-          
           <Button variant="default" size="small" className="mr-3 text-small">
             Update
           </Button>
