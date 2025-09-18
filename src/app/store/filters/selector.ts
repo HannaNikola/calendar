@@ -32,7 +32,7 @@ export const selectFilteredTodos = createSelector(
     } else if (entity === "completed") {
       filtered = filtered.filter((todo) => todo.isCompleted);
     } else if (entity === "todo") {
-      filtered = filtered.filter((todo) => !todo.isCompleted);
+      filtered = filtered.filter((todo) => !todo.isCompleted );
     }
 
     if (!query) return filtered;

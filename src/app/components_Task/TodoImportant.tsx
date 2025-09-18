@@ -15,16 +15,6 @@ export const TodoImportant = () => {
   const { isOpen, type } = useSelector((state: RootState) => state.modal);
   const query = useSelector((state: RootState) => state.filter.query);
   const queryResult = useSelector(selectFilterResult);
-  const [showLoader, setShowLoader] = useState(false);
-
-  useEffect(() => {
-    if (status === "loading") {
-      const timeout = setTimeout(() => setShowLoader(true), 1000);
-      return () => clearTimeout(timeout);
-    } else {
-      setShowLoader(false);
-    }
-  }, [status]);
 
   useEffect(() => {
     dispatch(fetchTodosApi());
@@ -38,9 +28,13 @@ export const TodoImportant = () => {
 
   return (
     <div className="w-full">
-      {showLoader ? (
+      {status === "loading" || status === "idle" ? (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
+        </div>
+      ) : activeTodos.length === 0 ? (
+        <div>
+          <p className="text-h2 text-center pt-10">No task for you ...</p>
         </div>
       ) : (
         <ul>
