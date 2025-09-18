@@ -35,6 +35,10 @@ export const Filter = () => {
 
     if (path.startsWith("/calendar")) {
       dispatch(setFilterEntity("event"));
+    } else if (path.startsWith("/task/favorit")) {
+      dispatch(setFilterEntity("favorite"));
+    } else if (path.startsWith("/task/completed")) {
+      dispatch(setFilterEntity("completed"));
     } else if (path.startsWith("/task") || path.startsWith("/tasks")) {
       dispatch(setFilterEntity("todo"));
     } else {

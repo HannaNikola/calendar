@@ -25,9 +25,19 @@ export const selectFilteredEvents = createSelector(
 export const selectFilteredTodos = createSelector(
   [selectFilterQuery, selectFilterEntity, selectAllTodo],
   (query, entity, todos) => {
-    if (entity !== "todo" || !query) return todos;
+    let filtered = todos;
 
-    const fuse = new Fuse(todos, { keys: ["title"], threshold: 0.4 });
+    if (entity === "favorite") {
+      filtered = filtered.filter((todo) => todo.isImportant);
+    } else if (entity === "completed") {
+      filtered = filtered.filter((todo) => todo.isCompleted);
+    } else if (entity === "todo") {
+      filtered = filtered.filter((todo) => !todo.isCompleted);
+    }
+
+    if (!query) return filtered;
+
+    const fuse = new Fuse(filtered, { keys: ["title"], threshold: 0.4 });
     const results = fuse.search(query);
     return results.map((result) => result.item);
   }
@@ -37,7 +47,8 @@ export const selectFilterResult = createSelector(
   [selectFilterEntity, selectFilteredEvents, selectFilteredTodos],
   (entity, filteredEvents, filteredTodos) => {
     if (entity === "event") return filteredEvents;
-    if (entity === "todo") return filteredTodos;
+    if (entity === "todo" || entity === "favorite" || entity === "completed")
+      return filteredTodos;
     return [];
   }
 );
