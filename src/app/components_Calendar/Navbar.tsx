@@ -6,12 +6,15 @@ import { BookOpenCheck } from "lucide-react";
 import EddEventButton from "./EddEventButton";
 import { AdaptiveProps } from "../types/typesAdaptive";
 import { FC } from "react";
+import { usePathname } from "next/navigation";
 
 export const Navbar: FC<AdaptiveProps> = () => {
+  const pathname = usePathname()
   return (
     <section className="flex w-full max-lg:flex-row-reverse lg:flex-col lg:max-w-[290px]">
       <div className=" flex  lg:mb-3  ">
-        <EddEventButton />
+        {pathname === "/calendar" && <EddEventButton />}
+        
       </div>
       <nav className="flex flex-row w-full sm:gap-2 lg:w-auto lg:flex-col lg:mr-4">
         <Link
