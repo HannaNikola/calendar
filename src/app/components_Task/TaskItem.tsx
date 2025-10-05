@@ -8,6 +8,7 @@ import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { CalendarTodo } from "../types/typesTodoApi";
 import { useTodoExpired } from "../hooks/useTodoExpired";
 import { toDate } from "../utils/date";
+import { useState } from "react";
 
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +21,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
       : "border-grey-border bg-sky-50 ";
 
   const formattedEnd = item.end ? toDate(item.end)?.toLocaleDateString() : "—";
+  const [localCompleted, setLocalCompleted] = useState(item.isCompleted);
 
   return (
     <li
@@ -46,7 +48,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
         </div>
       </div>
 
-      <div className="flex max-lg:flex-col gap-3">
+      <div className="flex flex-col place-content-start gap-3">
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -67,17 +69,21 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            if (item._id) {
-              dispatch(
-                completedTodoApi({
-                  id: item._id,
-                  isCompleted: !item.isCompleted,
-                })
-              );
-            }
+            setLocalCompleted(true);
+
+            setTimeout(() => {
+              if (item._id) {
+                dispatch(
+                  completedTodoApi({
+                    id: item._id,
+                    isCompleted: !item.isCompleted,
+                  })
+                );
+              }
+            }, 500);
           }}
         >
-          {item.isCompleted ? <CircleCheckBig size={20} /> : <Circle />}
+          {localCompleted ? <CircleCheckBig size={20} /> : <Circle />}
         </button>
         <button
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
