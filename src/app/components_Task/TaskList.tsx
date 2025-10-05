@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTodosApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
