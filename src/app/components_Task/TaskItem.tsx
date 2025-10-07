@@ -23,85 +23,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const formattedEnd = item.end ? toDate(item.end)?.toLocaleDateString() : "—";
   const [localCompleted, setLocalCompleted] = useState(item.isCompleted);
 
-//   return (
-//     <li
-//       onClick={() =>
-//         dispatch(openElementModal({ type: "todo", selectedId: item._id }))
-//       }
-//       className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder}`}
-//     >
-//       <div className="flex w-full flex-col mr-3 ">
-//         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
-//         <p className="text-small mb-3">{item.description}</p>
-//         <p
-//           className={`mb-1 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
-//         >
-//           Deadline:{formattedEnd}
-//         </p>
-//         <div className="flex items-end mt-auto">
-//           <Button variant="default" size="small" className="mr-3 text-small">
-//             Update
-//           </Button>
-//           <button>
-//             <BellRing size={20} />
-//           </button>
-//         </div>
-//       </div>
-
-//       <div className="flex flex-col place-content-start gap-3">
-//         <button
-//           onClick={(e) => {
-//             e.stopPropagation();
-//             if (!item._id) return;
-//             dispatch(
-//               favoriteTodoApi({
-//                 id: item._id,
-//                 isImportant: !item.isImportant,
-//               })
-//             );
-//           }}
-//         >
-//           <Star
-//             size={20}
-//             className={item.isImportant ? "fill-amber-300" : "stroke-black"}
-//           />
-//         </button>
-//         <button
-//           onClick={(e) => {
-//             e.stopPropagation();
-//             setLocalCompleted(true);
-
-//             setTimeout(() => {
-//               if (item._id) {
-//                 dispatch(
-//                   completedTodoApi({
-//                     id: item._id,
-//                     isCompleted: !item.isCompleted,
-//                   })
-//                 );
-//               }
-//             }, 500);
-//           }}
-//         >
-//           {localCompleted ? <CircleCheckBig size={20} /> : <Circle />}
-//         </button>
-//         <button
-//           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-//             e.stopPropagation();
-//             if (item._id) {
-//               handeDeleteTodo(item._id);
-//             }
-//           }}
-//         >
-//           <Trash2 size={20} />
-//         </button>
-//       </div>
-//     </li>
-//   );
-// };
-
-
-return (
+  return (
     <li
       onClick={() =>
         dispatch(openElementModal({ type: "todo", selectedId: item._id }))
@@ -110,7 +32,7 @@ return (
     >
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
-        <p className="text-small mb-3">{item.description}</p>
+        <p className="text-small line-clamp-1 mb-3">{item.description}</p>
         <p
           className={`mb-1 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
         >
@@ -126,7 +48,7 @@ return (
         </div>
       </div>
 
-      <div className="flex flex-col place-content-start gap-3">
+      <div className="flex flex-col place-content-between gap-3">
         <button
           onClick={(e) => {
             e.stopPropagation();
