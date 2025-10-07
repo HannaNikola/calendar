@@ -68,20 +68,29 @@
 
 
 
-/* @layer base {
+/* 
+@layer base {
   html, body, #__next {
     @apply w-full h-full box-border;
     margin: 0;
     padding: 0;
     -webkit-tap-highlight-color: transparent; 
     touch-action: pan-y; 
-    
+    .h-screen {
+    height: 100vh;
+  }
+
+  @supports (height: 100dvh) {
+    .h-screen {
+      height: 100dvh;
+    }
+  }
   }
 
   html {
     /* Фикс для 100vh в iOS */
-    /* height: -webkit-fill-available; */
-  /* } */
+    /* height: -webkit-fill-available;
+  } */
 
   /* body {
     @apply overflow-x-hidden relative;
@@ -110,9 +119,8 @@
 
 
 
-
 @layer base {
-  /* Сброс и базовые стили */
+  /* Базовые стили */
   html, body, #__next {
     @apply w-full h-full box-border;
     margin: 0;
@@ -128,7 +136,7 @@
 
   @supports (height: 100dvh) {
     .h-screen {
-      height: 100dvh; /* динамическая высота для мобильных Safari */
+      height: 100dvh; /* динамическая высота для Safari и мобильных браузеров */
     }
   }
 
