@@ -1,14 +1,17 @@
 "use client";
 import * as Yup from "yup";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { completedTodoApi, favoriteTodoApi, fetchTodosApi } from "../api/todoApi";
+import {
+  completedTodoApi,
+  favoriteTodoApi,
+  fetchTodosApi,
+} from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
-
 
 const TodoSchema = Yup.object().shape({
   title: Yup.string()
@@ -28,9 +31,10 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const { todos } = useSelector((state: RootState) => state.todo);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-const { selectedId, type } = useSelector((state: RootState) => state.modal);
- const selectedItem = todos.find(todo => todo._id === selectedId);
-
+  const { selectedId, type } = useSelector((state: RootState) => state.modal);
+  const selectedItem = todos.find((todo) => todo._id === selectedId);
+  const titleRef = useRef<HTMLTextAreaElement | null>(null);
+  const desRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     dispatch(fetchTodosApi());
@@ -39,15 +43,21 @@ const { selectedId, type } = useSelector((state: RootState) => state.modal);
   useEffect(() => {
     if (!selectedItem) return;
 
-    if (selectedItem?.title) {
-      setTitle(selectedItem.title);
-    }
-    if (selectedItem?.description) {
-      setDescription(selectedItem.description ?? "");
-    }
+    setTitle(selectedItem.title || "");
+    setDescription(selectedItem.description || "");
   }, [selectedItem]);
 
-
+  useEffect(() => {
+    if (isOpen) {
+      const adjustHeight = (el: HTMLTextAreaElement | null) => {
+        if (!el) return;
+        el.style.height = "auto";
+        el.style.height = `${el.scrollHeight}px`;
+      };
+      adjustHeight(titleRef.current);
+      adjustHeight(desRef.current);
+    }
+  }, [isOpen, title, description]);
   const handelTodoSubmit = async () => {
     if (!selectedItem) return;
     try {
@@ -57,11 +67,9 @@ const { selectedId, type } = useSelector((state: RootState) => state.modal);
         title,
         description,
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
- if (!selectedItem) return null;
+  if (!selectedItem) return null;
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -70,15 +78,17 @@ const { selectedId, type } = useSelector((state: RootState) => state.modal);
     >
       <div className="flex flex-col w-full">
         <textarea
+          ref={titleRef}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border-0  bg-input-light focus:outline-none focus:bg-hover-input p-1 mb-4 text-main resize-none overflow-hidden h-[30px]"
+          className="w-full border-0  bg-input-light focus:outline-none focus:bg-hover-input p-1 mb-4 text-main resize-none overflow-hidden min-h-[30px]"
           onInput={(e) => {
             e.currentTarget.style.height = "auto";
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
           }}
         />
         <textarea
+          ref={desRef}
           placeholder="Type your description..."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -109,7 +119,6 @@ const { selectedId, type } = useSelector((state: RootState) => state.modal);
                 e.stopPropagation();
                 dispatch(
                   favoriteTodoApi({
-                   
                     id: selectedItem._id,
                     isImportant: !selectedItem.isImportant,
                   })
@@ -118,18 +127,30 @@ const { selectedId, type } = useSelector((state: RootState) => state.modal);
             >
               <Star
                 size={20}
-                className={selectedItem.isImportant ? "fill-amber-300" : "stroke-black"}
+                className={
+                  selectedItem.isImportant ? "fill-amber-300" : "stroke-black"
+                }
               />
             </button>
-           <button  onClick={(e)=>{
-                     e.stopPropagation()
-                     if(selectedItem._id){
-                      dispatch(completedTodoApi({id: selectedItem._id, isCompleted: !selectedItem.isCompleted})) 
-                     }
-                   }}>
-                     {selectedItem.isCompleted ? (<CircleCheckBig size={20} />) :(<Circle size={20} />) }
-                    
-                   </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (selectedItem._id) {
+                  dispatch(
+                    completedTodoApi({
+                      id: selectedItem._id,
+                      isCompleted: !selectedItem.isCompleted,
+                    })
+                  );
+                }
+              }}
+            >
+              {selectedItem.isCompleted ? (
+                <CircleCheckBig size={20} />
+              ) : (
+                <Circle size={20} />
+              )}
+            </button>
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -144,5 +165,3 @@ const { selectedId, type } = useSelector((state: RootState) => state.modal);
     </ModalWrapper>
   );
 };
-
-
