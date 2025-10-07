@@ -76,12 +76,13 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       onClose={onClose}
       className="w-full lg:w-[700px]"
     >
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full  mt-4">
+        
         <textarea
           ref={titleRef}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border-0  bg-input-light focus:outline-none focus:bg-hover-input p-1 mb-4 text-main resize-none overflow-hidden min-h-[30px]"
+          className="w-full border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-1 mb-4 text-main resize-none overflow-hidden min-h-[30px]"
           onInput={(e) => {
             e.currentTarget.style.height = "auto";
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
