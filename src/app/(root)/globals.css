@@ -68,8 +68,51 @@
 
 
 
+/* @layer base {
+  html, body, #__next {
+    @apply w-full h-full box-border;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent; 
+    touch-action: pan-y; 
+    
+  }
+
+  html {
+    /* Фикс для 100vh в iOS */
+    /* height: -webkit-fill-available; */
+  /* } */
+
+  /* body {
+    @apply overflow-x-hidden relative;
+    font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+    color: #333333;
+    -webkit-font-smoothing: antialiased; 
+    overscroll-behavior-y: contain;
+  } */
+
+  /* Фикс для input в iOS */
+  /* input, textarea, select {
+    @apply text-base; 
+    transform: scale(1); 
+  } */
+
+  /* Отключает увеличение при фокусе */
+  /* @media screen and (max-width: 1024px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      font-size: 16px !important; 
+    }
+  } */
+/* }  */
+
+
+
 
 @layer base {
+  /* Сброс и базовые стили */
   html, body, #__next {
     @apply w-full h-full box-border;
     margin: 0;
@@ -78,8 +121,19 @@
     touch-action: pan-y; 
   }
 
+  /* Умный h-screen для всего проекта */
+  .h-screen {
+    height: 100vh; /* fallback для старых браузеров */
+  }
+
+  @supports (height: 100dvh) {
+    .h-screen {
+      height: 100dvh; /* динамическая высота для мобильных Safari */
+    }
+  }
+
+  /* Фикс для 100vh в iOS */
   html {
-    /* Фикс для 100vh в iOS */
     height: -webkit-fill-available;
   }
 
@@ -97,7 +151,7 @@
     transform: scale(1); 
   }
 
-  /* Отключает увеличение при фокусе */
+  /* Отключает увеличение при фокусе на мобильных */
   @media screen and (max-width: 1024px) {
     input[type="text"],
     input[type="email"],
