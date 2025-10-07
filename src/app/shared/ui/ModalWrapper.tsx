@@ -23,43 +23,23 @@ export const ModalWrapper = ({
     }
   };
   return (
-    // <div
-    //   onClick={handelOverlowClick}
-    //   className=" flex fixed inset-0  bg-black/50  items-center justify-center z-50 shadow-2xs p-4 "
-    // >
-    //   <div
-    //     className={`p-4 relative rounded-lg shadow-lg  bg-white mx-auto max-h-[85vh] overflow-y-auto no-scrollbar mt-10 mb-26 ${className}`}
-    //   >
-    //     {withCloseButton && (
-    //       <button
-    //         onClick={onClose}
-    //         className="absolute top-2 right-2  text-gray-500 hover:text-gray-800"
-    //       >
-    //         <X size={20} />
-    //       </button>
-    //     )}
-    //     {children}
-    //   </div>
-    // </div>
-
-  <div
-  onClick={handelOverlowClick}
-  className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50 p-4"
->
-  <div
-    className={`relative bg-white rounded-lg shadow-lg  max-h-[85vh] overflow-y-auto no-scrollbar mt-10 mb-28 p-4 ${className}`}
-  >
-    {withCloseButton && (
-      <button
-        onClick={onClose}
-        className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+    <div
+      onClick={handelOverlowClick}
+      className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50 p-4"
+    >
+      <div
+        className={`relative bg-white rounded-lg shadow-lg  max-h-[85vh] overflow-y-auto no-scrollbar mt-10 mb-28 p-4 ${className}`}
       >
-        <X size={20} />
-      </button>
-    )}
-    {children}
-  </div>
-</div>
-    
+        {withCloseButton && (
+          <button
+            onClick={onClose}
+            className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+          >
+            <X size={20} />
+          </button>
+        )}
+        {children}
+      </div>
+    </div>
   );
 };

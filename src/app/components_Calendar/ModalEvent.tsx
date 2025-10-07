@@ -207,7 +207,7 @@ const handleStartTimeChange = (time: Date | null) => {
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      className=" min-w-[300px]"
+      className=" min-w-[300px] lg:min-w-[500px]"
     >
       <div className="flex">
         {isNew ? (
@@ -223,6 +223,7 @@ const handleStartTimeChange = (time: Date | null) => {
         <textarea
           required
           value={title}
+          placeholder="write your title maximum 100 characters..."
           onChange={(e) => setTitle(e.target.value)}
           className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px] shadow-lg"
           onInput={(e) => {
@@ -238,7 +239,7 @@ const handleStartTimeChange = (time: Date | null) => {
               onChange={handleStartDayChange}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
             />
             <DatePicker
               selected={startTime}
@@ -250,7 +251,7 @@ const handleStartTimeChange = (time: Date | null) => {
               timeIntervals={5}
               timeCaption="Время"
               placeholderText="Select the time"
-              className="rounded w-[150px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              className="rounded w-[150px] lg:w-[250px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
             />
           </div>
           <div className="flex flex-1 mb-2 gap-2">
@@ -259,7 +260,7 @@ const handleStartTimeChange = (time: Date | null) => {
               onChange={handleEndDayChange}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
             />
             <DatePicker
               selected={endTime}
@@ -271,7 +272,7 @@ const handleStartTimeChange = (time: Date | null) => {
               timeIntervals={5}
               timeCaption="Time"
               placeholderText="Select the time"
-              className=" w-[150px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
             />
           </div>
         </div>

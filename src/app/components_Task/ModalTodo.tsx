@@ -12,13 +12,16 @@ import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
+import { toast } from "react-toastify";
 
 const TodoSchema = Yup.object().shape({
   title: Yup.string()
     .max(100, "Title must be less than 100 characters")
     .required("title can`t be empty"),
-    description:Yup.string()
-    .max(600,"Description must be less than 600 characters ")
+  description: Yup.string().max(
+    600,
+    "Description must be less than 600 characters "
+  ),
 });
 
 interface ModalTodoProps {
@@ -42,14 +45,12 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     dispatch(fetchTodosApi());
   }, [dispatch]);
 
-
   useEffect(() => {
     if (!selectedItem) return;
 
     setTitle(selectedItem.title || "");
     setDescription(selectedItem.description || "");
   }, [selectedItem]);
-
 
   useEffect(() => {
     if (isOpen) {
@@ -63,21 +64,32 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     }
   }, [isOpen, title, description]);
 
+  // const handelTodoSubmit = async () => {
+  //   if (!selectedItem) return;
+  //   try {
+  //     await TodoSchema.validate({ title });
+
+  //     await handelUpdateTodo(selectedItem._id, {
+  //       title,
+  //       description,
+  //     });
+  //   } catch (error) {}
+  // };
 
   const handelTodoSubmit = async () => {
     if (!selectedItem) return;
     try {
-      await TodoSchema.validate({ title });
+      await TodoSchema.validate({ title,description });
 
       await handelUpdateTodo(selectedItem._id, {
         title,
         description,
       });
-    } catch (error) {}
+    } catch (error) {
   };
-  
-  if (!selectedItem) return null;
+}
 
+  if (!selectedItem) return null;
 
   return (
     <ModalWrapper
@@ -86,7 +98,6 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       className="w-full lg:w-[700px]"
     >
       <div className="flex flex-col w-full  mt-4">
-
         <textarea
           ref={titleRef}
           value={title}
@@ -100,11 +111,11 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
         />
         <textarea
           ref={desRef}
-          placeholder="Type your description..."
+          placeholder="Type your description maximum 600 characters ..."
           value={description}
           maxLength={600}
           onChange={(e) => setDescription(e.target.value)}
-          className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px] "
+          className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 "
           onInput={(e) => {
             e.currentTarget.style.height = "auto";
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
@@ -177,3 +188,6 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     </ModalWrapper>
   );
 };
+
+
+
