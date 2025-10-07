@@ -25,6 +25,7 @@
   /* input color */
   --color-input-light: #e0f2fe; /*sky-100*/
   --color-hover-input: #bae6fd; /*sky-200*/
+  --color-checkboks: #0284c7/*sky-600*/;
 
   /* text color */
   --color-main: #333333; /* black */

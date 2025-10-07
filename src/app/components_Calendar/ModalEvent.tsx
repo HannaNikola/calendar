@@ -233,7 +233,7 @@ const handleStartTimeChange = (time: Date | null) => {
         />
 
         <div className="mb-4 w-full">
-          <div className="flex flex-1  mb-2 gap-2 w-full">
+          <div className="flex flex-1  mb-2 gap-2 w-full ">
             <DatePicker
               selected={startDay}
               onChange={handleStartDayChange}
@@ -276,20 +276,29 @@ const handleStartTimeChange = (time: Date | null) => {
             />
           </div>
         </div>
-        <div className="flex justify-between mb-8 ">
-          <div className="flex items-center">
+        <div className="flex justify-between items-center mb-8 ">
+          <div className="flex items-center justify-center ">
             <label className="flex text-main mr-2">All day event</label>
             <input
               type="checkbox"
               name="allDay"
               checked={allDay}
               onChange={(e) => setAllDay(e.target.checked)}
-              
+              className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
+             before:flex before:items-center before:justify-center 
+             checked:before:content-['✓'] checked:before:text-white 
+             text-sm cursor-pointer transition"
             />
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center justify-between">
             <label className="mr-2 text-main">Add Task</label>
-            <input type="checkbox" name="addTask" onChange={handelAddTodo} />
+            <input type="checkbox" name="addTask" onChange={handelAddTodo}
+            className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
+             before:flex before:items-center before:justify-center 
+             checked:before:content-['✓'] checked:before:text-white 
+             text-sm cursor-pointer transition"
+             
+            />
           </div>
         </div>
       </div>
