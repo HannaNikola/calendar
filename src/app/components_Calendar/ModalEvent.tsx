@@ -216,10 +216,6 @@ const handleStartTimeChange = (time: Date | null) => {
           <h1 className="flex-1 text-center  text-main mb-6">Update event</h1>
         )}
 
-        <button className="flex" onClick={onClose}>
-          {" "}
-          <X size={15} />
-        </button>
       </div>
 
       <div className="flex flex-col ">
