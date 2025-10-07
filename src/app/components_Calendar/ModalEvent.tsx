@@ -287,6 +287,7 @@ const handleStartTimeChange = (time: Date | null) => {
               name="allDay"
               checked={allDay}
               onChange={(e) => setAllDay(e.target.checked)}
+              
             />
           </div>
           <div className="flex items-center">

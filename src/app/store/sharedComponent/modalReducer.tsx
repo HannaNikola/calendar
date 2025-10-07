@@ -37,3 +37,5 @@ const modalElementSlice = createSlice({
 export const { openElementModal, closeElementModal } = modalElementSlice.actions;
 export const modalReducer = modalElementSlice.reducer;
 
+
+
