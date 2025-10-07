@@ -8,7 +8,7 @@ const initialState: ModalState = {
   isOpen: false,
   type: undefined,
   mode: undefined,
-   selectedId: null
+  selectedId: null
 };
 
 const modalElementSlice = createSlice({

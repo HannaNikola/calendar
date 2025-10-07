@@ -15,8 +15,10 @@ import { useTodoHandlers } from "../hooks/useTodoHandlers";
 
 const TodoSchema = Yup.object().shape({
   title: Yup.string()
-    .max(70, "Title must be less than 100 characters")
+    .max(100, "Title must be less than 100 characters")
     .required("title can`t be empty"),
+    description:Yup.string()
+    .max(600,"Description must be less than 600 characters ")
 });
 
 interface ModalTodoProps {
@@ -40,12 +42,14 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     dispatch(fetchTodosApi());
   }, [dispatch]);
 
+
   useEffect(() => {
     if (!selectedItem) return;
 
     setTitle(selectedItem.title || "");
     setDescription(selectedItem.description || "");
   }, [selectedItem]);
+
 
   useEffect(() => {
     if (isOpen) {
@@ -58,6 +62,8 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       adjustHeight(desRef.current);
     }
   }, [isOpen, title, description]);
+
+
   const handelTodoSubmit = async () => {
     if (!selectedItem) return;
     try {
@@ -69,7 +75,10 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       });
     } catch (error) {}
   };
+  
   if (!selectedItem) return null;
+
+
   return (
     <ModalWrapper
       isOpen={isOpen}
@@ -77,10 +86,11 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       className="w-full lg:w-[700px]"
     >
       <div className="flex flex-col w-full  mt-4">
-        
+
         <textarea
           ref={titleRef}
           value={title}
+          maxLength={100}
           onChange={(e) => setTitle(e.target.value)}
           className="w-full border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-1 mb-4 text-main resize-none overflow-hidden min-h-[30px]"
           onInput={(e) => {
@@ -92,6 +102,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
           ref={desRef}
           placeholder="Type your description..."
           value={description}
+          maxLength={600}
           onChange={(e) => setDescription(e.target.value)}
           className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px] "
           onInput={(e) => {
