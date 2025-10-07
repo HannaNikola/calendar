@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
-import { toast } from "react-toastify";
+
 
 const TodoSchema = Yup.object().shape({
   title: Yup.string()

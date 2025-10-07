@@ -119,7 +119,7 @@ export const Filter = () => {
       </div>
 
       {isFocused && query && entity === "event" && (
-        <ul className="absolute top-full left-0 w-full max-sm:w-[370px] z-50 max-h-60 overflow-hidden scrollbar-hide rounded-b-3xl bg-input-light shadow-lg text-sm">
+        <ul className="absolute top-full left-0 w-full  z-50 max-h-60 overflow-hidden scrollbar-hide rounded-b-3xl bg-input-light shadow-lg text-sm">
           {result.length > 0 ? (
             result.map((item) => (
               <li
