@@ -104,7 +104,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
           value={description}
           maxLength={600}
           onChange={(e) => setDescription(e.target.value)}
-          className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 "
+          className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 "
           onInput={(e) => {
             e.currentTarget.style.height = "auto";
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
