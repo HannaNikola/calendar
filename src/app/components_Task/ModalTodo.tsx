@@ -64,22 +64,11 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     }
   }, [isOpen, title, description]);
 
-  // const handelTodoSubmit = async () => {
-  //   if (!selectedItem) return;
-  //   try {
-  //     await TodoSchema.validate({ title });
-
-  //     await handelUpdateTodo(selectedItem._id, {
-  //       title,
-  //       description,
-  //     });
-  //   } catch (error) {}
-  // };
 
   const handelTodoSubmit = async () => {
     if (!selectedItem) return;
     try {
-      await TodoSchema.validate({ title,description });
+      await TodoSchema.validate({ title, description });
 
       await handelUpdateTodo(selectedItem._id, {
         title,
@@ -95,7 +84,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      className="w-full lg:w-[700px]"
+      className="w-full lg:w-[700px]  max-h-[85vh]  overflow-y-auto no-scrollbar max-lg:mt-10 max-lg:mb-28"
     >
       <div className="flex flex-col w-full  mt-4">
         <textarea

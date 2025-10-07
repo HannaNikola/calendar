@@ -50,6 +50,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
 
       <div className="flex flex-col place-content-between gap-3">
         <button
+        type="button"
           onClick={(e) => {
             e.stopPropagation();
             if (!item._id) return;
@@ -67,6 +68,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
           />
         </button>
         <button
+        type="button"
           onClick={(e) => {
             e.stopPropagation();
             setLocalCompleted(true);
@@ -86,6 +88,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
           {localCompleted ? <CircleCheckBig size={20} /> : <Circle />}
         </button>
         <button
+        type="button"
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
             if (item._id) {
