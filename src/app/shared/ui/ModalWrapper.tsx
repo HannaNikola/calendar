@@ -44,7 +44,7 @@ export const ModalWrapper = ({
 
      <div
       onClick={handelOverlowClick}
-      className=" flex fixed inset-0  bg-black/50  items-center justify-center z-50 shadow-2xs p-4 "
+      className=" flex fixed  top-0 left-0 w-full h-full bg-black/50  items-center justify-center z-50 shadow-2xs p-4 "
     >
       <div
         className={`p-4 relative rounded-lg shadow-lg  bg-white mx-auto max-h-[85vh] overflow-y-auto no-scrollbar mt-10 mb-26 ${className}`}
