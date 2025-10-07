@@ -47,7 +47,7 @@ export const ModalWrapper = ({
   className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50 p-4"
 >
   <div
-    className={`relative bg-white rounded-lg shadow-lg w-full lg:w-[700px] max-h-[85vh] overflow-y-auto no-scrollbar mt-10 mb-28 p-4 ${className}`}
+    className={`relative bg-white rounded-lg shadow-lg  max-h-[85vh] overflow-y-auto no-scrollbar mt-10 mb-28 p-4 ${className}`}
   >
     {withCloseButton && (
       <button

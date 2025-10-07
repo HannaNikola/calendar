@@ -207,7 +207,7 @@ const handleStartTimeChange = (time: Date | null) => {
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      className=" min-w-[300px] p-4 shadow-lg rounded-lg"
+      className=" min-w-[300px]"
     >
       <div className="flex">
         {isNew ? (
