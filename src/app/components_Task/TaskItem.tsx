@@ -9,7 +9,8 @@ import { CalendarTodo } from "../types/typesTodoApi";
 import { useTodoExpired } from "../hooks/useTodoExpired";
 import { toDate } from "../utils/date";
 import { useState } from "react";
-
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +34,22 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
     >
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
-        <p className="text-small line-clamp-1 mb-3">{item.description}</p>
+        <p
+          ref={(el) => {
+            if (el)
+              tippy(el, {
+                content: item.description,
+                theme: "gray",
+                arrow: false,
+                inertia: true,
+                duration: 200,
+                animation: "fade",
+              });
+          }}
+          className="text-small line-clamp-1 mb-3"
+        >
+          {item.description}
+        </p>
         <p
           className={`mb-1 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
         >
@@ -43,15 +59,27 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
           <Button variant="default" size="small" className="mr-3 text-small">
             Update
           </Button>
-          <button>
-            <BellRing size={20} />
+          <button
+            ref={(el) => {
+              if (el)
+                tippy(el, {
+                  content: "Notification",
+                  theme: "gray",
+                  arrow: false,
+                  inertia: true,
+                  duration: 200,
+                  animation: "fade",
+                });
+            }}
+          >
+            <BellRing size={20} className="hover:animate-pulse" />
           </button>
         </div>
       </div>
 
       <div className="flex flex-col place-content-between gap-3">
         <button
-        type="button"
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             if (!item._id) return;
@@ -62,6 +90,18 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
               })
             );
           }}
+          ref={(el) => {
+            if (el)
+              tippy(el, {
+                content: "Favorite",
+                theme: "gray",
+                arrow: false,
+                inertia: true,
+                duration: 200,
+                animation: "fade",
+              });
+          }}
+          className="hover:animate-pulse"
         >
           <Star
             size={20}
@@ -69,7 +109,8 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
           />
         </button>
         <button
-        type="button"
+          type="button"
+          className="hover:animate-pulse"
           onClick={(e) => {
             e.stopPropagation();
             setLocalCompleted(true);
@@ -85,16 +126,39 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
               }
             }, 500);
           }}
+          ref={(el) => {
+            if (el)
+              tippy(el, {
+                content: "Complite",
+                theme: "gray",
+                arrow: false,
+                inertia: true,
+                duration: 200,
+                animation: "fade",
+              });
+          }}
         >
           {localCompleted ? <CircleCheckBig size={20} /> : <Circle />}
         </button>
         <button
-        type="button"
+          type="button"
+          className="hover:animate-pulse"
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
             if (item._id) {
               handeDeleteTodo(item._id);
             }
+          }}
+          ref={(el) => {
+            if (el)
+              tippy(el, {
+                content: "Delite",
+                theme: "gray",
+                arrow: false,
+                inertia: true,
+                duration: 200,
+                animation: "fade",
+              });
           }}
         >
           <Trash2 size={20} />

@@ -13,7 +13,6 @@ import { Button } from "../shared/ui/Button";
 import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 
-
 const TodoSchema = Yup.object().shape({
   title: Yup.string()
     .max(100, "Title must be less than 100 characters")
@@ -64,7 +63,6 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     }
   }, [isOpen, title, description]);
 
-
   const handelTodoSubmit = async () => {
     if (!selectedItem) return;
     try {
@@ -74,9 +72,8 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
         title,
         description,
       });
-    } catch (error) {
+    } catch (error) {}
   };
-}
 
   if (!selectedItem) return null;
 
@@ -120,13 +117,14 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
             >
               Update
             </Button>
-            <button>
+            <button className="hover:animate-pulse">
               <BellRing size={20} />
             </button>
           </div>
 
           <div className="flex gap-3">
             <button
+              className="hover:animate-pulse"
               onClick={(e) => {
                 e.stopPropagation();
                 dispatch(
@@ -145,6 +143,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
               />
             </button>
             <button
+              className="hover:animate-pulse"
               onClick={(e) => {
                 e.stopPropagation();
                 if (selectedItem._id) {
@@ -164,6 +163,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
               )}
             </button>
             <button
+              className="hover:animate-pulse"
               onClick={(e) => {
                 e.stopPropagation();
                 handeDeleteTodo(selectedItem._id, true);
@@ -177,6 +177,3 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     </ModalWrapper>
   );
 };
-
-
-
