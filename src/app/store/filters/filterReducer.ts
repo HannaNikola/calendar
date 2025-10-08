@@ -34,7 +34,6 @@ const FilterSlice = createSlice({
     },
     clearFilter(state) {
       state.query = "";
-      state.entity = null;
       state.isFocused = false;
       state.selectedItem = null;
     },
