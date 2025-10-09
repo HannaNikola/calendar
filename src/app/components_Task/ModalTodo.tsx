@@ -12,6 +12,7 @@ import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
+import { TooltipDesktop } from "../shared/ui/Tooltip";
 
 const TodoSchema = Yup.object().shape({
   title: Yup.string()
@@ -117,60 +118,66 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
             >
               Update
             </Button>
-            <button className="hover:animate-pulse">
+            {/* <button className="hover:animate-pulse">
               <BellRing size={20} />
-            </button>
+            </button> */}
           </div>
 
           <div className="flex gap-3">
-            <button
-              className="hover:animate-pulse"
-              onClick={(e) => {
-                e.stopPropagation();
-                dispatch(
-                  favoriteTodoApi({
-                    id: selectedItem._id,
-                    isImportant: !selectedItem.isImportant,
-                  })
-                );
-              }}
-            >
-              <Star
-                size={20}
-                className={
-                  selectedItem.isImportant ? "fill-amber-300" : "stroke-black"
-                }
-              />
-            </button>
-            <button
-              className="hover:animate-pulse"
-              onClick={(e) => {
-                e.stopPropagation();
-                if (selectedItem._id) {
+            <TooltipDesktop content="Favorite">
+              <button
+                className="hover:animate-pulse"
+                onClick={(e) => {
+                  e.stopPropagation();
                   dispatch(
-                    completedTodoApi({
+                    favoriteTodoApi({
                       id: selectedItem._id,
-                      isCompleted: !selectedItem.isCompleted,
+                      isImportant: !selectedItem.isImportant,
                     })
                   );
-                }
-              }}
-            >
-              {selectedItem.isCompleted ? (
-                <CircleCheckBig size={20} />
-              ) : (
-                <Circle size={20} />
-              )}
-            </button>
-            <button
-              className="hover:animate-pulse"
-              onClick={(e) => {
-                e.stopPropagation();
-                handeDeleteTodo(selectedItem._id, true);
-              }}
-            >
-              <Trash2 size={20} />
-            </button>
+                }}
+              >
+                <Star
+                  size={20}
+                  className={
+                    selectedItem.isImportant ? "fill-amber-300" : "stroke-black"
+                  }
+                />
+              </button>
+            </TooltipDesktop>
+            <TooltipDesktop content="Complete task">
+              <button
+                className="hover:animate-pulse"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (selectedItem._id) {
+                    dispatch(
+                      completedTodoApi({
+                        id: selectedItem._id,
+                        isCompleted: !selectedItem.isCompleted,
+                      })
+                    );
+                  }
+                }}
+              >
+                {selectedItem.isCompleted ? (
+                  <CircleCheckBig size={20} />
+                ) : (
+                  <Circle size={20} />
+                )}
+              </button>
+            </TooltipDesktop>
+            <TooltipDesktop content="Delete task">
+              <button
+                className="hover:animate-pulse"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handeDeleteTodo(selectedItem._id, true);
+                }}
+              >
+                <Trash2 size={20} />
+              </button>
+            </TooltipDesktop>
           </div>
         </div>
       </div>
