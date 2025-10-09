@@ -91,7 +91,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
             />
           </button>
         </TooltipDesktop>
-        <TooltipDesktop content="Complite task">
+        <TooltipDesktop content="Complete task">
           <button
             type="button"
             className="hover:animate-pulse"

@@ -34,7 +34,7 @@ export default function Header() {
               </div> */}
               
               <p className=" mr-4 ml-3 text-main hidden sm:block">
-                autor@gmail.com
+                author@gmail.com
               </p>
 
               <button className="flex items-center w-[80px] whitespace-nowrap  transition-colors duration-500 text-main   hover:text-sky-hover">

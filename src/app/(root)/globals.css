@@ -83,6 +83,7 @@
     padding: 0;
     -webkit-tap-highlight-color: transparent; 
     touch-action: pan-y; 
+    
   }
 
   /* Умный h-screen для всего проекта */

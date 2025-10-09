@@ -7,9 +7,12 @@ import EddEventButton from "./EddEventButton";
 import { AdaptiveProps } from "../types/typesAdaptive";
 import { FC } from "react";
 import { usePathname } from "next/navigation";
+import { useScreenType } from "../hooks/useScreenType";
 
 export const Navbar: FC<AdaptiveProps> = () => {
   const pathname = usePathname()
+  const screenType = useScreenType();
+  
   return (
     <section className="flex w-full max-lg:flex-row-reverse lg:flex-col lg:max-w-[290px]">
       <div className=" flex  lg:mb-3  ">
