@@ -18,7 +18,7 @@ const ref = useRef<HTMLElement | null>(null)
 const screenType = useScreenType()
 
 useEffect(()=>{
-  if(screenType !== 'desktop' || !ref.current) return
+  if(screenType !== 'desktop' || !ref.current || !content) return
   const instance: Instance = tippy(ref.current,{
     content,
     arrow: false,
