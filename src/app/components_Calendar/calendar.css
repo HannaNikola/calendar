@@ -29,6 +29,8 @@
 }
 
 /* hover event*/
+
+
 .fc-event:hover {
   background-color: #2a76c0 !important;
   border-color: #2a76c0 !important;
@@ -52,6 +54,7 @@
   width: 100%;
   border: 1px;
   border-radius: 30px 30px 0px 0px !important;
+
 }
 
 .fc .fc-daygrid-day-frame {
@@ -65,6 +68,8 @@
   border-radius: 30px 30px 0px 0px !important;
   margin-bottom: 0 !important;
   padding: 4px 20px 4px 20px;
+  
+  
 }
 
 .fc .fc-button {
@@ -74,9 +79,11 @@
 .fc-header-toolbar {
   flex-direction: row;
   width: 100%;
+   
+  
 }
 .fc-toolbar-title {
-  font-size: 10px !important;
+  display: none;
 }
 
 .fc-today-button {
@@ -90,18 +97,15 @@
 }
 
 @media (min-width: 530px) {
-  .fc-toolbar-title {
-    font-size: 14px !important;
-  }
+  
   .fc .fc-button {
     font-size: 14px !important;
+
   }
 }
 
 @media (min-width: 640px) {
-  .fc-toolbar-title {
-    font-size: 16px !important;
-  }
+  
   .fc .fc-button {
     font-size: 16px !important;
   }
@@ -116,6 +120,7 @@
 @media (min-width: 1024px) {
   .fc-toolbar-title {
     font-size: 20px !important;
+    display: block;
   }
 }
 

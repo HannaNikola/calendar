@@ -255,13 +255,16 @@ const CalendarEl = () => {
       hour: "2-digit",
       minute: "2-digit",
     });
-    tippy(el, {
+    if(screenType === 'desktop'){
+      tippy(el, {
       content: `<strong>${event.title}</strong><br/>${time}`,
       allowHTML: true,
       placement: "top",
       theme: "gray",
       animation: "fade",
     });
+    }
+    
   };
 
   const handleEventDrop = (info: EventDropArg) => {
