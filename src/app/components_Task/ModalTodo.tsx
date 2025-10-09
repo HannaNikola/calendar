@@ -83,7 +83,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       onClose={onClose}
       className="w-full lg:w-[700px]  max-h-[85vh]  overflow-y-auto no-scrollbar max-lg:mt-10 max-lg:mb-28"
     >
-      <div className="flex flex-col w-full  mt-4">
+      <div className="flex flex-col w-full  mt-4 scrollbar-hide">
         <textarea
           ref={titleRef}
           value={title}

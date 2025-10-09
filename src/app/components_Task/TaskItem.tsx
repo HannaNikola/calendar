@@ -11,6 +11,7 @@ import { toDate } from "../utils/date";
 import { useState } from "react";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
+import { useScreenType } from "../hooks/useScreenType";
 
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,6 +25,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
 
   const formattedEnd = item.end ? toDate(item.end)?.toLocaleDateString() : "—";
   const [localCompleted, setLocalCompleted] = useState(item.isCompleted);
+  const screenType = useScreenType();
 
   return (
     <li
@@ -34,9 +36,10 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
     >
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
-        <p
-          ref={(el) => {
-            if (el)
+        {screenType === "desktop" && (
+          <p
+            ref={(el) => {
+              if (!el) return;
               tippy(el, {
                 content: item.description,
                 theme: "gray",
@@ -45,11 +48,16 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
                 duration: 200,
                 animation: "fade",
               });
-          }}
-          className="text-small line-clamp-1 mb-3"
-        >
-          {item.description}
-        </p>
+            }}
+            className="text-small line-clamp-1 mb-3 "
+          >
+            {item.description}
+          </p>
+        )}
+        {(screenType === "mobail" || screenType === "tablet") && (
+          <p className="text-small line-clamp-1 mb-3">{item.description}</p>
+        )}
+
         <p
           className={`mb-1 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
         >
