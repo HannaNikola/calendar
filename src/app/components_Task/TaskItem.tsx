@@ -12,6 +12,7 @@ import { useState } from "react";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { useScreenType } from "../hooks/useScreenType";
+import { TooltipDesktop } from "../shared/ui/Tooltip";
 
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,30 +37,13 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
     >
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
-        {screenType === "desktop" && (
-          <p
-            ref={(el) => {
-              if (!el) return;
-              tippy(el, {
-                content: item.description,
-                theme: "gray",
-                arrow: false,
-                inertia: true,
-                duration: 200,
-                animation: "fade",
-              });
-            }}
-            className="text-small line-clamp-1 mb-3 "
-          >
-            {item.description}
-          </p>
-        )}
-        {(screenType === "mobail" || screenType === "tablet") && (
+
+        <TooltipDesktop content={item.description}>
           <p className="text-small line-clamp-1 mb-3">{item.description}</p>
-        )}
+        </TooltipDesktop>
 
         <p
-          className={`mb-1 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
+          className={`mb-2 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
         >
           Deadline:{formattedEnd}
         </p>
@@ -67,7 +51,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
           <Button variant="default" size="small" className="mr-3 text-small">
             Update
           </Button>
-          <button
+          {/* <button
             ref={(el) => {
               if (el)
                 tippy(el, {
@@ -81,96 +65,69 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
             }}
           >
             <BellRing size={20} className="hover:animate-pulse" />
-          </button>
+          </button> */}
         </div>
       </div>
 
       <div className="flex flex-col place-content-between gap-3">
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (!item._id) return;
-            dispatch(
-              favoriteTodoApi({
-                id: item._id,
-                isImportant: !item.isImportant,
-              })
-            );
-          }}
-          ref={(el) => {
-            if (el)
-              tippy(el, {
-                content: "Favorite",
-                theme: "gray",
-                arrow: false,
-                inertia: true,
-                duration: 200,
-                animation: "fade",
-              });
-          }}
-          className="hover:animate-pulse"
-        >
-          <Star
-            size={20}
-            className={item.isImportant ? "fill-amber-300" : "stroke-black"}
-          />
-        </button>
-        <button
-          type="button"
-          className="hover:animate-pulse"
-          onClick={(e) => {
-            e.stopPropagation();
-            setLocalCompleted(true);
+        <TooltipDesktop content="Favorite">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!item._id) return;
+              dispatch(
+                favoriteTodoApi({
+                  id: item._id,
+                  isImportant: !item.isImportant,
+                })
+              );
+            }}
+            className="hover:animate-pulse"
+          >
+            <Star
+              size={20}
+              className={item.isImportant ? "fill-amber-300" : "stroke-black"}
+            />
+          </button>
+        </TooltipDesktop>
+        <TooltipDesktop content="Complite task">
+          <button
+            type="button"
+            className="hover:animate-pulse"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLocalCompleted(true);
 
-            setTimeout(() => {
+              setTimeout(() => {
+                if (item._id) {
+                  dispatch(
+                    completedTodoApi({
+                      id: item._id,
+                      isCompleted: !item.isCompleted,
+                    })
+                  );
+                }
+              }, 500);
+            }}
+          >
+            {localCompleted ? <CircleCheckBig size={20} /> : <Circle />}
+          </button>
+        </TooltipDesktop>
+        <TooltipDesktop content="Delite task">
+          <button
+            type="button"
+            className="hover:animate-pulse"
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
               if (item._id) {
-                dispatch(
-                  completedTodoApi({
-                    id: item._id,
-                    isCompleted: !item.isCompleted,
-                  })
-                );
+                handeDeleteTodo(item._id);
               }
-            }, 500);
-          }}
-          ref={(el) => {
-            if (el)
-              tippy(el, {
-                content: "Complite",
-                theme: "gray",
-                arrow: false,
-                inertia: true,
-                duration: 200,
-                animation: "fade",
-              });
-          }}
-        >
-          {localCompleted ? <CircleCheckBig size={20} /> : <Circle />}
-        </button>
-        <button
-          type="button"
-          className="hover:animate-pulse"
-          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-            e.stopPropagation();
-            if (item._id) {
-              handeDeleteTodo(item._id);
-            }
-          }}
-          ref={(el) => {
-            if (el)
-              tippy(el, {
-                content: "Delite",
-                theme: "gray",
-                arrow: false,
-                inertia: true,
-                duration: 200,
-                animation: "fade",
-              });
-          }}
-        >
-          <Trash2 size={20} />
-        </button>
+            }}
+          >
+            <Trash2 size={20} />
+          </button>
+        </TooltipDesktop>
       </div>
     </li>
   );
