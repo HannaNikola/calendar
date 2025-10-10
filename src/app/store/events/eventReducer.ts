@@ -7,9 +7,6 @@ import {
 } from "@/app/api/eventsApi";
 import { EventStateProps } from "@/app/types/typesApi";
 
-
-
-
 const initialState: EventStateProps = {
   events: [],
   status: "idle",
@@ -76,8 +73,3 @@ const eventSlice = createSlice({
 });
 
 export const eventReducer = eventSlice.reducer;
-
-
-
-
-

@@ -23,17 +23,7 @@ export default function Header() {
           {(pathname.startsWith('/calendar') || pathname.startsWith('/task')) &&(<Filter />)}
           {!shouldHide && (
             <>
-              {/* <div className="flex w-[40px] h-[30px] mx-2  md:mx-6 border-[1] border-grey-border rounded-[50px] overflow-hidden ">
-                <Image
-                  src="/woman.jpg"
-                  width={30}
-                  height={30}
-                  alt=""
-                  className="flex object-cover"
-                />
-              </div> */}
-              
-              <p className=" mr-4 ml-3 text-main hidden sm:block">
+               <p className=" mr-4 ml-3 text-main hidden sm:block">
                 author@gmail.com
               </p>
 

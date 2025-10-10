@@ -1,7 +1,6 @@
 "use client";
 
 import * as Yup from "yup";
-import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CalendarEvent } from "../types/typesApi";
 import "flatpickr/dist/themes/airbnb.css";
@@ -31,8 +30,7 @@ export const ModalEvent = ({
   selectedEvent,
 }: EventModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { events } = useSelector((state: RootState) => state.eventData);
-  const { type, mode, isOpen } = useSelector((state: RootState) => state.modal);
+  const { mode, isOpen } = useSelector((state: RootState) => state.modal);
 
   const [title, setTitle] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
@@ -46,8 +44,7 @@ export const ModalEvent = ({
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
     useEventHandlers();
 
-
-useEffect(() => {
+  useEffect(() => {
     const now = new Date();
     const start = toDate(selectedEvent?.start ?? slotStart ?? now);
     const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
@@ -59,7 +56,7 @@ useEffect(() => {
     setStartDay(start);
 
     if (selectedEvent?.start) {
-      setStartTime(new Date( start.getHours(), start.getMinutes()));
+      setStartTime(new Date(start.getHours(), start.getMinutes()));
     } else {
       setStartTime(new Date());
     }
@@ -70,12 +67,11 @@ useEffect(() => {
       setEndTime(new Date());
     } else if (end) {
       setEndDay(end);
-      setEndTime(new Date( end.getHours(), end.getMinutes()));
+      setEndTime(new Date(end.getHours(), end.getMinutes()));
     } else {
       setEndTime(new Date());
     }
   }, [selectedEvent, slotStart, slotEnd, isNew]);
-
 
   const combineDateTime = (
     date: Date | null,
@@ -108,7 +104,7 @@ useEffect(() => {
   //     setEndTime(oneHourLater);
   //   }
   // };
-const handleStartTimeChange = (time: Date | null) => {
+  const handleStartTimeChange = (time: Date | null) => {
     setStartTime(time);
     if (time && isNew) {
       const oneHourLater = new Date(
@@ -121,7 +117,7 @@ const handleStartTimeChange = (time: Date | null) => {
       setEndTime(oneHourLater);
     }
   };
-  
+
   // const handleEndDayChange = (date: Date | null) => {
   //   setEndDay(date);
   //   if (date && startTime) {
@@ -134,9 +130,7 @@ const handleStartTimeChange = (time: Date | null) => {
   const handleEndDayChange = (date: Date | null) => {
     setEndDay(date);
     if (date && startTime) {
-      setEndTime(
-        new Date( startTime.getHours() + 1, startTime.getMinutes())
-      );
+      setEndTime(new Date(startTime.getHours() + 1, startTime.getMinutes()));
     }
   };
 
@@ -215,7 +209,6 @@ const handleStartTimeChange = (time: Date | null) => {
         ) : (
           <h1 className="flex-1 text-center  text-main mb-6">Update event</h1>
         )}
-
       </div>
 
       <div className="flex flex-col ">
@@ -292,12 +285,14 @@ const handleStartTimeChange = (time: Date | null) => {
           </div>
           <div className="flex items-center justify-between">
             <label className="mr-2 text-main">Add Task</label>
-            <input type="checkbox" name="addTask" onChange={handelAddTodo}
-            className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
+            <input
+              type="checkbox"
+              name="addTask"
+              onChange={handelAddTodo}
+              className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
              before:flex before:items-center before:justify-center 
              checked:before:content-['✓'] checked:before:text-white 
              text-sm cursor-pointer transition"
-             
             />
           </div>
         </div>
@@ -339,5 +334,3 @@ const handleStartTimeChange = (time: Date | null) => {
     </ModalWrapper>
   );
 };
-
-

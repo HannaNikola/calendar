@@ -1,13 +1,10 @@
 "use client";
 
-import Header from "@/app/components_Calendar/Header";
 import "./globals.css";
-import { PageWrapper } from "@/app/shared/PageWrapper";
 import { Provider } from "react-redux";
 import { store } from "@/app/store/store";
-import Navbar from "../components_Calendar/Navbar";
-import Footer from "../components_Calendar/Footer";
 import { useScreenType } from "../hooks/useScreenType";
+import { LayoutContent } from "./LayoutContent";
 
 export default function RootLayout({
   children,
@@ -16,34 +13,14 @@ export default function RootLayout({
 }) {
   const screenType = useScreenType();
 
-
   return (
     <html lang="en" className="h-full w-full">
       <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"
-        />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-
-      <body className="h-full w-full overflow-x-hidden flex flex-col ">
+      <body className="h-full w-full overflow-x-hidden flex flex-col">
         <Provider store={store}>
-          <div className=" overflow-x-hidden">
-          <Header />
-          </div>
-          <main className="flex-1 overflow-y-auto pt-[60px] max-lg:pb-[60px]"> 
-            <PageWrapper>
-              {screenType === "desktop" && ( 
-                <div className="max-lg:hidden">
-                  <Navbar /> 
-                 </div> 
-               )}
-              {children}
-            </PageWrapper>
-          </main>
-          <Footer />
+          <LayoutContent screenType={screenType}>{children}</LayoutContent>
         </Provider>
       </body>
     </html>

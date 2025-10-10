@@ -7,9 +7,9 @@ import { CalendarTodo } from "../types/typesTodoApi";
 export const useTodoHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { todos } = useSelector((state: RootState) => state.todo);
-  const { selectedId, type } = useSelector((state: RootState) => state.modal);
+  const { data, type } = useSelector((state: RootState) => state.modal);
 const selectedItem = useSelector((state: RootState) =>
-  state.todo.todos.find(todo => todo._id === selectedId)
+  state.todo.todos.find(todo => todo._id === data?.selectedId)
 );
 
   const handelUpdateTodo = async (
