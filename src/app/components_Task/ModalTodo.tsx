@@ -10,7 +10,7 @@ import {
 } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
-import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
+import { Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
 
@@ -36,7 +36,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const { todos } = useSelector((state: RootState) => state.todo);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { data, type } = useSelector((state: RootState) => state.modal);
+  const { data } = useSelector((state: RootState) => state.modal);
   const selectedItem = todos.find((todo) => todo._id === data?.selectedId);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const desRef = useRef<HTMLTextAreaElement | null>(null);

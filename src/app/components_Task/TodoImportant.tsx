@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { TaskItem } from "./TaskItem";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ModalTodo } from "./ModalTodo";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { selectFilterResult } from "../store/filters/selector";
