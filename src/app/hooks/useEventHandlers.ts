@@ -17,15 +17,14 @@ export const useEventHandlers = () => {
   const { data,  mode, isOpen } = useSelector(
     (state: RootState) => state.modal
   );
-  const selectedEvent = useSelector((state: RootState) =>
-    state.eventData.events.find((item) => item._id === data?.selectedId)
-  );
+  const selectedEvent = useSelector((state: RootState) =>data?.selectedId 
+   ? state.eventData.events.find((item) => item._id === data.selectedId)
+   : undefined
+)
 
   const handleSlotAction = (
     arg: DateSelectArg | DateClickArg,
-    setSlotData: React.Dispatch<
-      React.SetStateAction<{ slotStart: Date | null; slotEnd: Date | null }>
-    >
+    setSlotData: React.Dispatch< React.SetStateAction<{ slotStart: Date | null; slotEnd: Date | null }>>
   ) => {
     let start: Date;
     let end: Date;
@@ -56,7 +55,7 @@ export const useEventHandlers = () => {
       openElementModal({
         mode: "update",
         type: "event",
-        data: { selectedId: arg.event.id },
+        data:{selectedId: arg.event.id },
       })
     );
   };
@@ -85,8 +84,8 @@ export const useEventHandlers = () => {
         id: eventData._id,
         eventData: {
           title: eventData.title,
-          start: new Date(eventData.start!),
-          end: new Date(eventData.end!),
+          start: toDate(eventData.start),
+          end: toDate(eventData.end),
           allDay: eventData.allDay,
           addTask: eventData.addTask,
         },

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { Axios, AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { CalendarTodo } from "../types/typesTodoApi";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";

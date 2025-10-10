@@ -32,7 +32,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   return (
     <li
       onClick={() =>
-        dispatch(openElementModal({ type: "todo", data: {selectedId: item._id} }))
+        dispatch(openElementModal({ type: "todo", data:{selectedId: item._id} }))
       }
       className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder}`}
     >

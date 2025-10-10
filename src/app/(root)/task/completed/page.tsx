@@ -3,7 +3,7 @@ import { TodoCompleted } from "@/app/components_Task/TodoCompleted";
 import { TooltipDesktop } from "@/app/shared/ui/Tooltip";
 import { BookOpenCheck, CircleCheck, Star } from "lucide-react";
 import Link from "next/link";
-import tippy from "tippy.js";
+
 
 export default function Completed() {
   return (

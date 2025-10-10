@@ -1,7 +1,7 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { TaskItem } from "./TaskItem";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { ModalTodo } from "./ModalTodo";

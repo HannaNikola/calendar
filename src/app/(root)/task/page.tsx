@@ -3,7 +3,7 @@ import { TaskList } from "@/app/components_Task/TaskList";
 import { TooltipDesktop } from "@/app/shared/ui/Tooltip";
 import { CircleCheck, Star } from "lucide-react";
 import Link from "next/link";
-import tippy from "tippy.js";
+
 
 export default function Task() {
   return (
