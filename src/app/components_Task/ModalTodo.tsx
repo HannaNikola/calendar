@@ -36,8 +36,8 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const { todos } = useSelector((state: RootState) => state.todo);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { selectedId, type } = useSelector((state: RootState) => state.modal);
-  const selectedItem = todos.find((todo) => todo._id === selectedId);
+  const { data, type } = useSelector((state: RootState) => state.modal);
+  const selectedItem = todos.find((todo) => todo._id === data?.selectedId);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const desRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -118,9 +118,6 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
             >
               Update
             </Button>
-            {/* <button className="hover:animate-pulse">
-              <BellRing size={20} />
-            </button> */}
           </div>
 
           <div className="flex gap-3">

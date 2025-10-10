@@ -1,7 +1,7 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { completedTodoApi, favoriteTodoApi } from "../api/todoApi";
-import { AppDispatch } from "../store/store";
-import { BellRing, Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
+import { AppDispatch, RootState } from "../store/store";
+import { Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
 import { openElementModal } from "../store/sharedComponent/modalReducer";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
@@ -9,15 +9,16 @@ import { CalendarTodo } from "../types/typesTodoApi";
 import { useTodoExpired } from "../hooks/useTodoExpired";
 import { toDate } from "../utils/date";
 import { useState } from "react";
-import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { useScreenType } from "../hooks/useScreenType";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
 
+
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { handeDeleteTodo } = useTodoHandlers();
-  const expired = useTodoExpired(item.end);
+  const { data} = useSelector((state: RootState) => state.modal);
+  const expired = useTodoExpired(item.end ?? null);
   const colorBorder = expired
     ? "border-red-400 bg-red-50"
     : item.isImportant
@@ -31,7 +32,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   return (
     <li
       onClick={() =>
-        dispatch(openElementModal({ type: "todo", selectedId: item._id }))
+        dispatch(openElementModal({ type: "todo", data: {selectedId: item._id} }))
       }
       className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder}`}
     >
@@ -51,21 +52,6 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
           <Button variant="default" size="small" className="mr-3 text-small">
             Update
           </Button>
-          {/* <button
-            ref={(el) => {
-              if (el)
-                tippy(el, {
-                  content: "Notification",
-                  theme: "gray",
-                  arrow: false,
-                  inertia: true,
-                  duration: 200,
-                  animation: "fade",
-                });
-            }}
-          >
-            <BellRing size={20} className="hover:animate-pulse" />
-          </button> */}
         </div>
       </div>
 

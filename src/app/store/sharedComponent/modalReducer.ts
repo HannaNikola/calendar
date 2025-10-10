@@ -37,10 +37,6 @@ const modalElementSlice = createSlice({
       state.mode = null;
       state.data = null;
     },
-    // updateModalData: (state, action: PayloadAction<Partial<ModalData>>) => {
-    //       state.data = { ...state.data, ...action.payload };
-    //     },
-    //   },
   },
 });
 
