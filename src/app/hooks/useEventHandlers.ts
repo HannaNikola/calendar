@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "../store/store";
 import { CalendarEvent } from "../types/typesApi";
 import { addEventApi, deleteEventApi, updateEventApi } from "../api/eventsApi";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
-import { toDate } from "../utils/date";
+import { toDate, toISOString } from "../utils/date";
 import {
   closeElementModal,
   openElementModal,
@@ -11,16 +11,14 @@ import {
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
 
 
-
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { events } = useSelector((state: RootState) => state.eventData);
 
-  const { selectedId, type, mode, isOpen } = useSelector(
+  const { data,  mode, isOpen } = useSelector(
     (state: RootState) => state.modal
   );
   const selectedEvent = useSelector((state: RootState) =>
-    state.eventData.events.find((item) => item._id === selectedId)
+    state.eventData.events.find((item) => item._id === data?.selectedId)
   );
 
   const handleSlotAction = (
@@ -33,36 +31,32 @@ export const useEventHandlers = () => {
     let end: Date;
 
     if ("start" in arg) {
-     
       start = arg.start;
       end = arg.end ?? new Date(arg.start.getTime() + 60 * 60 * 1000);
     } else {
-     
       start = arg.date;
       end = new Date(arg.date.getTime() + 60 * 60 * 1000);
     }
-
-    setSlotData({
-      slotStart: start,
-      slotEnd: end,
-    });
 
     dispatch(
       openElementModal({
         mode: "new",
         type: "event",
-        selectedId: undefined,
+        data: {
+          slotStart: toISOString(start),
+          slotEnd: toISOString(end),
+          selectedId: null,
+        },
       })
     );
   };
-
 
   const handleSelectEvent = (arg: EventClickArg) => {
     dispatch(
       openElementModal({
         mode: "update",
         type: "event",
-        selectedId: arg.event.id,
+        data: { selectedId: arg.event.id },
       })
     );
   };
@@ -70,37 +64,36 @@ export const useEventHandlers = () => {
   const handelAddEvent = (eventData: CalendarEvent) => {
     if (!eventData.start || !eventData.end) return;
 
-    const payload = {
-      title: eventData.title,
-      start: new Date(eventData.start),
-      end: new Date(eventData.end),
-      allDay: eventData.allDay ?? false,
-      addTask: eventData.addTask ?? false,
-    };
-
-    return dispatch(addEventApi(payload))
+    return dispatch(
+      addEventApi({
+        title: eventData.title,
+        start: new Date(eventData.start),
+        end: new Date(eventData.end),
+        allDay: eventData.allDay ?? false,
+        addTask: eventData.addTask ?? false,
+      })
+    )
       .unwrap()
-      .finally(() => {
-        dispatch(closeElementModal());
-      });
+      .finally(() => dispatch(closeElementModal()));
   };
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
-    const eventId = eventData._id;
-    if (!eventId) return;
+    if (!eventData._id) return;
 
-    const payload = {
-      title: eventData.title,
-      start: new Date(eventData.start!),
-      end: new Date(eventData.end!),
-      allDay: eventData.allDay,
-      addTask: eventData.addTask,
-    };
-    return dispatch(updateEventApi({ id: eventId, eventData: payload }))
+    return dispatch(
+      updateEventApi({
+        id: eventData._id,
+        eventData: {
+          title: eventData.title,
+          start: new Date(eventData.start!),
+          end: new Date(eventData.end!),
+          allDay: eventData.allDay,
+          addTask: eventData.addTask,
+        },
+      })
+    )
       .unwrap()
-      .finally(() => {
-        dispatch(closeElementModal());
-      });
+      .finally(() => dispatch(closeElementModal()));
   };
 
   const handleDeleteEvent = () => {

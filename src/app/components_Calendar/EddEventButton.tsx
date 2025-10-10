@@ -5,19 +5,24 @@ import { useDispatch} from "react-redux";
 import { AppDispatch} from "../store/store";
 import { useScreenType } from "../hooks/useScreenType";
 import {  openElementModal,} from "../store/sharedComponent/modalReducer";
+import { toISOString } from "../utils/date";
+
+
 
 const AddEventButton = () => {
   const dispatch = useDispatch<AppDispatch>();
   const screenType = useScreenType();
 
   const handleAddClick = () => {
-    const now = new Date();
-    const end = new Date(now.getTime() + 60 * 60 * 1000);
+   const now = toISOString(new Date())
+   const end = toISOString(new Date(Date.now() + 60 * 60 * 1000))
     dispatch(
+      
       openElementModal({
         mode: "new",
         type: "event",
-        selectedId: undefined
+        data:{slotStart: now, slotEnd: end },
+       
       })
     );
   };
