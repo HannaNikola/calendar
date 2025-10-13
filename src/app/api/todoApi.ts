@@ -4,6 +4,10 @@ import { CalendarTodo } from "../types/typesTodoApi";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
+
+
+
+
 export const fetchTodosApi = createAsyncThunk(
   "allTodo/fethcAll",
   async (_, thunkAPI) => {
@@ -24,18 +28,14 @@ export const addTodoApi = createAsyncThunk(
   async (
     newTodo: {
       title: string;
-      description: string;
-      isImportant: boolean;
-      isCompleted: boolean;
-      end: Date | string;
-      allDay: boolean;
-      eventId: string;
-      repeat: string;
-      reminder: {
-        triggerBefore: string;
-        notifyAt: Date | null;
-        notified: boolean;
-      };
+      description?: string;
+      isImportant?: boolean;
+      isCompleted?: boolean;
+      start?: Date | string;
+      end?: Date | string;
+      allDay?: boolean;
+      eventId?: string | null;
+      
     },
     thunkAPI
   ) => {

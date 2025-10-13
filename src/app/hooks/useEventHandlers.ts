@@ -66,6 +66,7 @@ export const useEventHandlers = () => {
     return dispatch(
       addEventApi({
         title: eventData.title,
+        description: eventData.description,
         start: new Date(eventData.start),
         end: new Date(eventData.end),
         allDay: eventData.allDay ?? false,

@@ -5,6 +5,11 @@ import { toISOString } from "../utils/date";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
+
+
+
+
+
 export const fetchEventsApi = createAsyncThunk(
   "allEvents/fetchAll",
   async (_, thunkAPI) => {
@@ -25,10 +30,19 @@ export const addEventApi = createAsyncThunk(
   async (
     newEvent: {
       title: string;
-      start: Date | string;
-      end: Date | string;
-      allDay: boolean;
-      addTask: boolean;
+      description?: string;
+      start?: Date | string | null;
+      end?: Date | string | null;
+      allDay?: boolean;
+      addTask?: boolean;
+      todoId?: string | null;
+      colorEvent?: "none" | "home" | "work" | "isektor";
+      repeat?: "none" | "daily" | "workday" | "weekend";
+      reminder?: {
+        triggerBefore?: "30min" | "1hour" | "1day" | "none";
+        notifyAt?: Date | null;
+        notified?: boolean;
+      };
     },
     thunkAPI
   ) => {
