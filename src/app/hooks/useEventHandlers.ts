@@ -11,6 +11,7 @@ import {
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
 
 
+
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -77,6 +78,7 @@ export const useEventHandlers = () => {
       .finally(() => dispatch(closeElementModal()));
   };
 
+
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     if (!eventData._id) return;
 
@@ -85,6 +87,7 @@ export const useEventHandlers = () => {
         id: eventData._id,
         eventData: {
           title: eventData.title,
+          description: eventData.description,
           start: toDate(eventData.start),
           end: toDate(eventData.end),
           allDay: eventData.allDay,
