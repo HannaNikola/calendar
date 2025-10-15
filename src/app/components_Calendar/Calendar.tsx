@@ -57,6 +57,7 @@ const CalendarEl = () => {
   const parsedEvents = events.map((event) => ({
     ...event,
     id: event._id,
+    
     start: event.start ? new Date(event.start) : new Date(),
     end: event.end ? new Date(event.end) : new Date(),
     allDay: event.allDay ?? false,

@@ -16,15 +16,13 @@ import { addTodoApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
-import { closeElementModal } from "../store/sharedComponent/modalReducer";
+
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
     .max(70, "Title must be less than 100 characters")
     .required("title can`t be empty"),
 });
-
-
 
 export const ModalEvent = ({
   onClose,
@@ -34,7 +32,6 @@ export const ModalEvent = ({
 }: EventModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const { mode, isOpen } = useSelector((state: RootState) => state.modal);
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
@@ -46,12 +43,11 @@ export const ModalEvent = ({
   const isNew = mode === "new";
   const desRef = useRef<HTMLTextAreaElement | null>(null);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
-  
 
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
     useEventHandlers();
 
-    useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       const adjustHeight = (el: HTMLTextAreaElement | null) => {
         if (!el) return;
@@ -61,38 +57,29 @@ export const ModalEvent = ({
       adjustHeight(titleRef.current);
       adjustHeight(desRef.current);
     }
-  }, [isOpen, title, description]); 
+  }, [isOpen, title, description]);
 
-  
+
   useEffect(() => {
     const now = new Date();
     const start = toDate(selectedEvent?.start ?? slotStart ?? now);
     const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
 
-    if (!start) return;
+    if (!start) return; 
 
     setTitle(selectedEvent?.title ?? "");
-    setDescription(selectedEvent?.description ?? "")
+    setDescription(selectedEvent?.description ?? "");
     setAllDay(selectedEvent?.allDay ?? false);
-    setAddTask(selectedEvent?.addTask ?? false)
+    setAddTask(selectedEvent?.addTask ?? false);
+
     setStartDay(start);
+    setEndDay(isNew ? start : end ?? start);
 
-    if (selectedEvent?.start) {
-      setStartTime(new Date(start.getHours(), start.getMinutes()));
-    } else {
-      setStartTime(new Date());
-    }
+    
+    setStartTime(start ? new Date(start) : new Date());
 
-    if (isNew) {
-      setEndDay(start);
-
-      setEndTime(new Date());
-    } else if (end) {
-      setEndDay(end);
-      setEndTime(new Date(end.getHours(), end.getMinutes()));
-    } else {
-      setEndTime(new Date());
-    }
+    
+    setEndTime(end ? new Date(end) : new Date());
   }, [selectedEvent, slotStart, slotEnd, isNew]);
 
   const combineDateTime = (
@@ -105,27 +92,13 @@ export const ModalEvent = ({
     return result;
   };
 
-  const handleStartDayChange = (date: Date | null) => {
-    setStartDay(date);
 
-    if (date && isNew) {
-      setEndDay(date);
-    }
+  const handleStartDayChange = (date: Date | null) => {
+    if (!date) return;
+    setStartDay(date);
+    if (!endDay || endDay < date) setEndDay(date);
   };
 
-  // const handleStartTimeChange = (time: Date | null) => {
-  //   setStartTime(time);
-  //   if (time && isNew) {
-  //     const oneHourLater = new Date(
-  //       1970,
-  //       0,
-  //       1,
-  //       time.getHours() + 1,
-  //       time.getMinutes()
-  //     );
-  //     setEndTime(oneHourLater);
-  //   }
-  // };
   const handleStartTimeChange = (time: Date | null) => {
     setStartTime(time);
     if (time && isNew) {
@@ -140,22 +113,13 @@ export const ModalEvent = ({
     }
   };
 
-  // const handleEndDayChange = (date: Date | null) => {
-  //   setEndDay(date);
-  //   if (date && startTime) {
-  //     setEndTime(
-  //       new Date(1970, 0, 1, startTime.getHours() + 1, startTime.getMinutes())
-  //     );
-  //   }
-  // };
 
   const handleEndDayChange = (date: Date | null) => {
+    if (!date) return;
     setEndDay(date);
-    if (date && startTime) {
-      setEndTime(new Date(startTime.getHours() + 1, startTime.getMinutes()));
-    }
+    if (startDay && date < startDay) setStartDay(date);
   };
-
+  
   const handleSubmit = async () => {
     try {
       await EventSchema.validate({ title });
@@ -190,8 +154,7 @@ export const ModalEvent = ({
             isCompleted: false,
             end: createdEvent.end,
             allDay: createdEvent.allDay,
-            eventId: createdEvent._id
-            
+            eventId: createdEvent._id,
           })
         );
       }
@@ -208,7 +171,6 @@ export const ModalEvent = ({
       }
     }
   };
-
 
   if (!isOpen) return null;
 
@@ -305,7 +267,7 @@ export const ModalEvent = ({
               type="checkbox"
               name="addTask"
               checked={addTask}
-              onChange={(e)=>setAddTask(e.target.checked)}
+              onChange={(e) => setAddTask(e.target.checked)}
               className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
              before:flex before:items-center before:justify-center 
              checked:before:content-['✓'] checked:before:text-white 
@@ -313,20 +275,20 @@ export const ModalEvent = ({
             />
           </div>
         </div>
-        { addTask &&  (
+        {addTask && (
           <textarea
-          ref={desRef}
-          placeholder="Type your description maximum 600 characters ..."
-          value={description}
-          maxLength={600}
-          onChange={(e) => setDescription(e.target.value)}
-          className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 "
-          onInput={(e) => {
-            e.currentTarget.style.height = "auto";
-            e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-          }}
-        />
-         )}
+            ref={desRef}
+            placeholder="Type your description maximum 600 characters ..."
+            value={description}
+            maxLength={600}
+            onChange={(e) => setDescription(e.target.value)}
+            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 "
+            onInput={(e) => {
+              e.currentTarget.style.height = "auto";
+              e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+            }}
+          />
+        )}
       </div>
 
       <div className="flex flex-row justify-between">

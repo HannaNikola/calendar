@@ -10,6 +10,7 @@ export interface ModalData {
   slotStart?: Date | string | null;
   slotEnd?: Date | string | null;
   selectedId?: string | null;
+  
 }
 
 export interface ModalState {
@@ -18,3 +19,11 @@ export interface ModalState {
   mode?: ModalMode | null;
   data?: ModalData | null;
 }
+
+
+
+
+
+
+
+
