@@ -63,6 +63,7 @@ export const useEventHandlers = () => {
 
   const handelAddEvent = (eventData: CalendarEvent) => {
     if (!eventData.start || !eventData.end) return;
+    
 
     return dispatch(
       addEventApi({
