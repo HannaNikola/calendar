@@ -26,7 +26,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
       : "border-grey-border bg-sky-50 ";
 
   const formattedEnd = item.end ? toDate(item.end)?.toLocaleDateString() : "—";
-  const [localCompleted, setLocalCompleted] = useState(item.isCompleted);
+  const [localCompleted, setLocalCompleted] = useState(item.isCompletedTask);
   const screenType = useScreenType();
 
   return (
@@ -90,7 +90,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
                   dispatch(
                     completedTodoApi({
                       id: item._id,
-                      isCompleted: !item.isCompleted,
+                      isCompletedTask: !item.isCompletedTask,
                     })
                   );
                 }

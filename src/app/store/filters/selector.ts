@@ -30,11 +30,10 @@ export const selectFilteredTodos = createSelector(
     if (entity === "favorite") {
       filtered = filtered.filter((todo) => todo.isImportant);
     } else if (entity === "completed") {
-      filtered = filtered.filter((todo) => todo.isCompleted);
+      filtered = filtered.filter((todo) => todo.isCompletedTask);
     } else if (entity === "todo") {
-      filtered = filtered.filter((todo) => !todo.isCompleted );
+      filtered = filtered.filter((todo) => !todo.isCompletedTask );
     }
-
     if (!query) return filtered;
 
     const fuse = new Fuse(filtered, { keys: ["title"], threshold: 0.4 });

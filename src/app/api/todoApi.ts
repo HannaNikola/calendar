@@ -30,7 +30,7 @@ export const addTodoApi = createAsyncThunk(
       title: string;
       description?: string;
       isImportant?: boolean;
-      isCompleted?: boolean;
+      isCompletedTask?: boolean;
       start?: Date | string;
       end?: Date | string;
       allDay?: boolean;
@@ -63,7 +63,7 @@ export const updateTodotApi = createAsyncThunk(
             const response = await axios.patch(
                 `/api/todo/${payload.id}`, sanitizedTodoData
             );
-            console.log("updateTodo", response.data)
+            console.log('POST', response.data)
             return response.data;
         }catch(error){
             const err = error as AxiosError;
@@ -89,11 +89,12 @@ try{
 )
 
 
+
 export const completedTodoApi = createAsyncThunk(
     "todoData/ completedTodo",
-    async(payload:{id:string; isCompleted: boolean}, thunkAPI)=>{
+    async(payload:{id:string; isCompletedTask: boolean}, thunkAPI)=>{
         try{
-            const response = await axios.patch(`/api/todo/${payload.id}`, {isCompleted: payload.isCompleted})
+            const response = await axios.patch(`/api/todo/${payload.id}`, {isCompletedTask: payload.isCompletedTask})
             return response.data
         }catch(error){
             const err = error as AxiosError;
@@ -101,7 +102,6 @@ export const completedTodoApi = createAsyncThunk(
         }
     }
 )
-
 export const deleteTodoApi = createAsyncThunk<string,string>(
     "todoData/deleteTodo",
     async(id:string, thunkAPI)=>{

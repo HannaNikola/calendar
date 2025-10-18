@@ -73,6 +73,7 @@ export const useEventHandlers = () => {
         end: new Date(eventData.end),
         allDay: eventData.allDay ?? false,
         addTask: eventData.addTask ?? false,
+        isCompletedTask: eventData.isCompletedTask ?? false
       })
     )
       .unwrap()
@@ -82,6 +83,7 @@ export const useEventHandlers = () => {
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     if (!eventData._id) return;
+
 
     return dispatch(
       updateEventApi({
@@ -93,6 +95,7 @@ export const useEventHandlers = () => {
           end: toDate(eventData.end),
           allDay: eventData.allDay,
           addTask: eventData.addTask,
+          isCompletedTask: eventData.isCompletedTask
         },
       })
     )

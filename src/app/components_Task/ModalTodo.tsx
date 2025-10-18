@@ -151,13 +151,13 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
                     dispatch(
                       completedTodoApi({
                         id: selectedItem._id,
-                        isCompleted: !selectedItem.isCompleted,
+                        isCompletedTask: !selectedItem.isCompletedTask,
                       })
                     );
                   }
                 }}
               >
-                {selectedItem.isCompleted ? (
+                {selectedItem.isCompletedTask ? (
                   <CircleCheckBig size={20} />
                 ) : (
                   <Circle size={20} />
