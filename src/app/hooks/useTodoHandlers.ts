@@ -17,6 +17,7 @@ const selectedItem = useSelector((state: RootState) =>
     updatedFields: Partial<CalendarTodo>
   ) => {
     if (!todoId) return;
+    
 
     await dispatch(updateTodotApi({ id: todoId, todoData: updatedFields }));
     dispatch(closeElementModal());

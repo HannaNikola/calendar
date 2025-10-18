@@ -16,7 +16,7 @@ import { addTodoApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
-
+import { TooltipDesktop } from "../shared/ui/Tooltip";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -40,6 +40,7 @@ export const ModalEvent = ({
   const [endDay, setEndDay] = useState<Date | null>(null);
   const [allDay, setAllDay] = useState(false);
   const [addTask, setAddTask] = useState(false);
+  const [isCompletedTask, setIsCompletedTask] = useState(false);
   const isNew = mode === "new";
   const desRef = useRef<HTMLTextAreaElement | null>(null);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
@@ -59,26 +60,21 @@ export const ModalEvent = ({
     }
   }, [isOpen, title, description]);
 
-
   useEffect(() => {
     const now = new Date();
     const start = toDate(selectedEvent?.start ?? slotStart ?? now);
     const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
 
-    if (!start) return; 
+    if (!start) return;
 
     setTitle(selectedEvent?.title ?? "");
     setDescription(selectedEvent?.description ?? "");
     setAllDay(selectedEvent?.allDay ?? false);
     setAddTask(selectedEvent?.addTask ?? false);
-
     setStartDay(start);
     setEndDay(isNew ? start : end ?? start);
-
-    
     setStartTime(start ? new Date(start) : new Date());
 
-    
     setEndTime(end ? new Date(end) : new Date());
   }, [selectedEvent, slotStart, slotEnd, isNew]);
 
@@ -91,7 +87,6 @@ export const ModalEvent = ({
     result.setHours(time.getHours(), time.getMinutes(), 0, 0);
     return result;
   };
-
 
   const handleStartDayChange = (date: Date | null) => {
     if (!date) return;
@@ -113,13 +108,12 @@ export const ModalEvent = ({
     }
   };
 
-
   const handleEndDayChange = (date: Date | null) => {
     if (!date) return;
     setEndDay(date);
     if (startDay && date < startDay) setStartDay(date);
   };
-  
+
   const handleSubmit = async () => {
     try {
       await EventSchema.validate({ title });
@@ -139,19 +133,20 @@ export const ModalEvent = ({
         end,
         allDay,
         addTask,
+        isCompletedTask,
       };
 
       const createdEvent = isNew
         ? await handelAddEvent(eventData)
         : await handelUpdateEvent(eventData);
 
-      if (addTask && createdEvent?._id) {
+      if (addTask && createdEvent?._id && !createdEvent.todoId) {
         await dispatch(
           addTodoApi({
             title: createdEvent.title,
             description: createdEvent.description,
             isImportant: false,
-            isCompleted: false,
+            isCompletedTask: false,
             end: createdEvent.end,
             allDay: createdEvent.allDay,
             eventId: createdEvent._id,
@@ -261,19 +256,46 @@ export const ModalEvent = ({
              text-sm cursor-pointer transition"
             />
           </div>
-          <div className="flex items-center justify-between">
-            <label className="mr-2 text-main">Add Task</label>
-            <input
-              type="checkbox"
-              name="addTask"
-              checked={addTask}
-              onChange={(e) => setAddTask(e.target.checked)}
-              className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
-             before:flex before:items-center before:justify-center 
-             checked:before:content-['✓'] checked:before:text-white 
-             text-sm cursor-pointer transition"
-            />
-          </div>
+
+          {!addTask ? (
+            <div className="flex items-center justify-between">
+              <label className="mr-2 text-main">Add Task</label>
+              <input
+                type="checkbox"
+                checked={addTask}
+                onChange={(e) => {
+                  setAddTask(e.target.checked);
+                  setTimeout(()=>{
+                  setIsCompletedTask(false); 
+                  }, 350)
+                 
+                }}
+                className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
+      before:flex before:items-center before:justify-center 
+      checked:before:content-['✓'] checked:before:text-white 
+      text-sm cursor-pointer transition"
+              />
+            </div>
+          ) : (
+            <div className="flex items-center justify-between">
+              <label className="mr-2 text-main">Task completed</label>
+              <input
+                type="checkbox"
+                checked={isCompletedTask}
+                onChange={(e) => {
+                  setIsCompletedTask(e.target.checked);
+                  setTimeout(()=>{
+                   setAddTask(false); 
+                  }, 350)
+                  
+                }}
+                className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
+      before:flex before:items-center before:justify-center 
+      checked:before:content-['✓'] checked:before:text-white 
+      text-sm cursor-pointer transition"
+              />
+            </div>
+          )}
         </div>
         {addTask && (
           <textarea

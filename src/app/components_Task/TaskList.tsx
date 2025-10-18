@@ -24,7 +24,7 @@ export const TaskList = () => {
 
   const activeTodos =
     entity === "todo"
-      ? (queryResult as CalendarTodo[]).filter((item) => !item.isCompleted)
+      ? (queryResult as CalendarTodo[]).filter((item) => !item.isCompletedTask)
       : [];
 
   return (

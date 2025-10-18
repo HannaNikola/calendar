@@ -7,6 +7,7 @@ export interface CalendarEvent {
   end?: string | Date | null;
   allDay?: boolean;
   addTask?: boolean;
+  isCompletedTask: boolean;
   todoId?: string | null; 
   colorEvent?: "none" | "home" | "work" | "isektor";
   repeat?: "none" | "daily" | "workday" | "weekend";

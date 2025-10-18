@@ -20,7 +20,7 @@ export const TodoCompleted = () => {
     dispatch(fetchTodosApi());
   }, [dispatch]);
 
-  const isCompletedTodo = todos.filter((item) => item.isCompleted);
+  const isCompletedTodo = todos.filter((item) => item.isCompletedTask);
 
   const activeTodos: CalendarTodo[] = query
     ? (queryResult as CalendarTodo[])
@@ -52,3 +52,6 @@ export const TodoCompleted = () => {
     </div>
   );
 };
+
+
+

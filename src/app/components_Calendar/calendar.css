@@ -61,6 +61,11 @@
   padding: 4px;
 }
 
+/* fc-listPlugin-view fc-view fc-list fc-list-sticky */
+/* fc list */
+.fc-list{
+  width: 100% !important;
+}
 /* button header styles */
 
 .fc .fc-toolbar.fc-header-toolbar {
