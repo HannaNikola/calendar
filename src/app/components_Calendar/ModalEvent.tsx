@@ -16,7 +16,7 @@ import { addTodoApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
-import { TooltipDesktop } from "../shared/ui/Tooltip";
+import { CheckCheck } from "lucide-react";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -41,6 +41,7 @@ export const ModalEvent = ({
   const [allDay, setAllDay] = useState(false);
   const [addTask, setAddTask] = useState(false);
   const [isCompletedTask, setIsCompletedTask] = useState(false);
+  const [isEditTask, setIsEditTask] = useState(false);
   const isNew = mode === "new";
   const desRef = useRef<HTMLTextAreaElement | null>(null);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
@@ -71,10 +72,10 @@ export const ModalEvent = ({
     setDescription(selectedEvent?.description ?? "");
     setAllDay(selectedEvent?.allDay ?? false);
     setAddTask(selectedEvent?.addTask ?? false);
+    setIsCompletedTask(selectedEvent?.isCompletedTask ?? false);
     setStartDay(start);
     setEndDay(isNew ? start : end ?? start);
     setStartTime(start ? new Date(start) : new Date());
-
     setEndTime(end ? new Date(end) : new Date());
   }, [selectedEvent, slotStart, slotEnd, isNew]);
 
@@ -242,7 +243,7 @@ export const ModalEvent = ({
             />
           </div>
         </div>
-        <div className="flex justify-between items-center mb-8 ">
+        <div className="flex justify-between items-center mb-4 ">
           <div className="flex items-center justify-center ">
             <label className="flex text-main mr-2">All day event</label>
             <input
@@ -257,44 +258,46 @@ export const ModalEvent = ({
             />
           </div>
 
-          {!addTask ? (
-            <div className="flex items-center justify-between">
-              <label className="mr-2 text-main">Add Task</label>
-              <input
-                type="checkbox"
-                checked={addTask}
-                onChange={(e) => {
-                  setAddTask(e.target.checked);
-                  setTimeout(()=>{
-                  setIsCompletedTask(false); 
-                  }, 350)
-                 
-                }}
-                className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
+          {!isCompletedTask && (
+            <>
+              {!addTask ? (
+                <div className="flex items-center justify-between">
+                  <label className="mr-2 text-main">Add Task</label>
+                  <input
+                    type="checkbox"
+                    checked={addTask}
+                    onChange={(e) => {
+                      setAddTask(e.target.checked);
+                      setTimeout(() => {
+                        setIsCompletedTask(false);
+                      }, 300);
+                    }}
+                    className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
       before:flex before:items-center before:justify-center 
       checked:before:content-['✓'] checked:before:text-white 
       text-sm cursor-pointer transition"
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-between">
-              <label className="mr-2 text-main">Task completed</label>
-              <input
-                type="checkbox"
-                checked={isCompletedTask}
-                onChange={(e) => {
-                  setIsCompletedTask(e.target.checked);
-                  setTimeout(()=>{
-                   setAddTask(false); 
-                  }, 350)
-                  
-                }}
-                className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
+                  />
+                </div>
+              ) : (
+                <div className="flex items-center justify-between ">
+                  <label className="mr-2 text-main">Task completed</label>
+                  <input
+                    type="checkbox"
+                    checked={isCompletedTask}
+                    onChange={(e) => {
+                      setIsCompletedTask(e.target.checked);
+                      setTimeout(() => {
+                        setAddTask(false);
+                      }, 300);
+                    }}
+                    className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
       before:flex before:items-center before:justify-center 
       checked:before:content-['✓'] checked:before:text-white 
       text-sm cursor-pointer transition"
-              />
-            </div>
+                  />
+                </div>
+              )}
+            </>
           )}
         </div>
         {addTask && (
@@ -312,7 +315,18 @@ export const ModalEvent = ({
           />
         )}
       </div>
-
+      {isCompletedTask && (
+        <div className="flex">
+          <CheckCheck size={20} className=" mr-2 text-green-600 " />
+          <p className="text-sky-dark mb-4 line-clamp-1 ">
+            Task completed:
+            <span className="text-sky-dark line-through ml-1 ">
+              {description}
+            </span>
+          </p>
+          {/* <button>edit</button> */}
+        </div>
+      )}
       <div className="flex flex-row justify-between">
         {isNew && (
           <Button

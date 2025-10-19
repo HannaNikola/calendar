@@ -28,7 +28,7 @@ export const ModalWrapper = ({
       className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50 p-4"
     >
       <div
-        className={`relative bg-white rounded-lg shadow-lg  p-4 ${className}`}
+        className={`relative bg-white rounded-lg shadow-lg  p-4 animate-fadeIn ${className}`}
       >
         {withCloseButton && (
           <button
