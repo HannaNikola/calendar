@@ -127,9 +127,10 @@ export const ModalEvent = ({
       const start = combineDateTime(startDay, startTime);
       const end = combineDateTime(endDay, endTime);
 
-      if (!start || !end) {
+    if (!start || !end) {
         return;
       }
+      
 
       const eventData: CalendarEvent = {
         ...selectedEvent,

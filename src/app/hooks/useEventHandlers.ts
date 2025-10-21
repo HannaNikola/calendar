@@ -51,6 +51,35 @@ export const useEventHandlers = () => {
     );
   };
 
+  // const handleSelectEvent = (arg: EventClickArg) => {
+  //   dispatch(
+  //     openElementModal({
+  //       mode: "update",
+  //       type: "event",
+  //       data:{selectedId: arg.event.id },
+  //     })
+  //   );
+  // };
+
+  // const handelAddEvent = (eventData: CalendarEvent) => {
+  //   if (!eventData.start || !eventData.end) return;
+    
+
+  //   return dispatch(
+  //     addEventApi({
+  //       title: eventData.title,
+  //       description: eventData.description,
+  //       start: new Date(eventData.start),
+  //       end: new Date(eventData.end),
+  //       allDay: eventData.allDay ?? false,
+  //       addTask: eventData.addTask ?? false,
+  //       isCompletedTask: eventData.isCompletedTask ?? false
+  //     })
+  //   )
+  //     .unwrap()
+  //     .finally(() => dispatch(closeElementModal()));
+  // };
+
   const handleSelectEvent = (arg: EventClickArg) => {
     dispatch(
       openElementModal({
@@ -64,7 +93,7 @@ export const useEventHandlers = () => {
   const handelAddEvent = (eventData: CalendarEvent) => {
     if (!eventData.start || !eventData.end) return;
     
-
+    
     return dispatch(
       addEventApi({
         title: eventData.title,
@@ -79,7 +108,6 @@ export const useEventHandlers = () => {
       .unwrap()
       .finally(() => dispatch(closeElementModal()));
   };
-
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
     if (!eventData._id) return;
