@@ -12,11 +12,13 @@ const selectedItem = useSelector((state: RootState) =>
   state.todo.todos.find(todo => todo._id === data?.selectedId)
 );
 
+
+
   const handelUpdateTodo = async (
     todoId: string,
     updatedFields: Partial<CalendarTodo>
   ) => {
-    if (!todoId) return;
+    
     
 
     await dispatch(updateTodotApi({ id: todoId, todoData: updatedFields }));

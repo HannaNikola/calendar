@@ -51,6 +51,7 @@ export const TaskList = () => {
     <ModalTodo
       isOpen={isOpen}
       onClose={() => dispatch(closeElementModal())}
+      
     />
   )}
 </>
