@@ -11,6 +11,7 @@ export interface EventModalProps {
   slotEnd?: Date | string | null ;
   selectedEvent?: CalendarEvent | null;
   addTask?: boolean;
+  isImportant?: boolean;
   isCompletedTask?: boolean;
 }
 
