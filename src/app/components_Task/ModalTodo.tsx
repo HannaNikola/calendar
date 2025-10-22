@@ -4,6 +4,7 @@ import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addTodoApi,
   completedTodoApi,
   favoriteTodoApi,
   fetchTodosApi,
@@ -13,6 +14,10 @@ import { Button } from "../shared/ui/Button";
 import { Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
+import { toISOString } from "../utils/date";
+import { AxiosError } from "axios";
+
+
 
 const TodoSchema = Yup.object().shape({
   title: Yup.string()
@@ -27,16 +32,16 @@ const TodoSchema = Yup.object().shape({
 interface ModalTodoProps {
   isOpen: boolean;
   onClose: () => void;
-  mode?: "new" | "update";
+  mode?: "newTodo" | "editTodo";
 }
 
-export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
+export const ModalTodo = ({ isOpen, onClose}: ModalTodoProps) => {
   const { handeDeleteTodo, handelUpdateTodo } = useTodoHandlers();
   const dispatch = useDispatch<AppDispatch>();
   const { todos } = useSelector((state: RootState) => state.todo);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { data } = useSelector((state: RootState) => state.modal);
+  const { data , mode } = useSelector((state: RootState) => state.modal);
   const selectedItem = todos.find((todo) => todo._id === data?.selectedId);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const desRef = useRef<HTMLTextAreaElement | null>(null);
@@ -46,10 +51,9 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!selectedItem) return;
 
-    setTitle(selectedItem.title || "");
-    setDescription(selectedItem.description || "");
+    setTitle(selectedItem?.title || "");
+    setDescription(selectedItem?.description || "");
   }, [selectedItem]);
 
   useEffect(() => {
@@ -64,19 +68,41 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     }
   }, [isOpen, title, description]);
 
-  const handelTodoSubmit = async () => {
-    if (!selectedItem) return;
+
+    const handelTodoSubmit = async () => {
+    
     try {
       await TodoSchema.validate({ title, description });
 
-      await handelUpdateTodo(selectedItem._id, {
+      if(selectedItem?._id){
+         await handelUpdateTodo(selectedItem._id, {
         title,
         description,
-      });
-    } catch (error) {}
+      }
+      
+    ) }else{
+        await dispatch(addTodoApi({
+            title,
+            description,
+            isImportant: false,
+            isCompletedTask: false,
+            // end: toISOString(new Date()) | null,
+            allDay:false,
+            
+          })).unwrap()
+          onClose()
+      }
+     
+    } catch (error) {
+      const err = error as AxiosError;
+    }
   };
 
-  if (!selectedItem) return null;
+
+
+
+ 
+  if (!isOpen) return null;
 
   return (
     <ModalWrapper
@@ -109,7 +135,8 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
           }}
         />
         <div className="flex mt-3 justify-between items-center">
-          <div className="flex  ">
+          {mode === 'editTodo'&&(
+            <div className="flex  ">
             <Button
               onClick={handelTodoSubmit}
               variant={"default"}
@@ -119,6 +146,19 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
               Update
             </Button>
           </div>
+          )}
+          {mode === 'newTodo' &&(
+            <div className="flex  ">
+            <Button
+              onClick={handelTodoSubmit}
+              variant={"default"}
+              size={"small"}
+              className="mr-7"
+            >
+              Add Task
+            </Button>
+          </div>
+          )}
 
           <div className="flex gap-3">
             <TooltipDesktop content="Favorite">
@@ -126,6 +166,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
                 className="hover:animate-pulse"
                 onClick={(e) => {
                   e.stopPropagation();
+                  if(!selectedItem?._id) return
                   dispatch(
                     favoriteTodoApi({
                       id: selectedItem._id,
@@ -137,27 +178,29 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
                 <Star
                   size={20}
                   className={
-                    selectedItem.isImportant ? "fill-amber-300" : "stroke-black"
+                    selectedItem?.isImportant ? "fill-amber-300" : "stroke-black"
                   }
                 />
-              </button>
+               </button>
             </TooltipDesktop>
-            <TooltipDesktop content="Complete task">
+        {mode === 'editTodo' &&(
+             <>
+  <TooltipDesktop content="Complete task">
               <button
                 className="hover:animate-pulse"
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (selectedItem._id) {
+                  if (selectedItem?._id) {
                     dispatch(
                       completedTodoApi({
-                        id: selectedItem._id,
-                        isCompletedTask: !selectedItem.isCompletedTask,
+                        id: selectedItem?._id,
+                        isCompletedTask: !selectedItem?.isCompletedTask,
                       })
                     );
                   }
                 }}
               >
-                {selectedItem.isCompletedTask ? (
+                {selectedItem?.isCompletedTask ? (
                   <CircleCheckBig size={20} />
                 ) : (
                   <Circle size={20} />
@@ -167,14 +210,53 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
             <TooltipDesktop content="Delete task">
               <button
                 className="hover:animate-pulse"
+               
                 onClick={(e) => {
                   e.stopPropagation();
+                  if(!selectedItem?._id)return;
                   handeDeleteTodo(selectedItem._id, true);
                 }}
               >
                 <Trash2 size={20} />
               </button>
             </TooltipDesktop>
+            </>
+)}
+            {/* <TooltipDesktop content="Complete task">
+              <button
+                className="hover:animate-pulse"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (selectedItem?._id) {
+                    dispatch(
+                      completedTodoApi({
+                        id: selectedItem?._id,
+                        isCompletedTask: !selectedItem?.isCompletedTask,
+                      })
+                    );
+                  }
+                }}
+              >
+                {selectedItem?.isCompletedTask ? (
+                  <CircleCheckBig size={20} />
+                ) : (
+                  <Circle size={20} />
+                )}
+              </button>
+            </TooltipDesktop>
+            <TooltipDesktop content="Delete task">
+              <button
+                className="hover:animate-pulse"
+               
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if(!selectedItem?._id)return;
+                  handeDeleteTodo(selectedItem._id, true);
+                }}
+              >
+                <Trash2 size={20} />
+              </button>
+            </TooltipDesktop> */}
           </div>
         </div>
       </div>
