@@ -36,6 +36,7 @@ export const addEventApi = createAsyncThunk(
       allDay?: boolean;
       addTask?: boolean;
       isCompletedTask?: boolean;
+      isImportant?:boolean;
       todoId?: string | null;
       colorEvent?: "none" | "home" | "work" | "isektor";
       repeat?: "none" | "daily" | "workday" | "weekend";

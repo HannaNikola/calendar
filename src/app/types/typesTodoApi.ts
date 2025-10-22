@@ -3,6 +3,7 @@ export interface CalendarTodo {
   title?: string;
   description?: string;
   isImportant?: boolean;
+  addTask?: boolean;
   isCompletedTask?: boolean;
   start?: string | Date | null;
   end?: string | Date | null;
