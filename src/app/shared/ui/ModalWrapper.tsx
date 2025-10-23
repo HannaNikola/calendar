@@ -16,10 +16,11 @@ export const ModalWrapper = ({
   withCloseButton = true,
   children,
 }: ModalWrapperProps) => {
-  if (!isOpen) return null;
-
   const [visible, setIsVisible] = useState(isOpen);
   const [animate, setanimAte] = useState(false);
+  
+
+  
 
   useEffect(() => {
     if (isOpen) {
@@ -30,16 +31,18 @@ export const ModalWrapper = ({
       const timer = setTimeout(() => setIsVisible(true), 300);
       return () => clearTimeout(timer);
     }
-    [isOpen];
-  });
+  },[isOpen]);
 
-  if (!visible) return null;
+  
 
   const handelOverlowClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
+
+  if (!visible) return null;
+  // if (!isOpen) return null;
   return (
     <div
       onClick={handelOverlowClick}

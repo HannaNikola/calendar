@@ -48,10 +48,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const desRef = useRef<HTMLTextAreaElement | null>(null);
 
-  useEffect(() => {
-    dispatch(fetchTodosApi());
-  }, [dispatch]);
-
+  
   useEffect(() => {
     setTitle(selectedItem?.title || "");
     setDescription(selectedItem?.description || "");
