@@ -212,7 +212,7 @@ export const ModalEvent = ({
               onChange={handleStartDayChange}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
             />
             <DatePicker
               selected={startTime}
@@ -224,7 +224,7 @@ export const ModalEvent = ({
               timeIntervals={5}
               timeCaption="Время"
               placeholderText="Select the time"
-              className="rounded w-[150px] lg:w-[250px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              className="rounded w-[150px] lg:w-[250px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
             />
           </div>
           <div className="flex flex-1 mb-2 gap-2">
@@ -233,7 +233,7 @@ export const ModalEvent = ({
               onChange={handleEndDayChange}
               dateFormat="dd-MM-yyyy"
               placeholderText="Select the day"
-              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
             />
             <DatePicker
               selected={endTime}
@@ -245,7 +245,7 @@ export const ModalEvent = ({
               timeIntervals={5}
               timeCaption="Time"
               placeholderText="Select the time"
-              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-lg"
+              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
             />
           </div>
         </div>
@@ -326,7 +326,7 @@ export const ModalEvent = ({
             value={description}
             maxLength={600}
             onChange={(e) => setDescription(e.target.value)}
-            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 "
+            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 shadow-md"
             onInput={(e) => {
               e.currentTarget.style.height = "auto";
               e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;

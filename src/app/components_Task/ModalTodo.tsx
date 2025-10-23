@@ -14,8 +14,11 @@ import { Button } from "../shared/ui/Button";
 import { Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
-import { toISOString } from "../utils/date";
 import { AxiosError } from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../components_Calendar/calendar.css";
+import "flatpickr/dist/themes/airbnb.css";
 
 const TodoSchema = Yup.object().shape({
   title: Yup.string()
@@ -39,6 +42,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const { todos } = useSelector((state: RootState) => state.todo);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [endDay, setEndDay] = useState<Date | null>(null);
   const { data, mode } = useSelector((state: RootState) => state.modal);
   const selectedItem = todos.find((todo) => todo._id === data?.selectedId);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
@@ -73,6 +77,8 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
         await handelUpdateTodo(selectedItem._id, {
           title,
           description,
+          start: endDay,
+          end: endDay,
         });
       } else {
         await dispatch(
@@ -82,7 +88,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
             isImportant: false,
             isCompletedTask: false,
             addTask: true,
-            // end: toISOString(new Date()) | null,
+            end: endDay,
             allDay: false,
           })
         ).unwrap();
@@ -99,7 +105,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     <ModalWrapper
       isOpen={isOpen}
       onClose={onClose}
-      className="w-full lg:w-[700px]  max-h-[85vh]  overflow-y-auto no-scrollbar max-lg:mt-10 max-lg:mb-28"
+      className="w-full lg:w-[700px]  max-h-[85vh]   no-scrollbar max-lg:mt-10 max-lg:mb-28"
     >
       <div className="flex flex-col w-full  mt-4 scrollbar-hide">
         <textarea
@@ -107,7 +113,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
           value={title}
           maxLength={100}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-1 mb-4 text-main resize-none overflow-hidden min-h-[30px]"
+          className="w-full border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-1 mb-4 text-main resize-none overflow-hidden min-h-[30px] shadow-md"
           onInput={(e) => {
             e.currentTarget.style.height = "auto";
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
@@ -119,12 +125,25 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
           value={description}
           maxLength={600}
           onChange={(e) => setDescription(e.target.value)}
-          className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 "
+          className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 shadow-md "
           onInput={(e) => {
             e.currentTarget.style.height = "auto";
             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
           }}
         />
+        {mode === "editTodo" && (
+          <div>
+            <p className="mr-3">Change deadline:</p>
+            <DatePicker
+              selected={endDay}
+              onChange={(date) => setEndDay(date)}
+              timeInputLabel="Time:"
+              dateFormat="MM/dd/yyyy h:mm aa"
+              showTimeInput
+              className="w-[200px] text-center bg-input-light rounded focus:outline-none focus:bg-hover-input shadow-md"
+            />
+          </div>
+        )}
         <div className="flex mt-3 justify-between items-center">
           {mode === "editTodo" && (
             <div className="flex  ">
@@ -132,7 +151,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
                 onClick={handelTodoSubmit}
                 variant={"default"}
                 size={"small"}
-                className="mr-7"
+                className="mr-7 shadow-md"
               >
                 Update
               </Button>
@@ -144,10 +163,20 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
                 onClick={handelTodoSubmit}
                 variant={"default"}
                 size={"small"}
-                className="mr-7"
+                className="mr-7 shadow-md"
               >
                 Add Task
               </Button>
+
+              <p className="mr-3">Deadline:</p>
+              <DatePicker
+                selected={endDay}
+                onChange={(date) => setEndDay(date)}
+                timeInputLabel="Time:"
+                dateFormat="MM/dd/yyyy h:mm aa"
+                showTimeInput
+                className="w-full  max-lg:[200px] text-center bg-input-light rounded focus:outline-none focus:bg-hover-input shadow-md"
+              />
             </div>
           )}
 

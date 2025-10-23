@@ -32,8 +32,8 @@ export const addTodoApi = createAsyncThunk(
       isImportant?: boolean;
       addTask?: boolean;
       isCompletedTask?: boolean;
-      start?: Date | string;
-      end?: Date | string;
+      start?: Date | string | null;
+      end?: Date | string | null;
       allDay?: boolean;
       eventId?: string | null;
       
