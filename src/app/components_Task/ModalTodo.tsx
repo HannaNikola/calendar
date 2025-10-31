@@ -7,7 +7,6 @@ import {
   addTodoApi,
   completedTodoApi,
   favoriteTodoApi,
-  fetchTodosApi,
 } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";

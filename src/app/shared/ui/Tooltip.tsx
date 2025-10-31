@@ -14,7 +14,8 @@ interface TooltiDesktoppProps {
 }
 
 export const TooltipDesktop = ({content, children, options}: TooltiDesktoppProps)=>{
-const ref = useRef<HTMLElement | null>(null)
+// const ref = useRef<HTMLElement | null>(null)
+const ref = useRef<HTMLSpanElement | null>(null)
 const screenType = useScreenType()
 
 useEffect(()=>{
@@ -24,9 +25,19 @@ useEffect(()=>{
     arrow: false,
     theme: 'gray',
     animation: 'fade',
+    appendTo: () => document.body,
+    allowHTML: true,
     ...options
   })
   return ()=> instance.destroy()
 },[screenType, content, options])
   return <span ref={ref}>{children}</span>
 }
+
+
+
+
+
+
+
+

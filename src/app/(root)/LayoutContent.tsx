@@ -38,8 +38,6 @@ export const LayoutContent = ({ children, screenType }: any) => {
             <ModalEvent
               isOpen={isOpen}
               onClose={() => dispatch(closeElementModal())}
-              // slotStart={slotData.slotStart}
-              // slotEnd={slotData.slotEnd}
                slotStart={data?.slotStart ?? new Date()}
               slotEnd={data?.slotEnd ?? new Date(new Date().getTime() + 60 * 60 * 1000)}
               selectedEvent={selectedEvent}

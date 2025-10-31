@@ -1,7 +1,6 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-import { useEffect } from "react";
 import { TaskItem } from "./TaskItem";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { ModalTodo } from "./ModalTodo";
@@ -16,9 +15,7 @@ export const TodoCompleted = () => {
   const query = useSelector((state: RootState) => state.filter.query);
   const queryResult = useSelector(selectFilterResult);
 
-  useEffect(() => {
-    dispatch(fetchTodosApi());
-  }, [dispatch]);
+
 
   const isCompletedTodo = todos.filter((item) => item.isCompletedTask);
 

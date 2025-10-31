@@ -13,7 +13,6 @@ import { useEventHandlers } from "../hooks/useEventHandlers";
 import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
-import { fetchEventsApi } from "../api/eventsApi";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
 
@@ -45,9 +44,6 @@ const CalendarEl = () => {
     slotEnd: null,
   });
 
-  useEffect(() => {
-    dispatch(fetchEventsApi());
-  }, [dispatch]);
 
   useEffect(() => {
     if (status === "loading") {
@@ -184,3 +180,18 @@ const CalendarEl = () => {
 };
 
 export default CalendarEl;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
