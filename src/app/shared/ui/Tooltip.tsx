@@ -14,7 +14,6 @@ interface TooltiDesktoppProps {
 }
 
 export const TooltipDesktop = ({content, children, options}: TooltiDesktoppProps)=>{
-// const ref = useRef<HTMLElement | null>(null)
 const ref = useRef<HTMLSpanElement | null>(null)
 const screenType = useScreenType()
 
