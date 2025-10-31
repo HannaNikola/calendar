@@ -61,7 +61,7 @@ export const Navbar: FC<AdaptiveProps> = () => {
       <TooltipDesktop content={tooltipContent}>
         <div className="relative flex flex-col items-center justify-center cursor-pointer">
           <span>{day}</span>
-          <span className="absolute bottom-1 w-1.5 h-1.5 bg-blue-500 rounded-full" />
+          <span className="absolute bottom-1 w-1.5 h-1.5 bg-[#3788d8] rounded-full" />
         </div>
       </TooltipDesktop>
     );
@@ -109,8 +109,8 @@ export const Navbar: FC<AdaptiveProps> = () => {
             // selected={selectedDate}
             renderDayContents={renderDayContents}
             monthsShown={2}
+            calendarClassName="mini-calendar"
             inline
-            className=""
           />
         </div>
       )}

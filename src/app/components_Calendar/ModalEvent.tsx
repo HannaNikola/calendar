@@ -44,6 +44,7 @@ export const ModalEvent = ({
   const isNew = mode === "new";
   const desRef = useRef<HTMLTextAreaElement | null>(null);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
     useEventHandlers();
@@ -127,10 +128,9 @@ export const ModalEvent = ({
       const start = combineDateTime(startDay, startTime);
       const end = combineDateTime(endDay, endTime);
 
-    if (!start || !end) {
+      if (!start || !end) {
         return;
       }
-      
 
       const eventData: CalendarEvent = {
         ...selectedEvent,
@@ -271,14 +271,16 @@ export const ModalEvent = ({
                 checked={isCompletedTask}
                 onChange={(e) => {
                   setIsCompletedTask(e.target.checked);
-                  setTimeout(() => {
+                  if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+                  timeoutRef.current = setTimeout(() => {
                     setAddTask(false);
                   }, 300);
                 }}
                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
-      before:flex before:items-center before:justify-center 
-      checked:before:content-['✓'] checked:before:text-white 
-      text-sm cursor-pointer transition"
+                before:flex before:items-center before:justify-center 
+                checked:before:content-['✓'] checked:before:text-white 
+                text-sm cursor-pointer transition"
               />
             </div>
           ) : isCompletedTask ? (
@@ -289,7 +291,8 @@ export const ModalEvent = ({
                 checked={addTask}
                 onChange={(e) => {
                   setAddTask(e.target.checked);
-                  setTimeout(() => {
+                  if(timeoutRef.current) clearTimeout(timeoutRef.current)
+                  timeoutRef.current = setTimeout(() => {
                     setIsCompletedTask(false);
                   }, 300);
                 }}
@@ -307,7 +310,8 @@ export const ModalEvent = ({
                 checked={addTask}
                 onChange={(e) => {
                   setAddTask(e.target.checked);
-                  setTimeout(() => {
+                  if(timeoutRef.current) clearTimeout(timeoutRef.current)
+                  timeoutRef.current = setTimeout(() => {
                     setIsCompletedTask(false);
                   }, 300);
                 }}
