@@ -2,7 +2,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { TaskItem } from "./TaskItem";
-import { useEffect } from "react";
 import { ModalTodo } from "./ModalTodo";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { selectFilterResult } from "../store/filters/selector";
@@ -16,10 +15,7 @@ export const TodoImportant = () => {
   const query = useSelector((state: RootState) => state.filter.query);
   const queryResult = useSelector(selectFilterResult);
 
-  useEffect(() => {
-    dispatch(fetchTodosApi());
-  }, [dispatch]);
-
+  
   const importantTodos = todos.filter((todo) => todo.isImportant);
 
   const activeTodos: CalendarTodo[] = query

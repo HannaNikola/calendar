@@ -134,6 +134,8 @@
 .react-datepicker__header {
   background: rgb(186, 230, 253);
   border: none;
+  width: 260px !important;
+  justify-content: center;
 }
 .react-datepicker-time__header {
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
@@ -141,6 +143,19 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: black !important; 
+}
+.react-datepicker{
+  border: none;
+  background-color: #F3F4F6;
+  
+}
+
+.react-datepicker__month-container{
+margin-bottom: 10px;
 }
 
 /* style for tooltip tippy */
@@ -151,3 +166,10 @@
 
 
 
+
+
+
+
+ 
+  
+   
