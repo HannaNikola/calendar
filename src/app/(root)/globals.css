@@ -85,6 +85,10 @@
     touch-action: pan-y; 
     
   }
+  
+  html.translated-ltr {
+  all: unset; /* убирает переведённые стили браузера */
+}
 
   /* Умный h-screen для всего проекта */
   .h-screen {

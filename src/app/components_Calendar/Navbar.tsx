@@ -9,6 +9,7 @@ import { FC } from "react";
 import { usePathname } from "next/navigation";
 import { useScreenType } from "../hooks/useScreenType";
 
+
 export const Navbar: FC<AdaptiveProps> = () => {
   const pathname = usePathname();
   const screenType = useScreenType();
@@ -49,8 +50,14 @@ export const Navbar: FC<AdaptiveProps> = () => {
           </span>
         </Link>
       </nav>
+     
     </section>
   );
 };
 
 export default Navbar;
+
+
+
+
+
