@@ -64,15 +64,13 @@ export const useEventHandlers = () => {
   };
 
   const handelAddEvent = (eventData: CalendarEvent) => {
-    if (!eventData.start || !eventData.end) return;
-    
     
     return dispatch(
       addEventApi({
         title: eventData.title,
         description: eventData.description,
-        start: new Date(eventData.start),
-        end: new Date(eventData.end),
+        start: eventData.start ? new Date(eventData.start as any) : null,
+        end: eventData.end ? new Date(eventData.end as any) : null,
         allDay: eventData.allDay ?? false,
         addTask: eventData.addTask ?? false,
         isCompletedTask: eventData.isCompletedTask ?? false
