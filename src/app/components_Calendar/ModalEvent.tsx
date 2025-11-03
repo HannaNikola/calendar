@@ -66,8 +66,6 @@ export const ModalEvent = ({
     const start = toDate(selectedEvent?.start ?? slotStart ?? now);
     const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
 
-    if (!start) return;
-
     setTitle(selectedEvent?.title ?? "");
     setDescription(selectedEvent?.description ?? "");
     setAllDay(selectedEvent?.allDay ?? false);
@@ -84,6 +82,21 @@ export const ModalEvent = ({
       setAddTask(selectedEvent?.addTask ?? false);
     }
   }, [selectedEvent, slotStart, slotEnd, isNew]);
+
+  useEffect(() => {
+    if (allDay) {
+      setStartTime(null);
+      setEndTime(null);
+    } else {
+      if (startDay && endDay && (!startTime || !endTime)) {
+        const defaultStart = new Date(startDay);
+        const defaultEnd = new Date(startDay);
+        defaultEnd.setHours(defaultStart.getHours() + 1);
+        setStartTime(defaultStart);
+        setEndTime(defaultEnd);
+      }
+    }
+  }, [allDay]);
 
   const combineDateTime = (
     date: Date | null,
@@ -124,13 +137,31 @@ export const ModalEvent = ({
   const handleSubmit = async () => {
     try {
       await EventSchema.validate({ title });
+      const start =
+        allDay && startDay
+          ? new Date(
+              startDay.getFullYear(),
+              startDay.getMonth(),
+              startDay.getDate(),
+              1,
+              0,
+              0,
+              0
+            )
+          : combineDateTime(startDay, startTime);
 
-      const start = combineDateTime(startDay, startTime);
-      const end = combineDateTime(endDay, endTime);
-
-      if (!start || !end) {
-        return;
-      }
+      const end =
+        allDay && endDay
+          ? new Date(
+              endDay.getFullYear(),
+              endDay.getMonth(),
+              endDay.getDate(),
+              23,
+              0,
+              0,
+              0
+            )
+          : combineDateTime(endDay, endTime);
 
       const eventData: CalendarEvent = {
         ...selectedEvent,
@@ -154,14 +185,14 @@ export const ModalEvent = ({
             description: createdEvent.description,
             isImportant: false,
             isCompletedTask: false,
-            end: createdEvent.end,
+            end: createdEvent.end || null,
             allDay: createdEvent.allDay,
             eventId: createdEvent._id,
           })
         );
       }
     } catch (error) {
-      if (
+     if (
         typeof error === "object" &&
         error !== null &&
         "message" in error &&
@@ -171,6 +202,7 @@ export const ModalEvent = ({
       } else {
         toast.error("An unknown error occurred.");
       }
+    
     }
   };
 
@@ -193,7 +225,6 @@ export const ModalEvent = ({
       <div className="flex flex-col ">
         <ToastContainer />
         <textarea
-          required
           ref={titleRef}
           value={title}
           placeholder="write your title maximum 100 characters..."
@@ -217,6 +248,7 @@ export const ModalEvent = ({
             <DatePicker
               selected={startTime}
               onChange={handleStartTimeChange}
+              disabled={allDay}
               showTimeSelect
               showTimeSelectOnly
               dateFormat="HH:mm"
@@ -238,6 +270,7 @@ export const ModalEvent = ({
             <DatePicker
               selected={endTime}
               onChange={(date) => setEndTime(date)}
+              disabled={allDay}
               showTimeSelect
               showTimeSelectOnly
               dateFormat="HH:mm"
@@ -291,7 +324,7 @@ export const ModalEvent = ({
                 checked={addTask}
                 onChange={(e) => {
                   setAddTask(e.target.checked);
-                  if(timeoutRef.current) clearTimeout(timeoutRef.current)
+                  if (timeoutRef.current) clearTimeout(timeoutRef.current);
                   timeoutRef.current = setTimeout(() => {
                     setIsCompletedTask(false);
                   }, 300);
@@ -310,7 +343,7 @@ export const ModalEvent = ({
                 checked={addTask}
                 onChange={(e) => {
                   setAddTask(e.target.checked);
-                  if(timeoutRef.current) clearTimeout(timeoutRef.current)
+                  if (timeoutRef.current) clearTimeout(timeoutRef.current);
                   timeoutRef.current = setTimeout(() => {
                     setIsCompletedTask(false);
                   }, 300);

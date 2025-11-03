@@ -2,13 +2,6 @@
 
 :root {
   /* button */
-  /* --fc-button-text-color: #fff;
-  --fc-button-bg-color: #808080;
-  --fc-button-border-color: #808080;
-  --fc-button-hover-bg-color: #6b6b6b;
-  --fc-button-hover-border-color: #6b6b6b;
-  --fc-button-active-bg-color: #6b7280;
-  --fc-button-active-border-color: #6b7280; */
 
   --fc-button-text-color: rgb(20, 18, 18);
   --fc-button-bg-color: #b3b3b3;
@@ -61,8 +54,7 @@
   padding: 4px;
 }
 
-/* fc-listPlugin-view fc-view fc-list fc-list-sticky */
-/* fc list */
+
 .fc-list{
   width: 100% !important;
 }
