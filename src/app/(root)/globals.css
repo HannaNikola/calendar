@@ -46,6 +46,8 @@
   /* background */
   --color-header-background: #bae6fd;
   --color-gray-light-background: #f3f4f6; /* gray-100 */
+  --color-gray-medium-background: #e5e7eb;/* gray-200 */
+  --color-sky-light-background: #e0f2fe; /*sky-100*/
 
   /* event color */
   --color-event: #3788d8;
