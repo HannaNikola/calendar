@@ -89,6 +89,8 @@ export const updateEventApi = createAsyncThunk(
   }
 );
 
+
+
 export const deleteEventApi = createAsyncThunk<string, string>(
   "eventsData/deleteEvent",
   async (id: string, thunkApi) => {

@@ -36,6 +36,7 @@ interface ModalTodoProps {
 }
 
 export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
+
   const { handeDeleteTodo, handelUpdateTodo } = useTodoHandlers();
   const dispatch = useDispatch<AppDispatch>();
   const { todos } = useSelector((state: RootState) => state.todo);
@@ -65,7 +66,9 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     }
   }, [isOpen, title, description]);
 
-  const handelTodoSubmit = async () => {
+
+
+   const handelTodoSubmit = async () => {
     try {
       await TodoSchema.validate({ title, description });
 
