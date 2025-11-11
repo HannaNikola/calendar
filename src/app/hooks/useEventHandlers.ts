@@ -65,6 +65,7 @@ export const useEventHandlers = () => {
 
   const handelAddEvent = (eventData: CalendarEvent) => {
     
+
     return dispatch(
       addEventApi({
         title: eventData.title,
@@ -80,11 +81,27 @@ export const useEventHandlers = () => {
       .finally(() => dispatch(closeElementModal()));
   };
 
-  const handelUpdateEvent = (eventData: CalendarEvent) => {
+  
+
+ const handelUpdateEvent = (eventData: CalendarEvent) => {
     if (!eventData._id) return;
 
 
-    return dispatch(
+    // return dispatch(
+    //   updateEventApi({
+    //     id: eventData._id,
+    //     eventData: {
+    //       title: eventData.title,
+    //       description: eventData.description,
+    //       start: toDate(eventData.start),
+    //       end: toDate(eventData.end),
+    //       allDay: eventData.allDay,
+    //       addTask: eventData.addTask,
+    //       isCompletedTask: eventData.isCompletedTask
+    //     },
+    //   })
+    // )
+     return dispatch(
       updateEventApi({
         id: eventData._id,
         eventData: {
@@ -102,12 +119,18 @@ export const useEventHandlers = () => {
       .finally(() => dispatch(closeElementModal()));
   };
 
+
+
   const handleDeleteEvent = () => {
     if (!selectedEvent?._id) return;
 
     dispatch(deleteEventApi(selectedEvent._id));
     dispatch(closeElementModal());
   };
+
+
+
+
 
   return {
     isOpen,

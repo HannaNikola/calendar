@@ -15,6 +15,7 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
+import { fetchEventsApi } from "../api/eventsApi";
 
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
@@ -44,6 +45,10 @@ const CalendarEl = () => {
     slotEnd: null,
   });
 
+  useEffect(()=>{
+    dispatch(fetchEventsApi())
+    
+  },[dispatch])
 
   useEffect(() => {
     if (status === "loading") {

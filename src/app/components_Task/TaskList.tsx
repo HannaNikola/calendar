@@ -7,6 +7,8 @@ import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { TaskItem } from "./TaskItem";
 import { selectFilterResult } from "../store/filters/selector";
 import { CalendarTodo } from "../types/typesTodoApi";
+import { useEffect } from "react";
+import { fetchTodosApi } from "../api/todoApi";
 
 export const TaskList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,7 +17,9 @@ export const TaskList = () => {
   const queryResult = useSelector(selectFilterResult);
   const entity = useSelector((state: RootState) => state.filter.entity);
 
-
+useEffect(()=>{
+  dispatch(fetchTodosApi());
+},[dispatch])
 
 
   const activeTodos =
