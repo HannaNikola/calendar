@@ -20,7 +20,7 @@ const selectedItem = useSelector((state: RootState) =>
   ) => {
     
     
-
+console.log("SEND TO BACKEND:", updatedFields);
     await dispatch(updateTodotApi({ id: todoId, todoData: updatedFields }));
     dispatch(closeElementModal());
   };
