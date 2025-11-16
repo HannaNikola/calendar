@@ -48,10 +48,14 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const desRef = useRef<HTMLTextAreaElement | null>(null);
 
-  
+
+
   useEffect(() => {
+    if (!selectedItem) return;
     setTitle(selectedItem?.title || "");
     setDescription(selectedItem?.description || "");
+     setEndDay(selectedItem.end ? new Date(selectedItem.end) : null);
+   
   }, [selectedItem]);
 
   useEffect(() => {
@@ -73,6 +77,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
       await TodoSchema.validate({ title, description });
 
       if (selectedItem?._id) {
+
         await handelUpdateTodo(selectedItem._id, {
           title,
           description,
@@ -137,7 +142,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
               selected={endDay}
               onChange={(date) => setEndDay(date)}
               timeInputLabel="Time:"
-              dateFormat="MM/dd/yyyy h:mm aa"
+              dateFormat="MM/dd/yyyy HH:mm"
               showTimeInput
               className="w-[200px] text-center bg-input-light rounded focus:outline-none focus:bg-hover-input shadow-md"
             />
@@ -172,7 +177,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
                 selected={endDay}
                 onChange={(date) => setEndDay(date)}
                 timeInputLabel="Time:"
-                dateFormat="MM/dd/yyyy h:mm aa"
+                dateFormat="MM/dd/yyyy HH:mm"
                 showTimeInput
                 className="w-full  max-lg:[200px] text-center bg-input-light rounded focus:outline-none focus:bg-hover-input shadow-md"
               />

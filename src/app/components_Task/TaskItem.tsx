@@ -12,6 +12,7 @@ import { useState } from "react";
 import "tippy.js/dist/tippy.css";
 import { useScreenType } from "../hooks/useScreenType";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
+import dayjs from "dayjs";
 
 
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
@@ -25,7 +26,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
       ? "border-amber-300 bg-amber-50"
       : "border-grey-border bg-sky-50 ";
 
-  const formattedEnd = item.end ? toDate(item.end)?.toLocaleDateString() : "—";
+  const formattedEnd = item.end ? dayjs(item.end).format("DD/MM/YYYY HH:mm") : "—";
   const [localCompleted, setLocalCompleted] = useState(item.isCompletedTask);
   const screenType = useScreenType();
 
@@ -42,7 +43,6 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
         <TooltipDesktop content={item.description}>
           <p className="text-small line-clamp-1 mb-3">{item.description}</p>
         </TooltipDesktop>
-
         <p
           className={`mb-2 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
         >
@@ -84,7 +84,6 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
             onClick={(e) => {
               e.stopPropagation();
               setLocalCompleted(true);
-
               setTimeout(() => {
                 if (item._id) {
                   dispatch(
