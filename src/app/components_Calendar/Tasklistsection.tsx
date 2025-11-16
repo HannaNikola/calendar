@@ -21,16 +21,16 @@ export const Tasklistsection = () => {
   };
 
   return (
-    <div className=" flex p-2 w-[260px] flex-col bg-sky-light-background rounded-2xl">
+    <div className=" flex w-full p-2 min-w-[260px] flex-col bg-sky-light-background rounded-2xl">
       <h2 className="mb-4 text-center text-medium ">Your active task list</h2>
-      <ul className="flex flex-col">
+      <ul className="flex  w-full flex-col">
         {activeTodos.map((item) => {
           const isExpanded = expandedId === item._id;
           return (
             <li
               key={item._id}
               className={`
-    w-64 flex flex-row place-content-between  rounded-lg border p-2 mb-2 overflow-hidden cursor-pointer
+     w-full flex flex-row place-content-between  rounded-lg border p-2 mb-2 overflow-hidden cursor-pointer
     transition-all duration-300
     ${isExpanded ? "max-h-[370px]" : "max-h-24"}
   `}

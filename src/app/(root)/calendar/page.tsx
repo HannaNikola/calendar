@@ -8,13 +8,13 @@ export default function Calendar() {
   const screenType = useScreenType();
  
   return (
-    <div className="flex flex-col lg:flex-row  ">
+    <div className="flex flex-col lg:flex-row  h-full w-full">
       <div className=" flex h-full flex-col overflow-y-auto ">
       <CalendarEl />
       </div>
       
       {screenType === 'desktop' &&(
-        <div className="flex h-full w-[260px]">
+        <div className="flex h-full w-[260px]  ml-auto flex-shrink-0">
         <Tasklistsection/>
       </div>
       )}
@@ -22,3 +22,5 @@ export default function Calendar() {
      </div>
  );
 }
+
+
