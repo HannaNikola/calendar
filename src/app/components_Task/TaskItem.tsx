@@ -7,7 +7,6 @@ import { openElementModal } from "../store/sharedComponent/modalReducer";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { CalendarTodo } from "../types/typesTodoApi";
 import { useTodoExpired } from "../hooks/useTodoExpired";
-import { toDate } from "../utils/date";
 import { useState } from "react";
 import "tippy.js/dist/tippy.css";
 import { useScreenType } from "../hooks/useScreenType";
