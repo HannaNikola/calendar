@@ -15,6 +15,9 @@ export const Tasklistsection = () => {
   const activeTodos = todos.filter(
     (item) => !item.isCompletedTask && !item.isOverdue
   );
+  const sortTodos = activeTodos.sort((a,b)=>{
+return Number(b.isImportant) - Number(a.isImportant)
+  })
 
   const toggleExpand = (id: string) => {
     setexpandedId(expandedId === id ? null : id);
@@ -24,7 +27,7 @@ export const Tasklistsection = () => {
     <div className=" flex w-full p-2 min-w-[260px] flex-col bg-sky-light-background rounded-2xl">
       <h2 className="mb-4 text-center text-medium ">Your active task list</h2>
       <ul className="flex  w-full flex-col">
-        {activeTodos.map((item) => {
+        {sortTodos.map((item) => {
           const isExpanded = expandedId === item._id;
           return (
             <li
@@ -32,7 +35,7 @@ export const Tasklistsection = () => {
               className={`
      w-full flex flex-row place-content-between  rounded-lg border p-2 mb-2 overflow-hidden cursor-pointer
     transition-all duration-300
-    ${isExpanded ? "max-h-[370px]" : "max-h-24"}
+    ${isExpanded ? "max-h-[400px]" : "max-h-24"}
   `}
               onClick={() => toggleExpand(item._id)}
             >
@@ -40,11 +43,11 @@ export const Tasklistsection = () => {
                 <p className="text-sky-dark text-medium weight-extra mb-2">
                   {item.title}
                 </p>
-                <p className="mb-2">{item.description}</p>
-                <p className="mb-2 text-small text-green-700">
+                 <p className="mb-2 text-small text-green-700">
                   Deadline:
                   {item.end ? dayjs(item.end).format("DD/MM/YYYY HH:mm") : "—"}
                 </p>
+                <p className="mb-2">{item.description}</p>
               </div>
               <div className="flex flex-col">
                 <TooltipDesktop content="Favorite">
