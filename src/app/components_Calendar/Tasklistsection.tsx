@@ -14,10 +14,9 @@ export const Tasklistsection = () => {
 
   const activeTodos = todos.filter(
     (item) => !item.isCompletedTask && !item.isOverdue
-  );
-  const sortTodos = activeTodos.sort((a,b)=>{
+  ).sort((a,b)=>{
 return Number(b.isImportant) - Number(a.isImportant)
-  })
+  });
 
   const toggleExpand = (id: string) => {
     setexpandedId(expandedId === id ? null : id);
@@ -27,7 +26,7 @@ return Number(b.isImportant) - Number(a.isImportant)
     <div className=" flex w-full p-2 min-w-[260px] flex-col bg-sky-light-background rounded-2xl">
       <h2 className="mb-4 text-center text-medium ">Your active task list</h2>
       <ul className="flex  w-full flex-col">
-        {sortTodos.map((item) => {
+        {activeTodos.map((item) => {
           const isExpanded = expandedId === item._id;
           return (
             <li

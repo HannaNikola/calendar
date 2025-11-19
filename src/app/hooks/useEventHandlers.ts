@@ -86,21 +86,6 @@ export const useEventHandlers = () => {
  const handelUpdateEvent = (eventData: CalendarEvent) => {
     if (!eventData._id) return;
 
-
-    // return dispatch(
-    //   updateEventApi({
-    //     id: eventData._id,
-    //     eventData: {
-    //       title: eventData.title,
-    //       description: eventData.description,
-    //       start: toDate(eventData.start),
-    //       end: toDate(eventData.end),
-    //       allDay: eventData.allDay,
-    //       addTask: eventData.addTask,
-    //       isCompletedTask: eventData.isCompletedTask
-    //     },
-    //   })
-    // )
      return dispatch(
       updateEventApi({
         id: eventData._id,
