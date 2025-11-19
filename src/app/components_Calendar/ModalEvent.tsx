@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../components_Calendar/calendar.css";
 import { Button } from "@/app/shared/ui/Button";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "sonner";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { toDate } from "../utils/date";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,12 +17,11 @@ import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
 import { CheckCheck } from "lucide-react";
-import { fetchEventsApi } from "../api/eventsApi";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
     .max(70, "Title must be less than 100 characters")
-    .required("title can`t be empty"),
+    .required("itle can`t be empty"),
 });
 
 export const ModalEvent = ({
@@ -33,7 +32,7 @@ export const ModalEvent = ({
 }: EventModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { mode,data, isOpen } = useSelector((state: RootState) => state.modal);
+  const { mode, data, isOpen } = useSelector((state: RootState) => state.modal);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
@@ -62,8 +61,6 @@ export const ModalEvent = ({
       adjustHeight(desRef.current);
     }
   }, [isOpen, title, description]);
-
-  
 
   useEffect(() => {
     const now = new Date();
@@ -138,80 +135,7 @@ export const ModalEvent = ({
     if (startDay && date < startDay) setStartDay(date);
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     await EventSchema.validate({ title });
-  //     const start =
-  //       allDay && startDay
-  //         ? new Date(
-  //             startDay.getFullYear(),
-  //             startDay.getMonth(),
-  //             startDay.getDate(),
-  //             1,
-  //             0,
-  //             0,
-  //             0
-  //           )
-  //         : combineDateTime(startDay, startTime);
-
-  //     const end =
-  //       allDay && endDay
-  //         ? new Date(
-  //             endDay.getFullYear(),
-  //             endDay.getMonth(),
-  //             endDay.getDate(),
-  //             23,
-  //             0,
-  //             0,
-  //             0
-  //           )
-  //         : combineDateTime(endDay, endTime);
-
-  //     const eventData: CalendarEvent = {
-  //       ...selectedEvent,
-  //       description,
-  //       title,
-  //       start,
-  //       end,
-  //       allDay,
-  //       addTask,
-  //       isCompletedTask,
-  //     };
-
-  //     const createdEvent = isNew
-  //       ? await handelAddEvent(eventData)
-  //       : await handelUpdateEvent(eventData);
-
-  //     if (addTask && createdEvent?._id && !createdEvent.todoId) {
-  //       await dispatch(
-  //         addTodoApi({
-  //           title: createdEvent.title,
-  //           description: createdEvent.description,
-  //           isImportant: false,
-  //           isCompletedTask: false,
-  //           end: createdEvent.end || null,
-  //           allDay: createdEvent.allDay,
-  //           eventId: createdEvent._id,
-  //         })
-  //       );
-  //     }
-  //   } catch (error) {
-  //    if (
-  //       typeof error === "object" &&
-  //       error !== null &&
-  //       "message" in error &&
-  //       typeof error.message === "string"
-  //     ) {
-  //       toast.error(error.message);
-  //     } else {
-  //       toast.error("An unknown error occurred.");
-  //     }
-    
-  //   }
-  // };
-
-
-    const handleSubmit = async () => {
+  const handleSubmit = async () => {
     try {
       await EventSchema.validate({ title });
       const start =
@@ -269,7 +193,7 @@ export const ModalEvent = ({
         );
       }
     } catch (error) {
-     if (
+      if (
         typeof error === "object" &&
         error !== null &&
         "message" in error &&
@@ -279,7 +203,6 @@ export const ModalEvent = ({
       } else {
         toast.error("An unknown error occurred.");
       }
-    
     }
   };
 
@@ -300,7 +223,6 @@ export const ModalEvent = ({
       </div>
 
       <div className="flex flex-col ">
-        <ToastContainer />
         <textarea
           ref={titleRef}
           value={title}

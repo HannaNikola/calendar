@@ -8,27 +8,24 @@ import { LayoutContent } from "./LayoutContent";
 import { useEffect } from "react";
 import { fetchEventsApi } from "../api/eventsApi";
 import { fetchTodosApi } from "../api/todoApi";
+import { Toaster} from "sonner";
 
-
-
-const LayoutWrapper =({children}: {children: React.ReactNode})=>{
+const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-useEffect(()=>{
-  dispatch(fetchEventsApi())
-  dispatch(fetchTodosApi());
-},[dispatch])
+  useEffect(() => {
+    dispatch(fetchEventsApi());
+    dispatch(fetchTodosApi());
+  }, [dispatch]);
 
-return  <>{children}</>
-}
-
+  return <>{children}</>;
+};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
   const screenType = useScreenType();
 
   return (
@@ -38,12 +35,18 @@ export default function RootLayout({
       </head>
       <body className="h-full w-full overflow-x-hidden flex flex-col">
         <Provider store={store}>
-         <LayoutWrapper>
-          <LayoutContent screenType={screenType}>{children}</LayoutContent>
+          <Toaster
+            duration={1200}
+            position="top-center"
+            toastOptions={{
+              className: "sonner-center",
+            }}
+          />
+          <LayoutWrapper>
+            <LayoutContent screenType={screenType}>{children}</LayoutContent>
           </LayoutWrapper>
         </Provider>
       </body>
     </html>
   );
 }
-

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { CalendarTodo } from "../types/typesTodoApi";
+import { toast } from "sonner";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
@@ -45,6 +46,7 @@ export const addTodoApi = createAsyncThunk(
         ...newTodo,
       };
       const response = await axios.post("/api/todo", payload);
+      toast.success("The task was created successefully");
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -64,7 +66,7 @@ export const updateTodotApi = createAsyncThunk(
             const response = await axios.patch(
                 `/api/todo/${payload.id}`, sanitizedTodoData
             );
-            console.log('POST', response.data)
+            toast.success("The task was update successefully");
             return response.data;
         }catch(error){
             const err = error as AxiosError;
@@ -80,7 +82,6 @@ export const  favoriteTodoApi = createAsyncThunk(
     async(payload:{id:string; isImportant: boolean }, thunkAPI)=>{
 try{
     const response = await axios.patch(`/api/todo/${payload.id}`, {isImportant: payload.isImportant},)
-    console.log('important', response.data)
     return response.data;
 }catch(error){
     const err = error as AxiosError;
@@ -96,6 +97,7 @@ export const completedTodoApi = createAsyncThunk(
     async(payload:{id:string; isCompletedTask: boolean}, thunkAPI)=>{
         try{
             const response = await axios.patch(`/api/todo/${payload.id}`, {isCompletedTask: payload.isCompletedTask})
+            toast.success("The task was completed successefully");
             return response.data
         }catch(error){
             const err = error as AxiosError;
@@ -108,7 +110,7 @@ export const deleteTodoApi = createAsyncThunk<string,string>(
     async(id:string, thunkAPI)=>{
         try{
             const response = await axios.delete(`/api/todo/${id}`);
-            console.log('delete', response.data._id)
+            toast.success("The task was deleted successefully");
             return response.data.data._id
         }catch(error){
             const err = error as AxiosError;
