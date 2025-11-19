@@ -26,6 +26,9 @@ useEffect(()=>{
     entity === "todo"
       ? (queryResult as CalendarTodo[]).filter((item) => !item.isCompletedTask)
       : [];
+      const sortTodos = activeTodos.sort((a,b)=>{
+return Number(b.isImportant) - Number(a.isImportant)
+  })
 
   return (
      <>
@@ -34,13 +37,13 @@ useEffect(()=>{
   <div className="fixed inset-0 flex items-center justify-center z-50">
     <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
   </div>
-) : activeTodos.length === 0 ? (
+) : sortTodos.length === 0 ? (
   <div>
     <p className="text-h2 text-center pt-10">No task for you</p>
   </div>
 ) : (
   <ul className="flex w-full flex-col">
-    {activeTodos.map((item) => (
+    {sortTodos.map((item) => (
       <TaskItem key={item._id} item={item} />
     ))}
   </ul>
