@@ -37,10 +37,11 @@ export default function SettingsSidebar({
       <div
         className={`
           fixed top-17 right-5 rounded-2xl h-[700px] p-4
-          w-72 lg:w-96
+          w-[350px]
           bg-white shadow-xl z-50
           transition-transform duration-300
-          ${open ? "translate-x-0" : "translate-x-full"}
+          ${open ? "right-5 translate-x-0" : "right-5 translate-x-[calc(100%+1.25rem)]"}
+         
         `}
       >
         <div className=" flex justify-between items-center mb-4">

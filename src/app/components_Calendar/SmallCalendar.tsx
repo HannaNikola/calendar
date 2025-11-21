@@ -65,13 +65,13 @@ export default function SmallCalendar({ type, position }: AdaptiveProps) {
   return (
     <section className="flex w-full max-lg:flex-row-reverse lg:flex-col lg:max-w-[290px]">
       {screenType === "desktop" && (
-        <div className=" flex  lg:mb-3  ">
+        <div className=" flex mb-3 ">
           <EddEventButton />
         </div>
       )}
 
       {screenType === "desktop" && (
-        <div className="w-[260px] mt-4 h-[400px]">
+        <div className="w-[260px] h-[400px]">
           <DatePicker
             // selected={selectedDate}
             renderDayContents={renderDayContents}
