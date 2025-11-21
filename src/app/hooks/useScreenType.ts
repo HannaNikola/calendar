@@ -11,7 +11,7 @@ export const useScreenType = ():TypesAdaptive =>{
             const width = window.innerWidth;
             if(width < 640) {
                 setScreenType("mobail")
-            }else if (width < 1024){
+            }else if (width < 1280){
                 setScreenType("tablet")
             }else {
                 setScreenType("desktop")
