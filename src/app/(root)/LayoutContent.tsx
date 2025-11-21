@@ -5,14 +5,13 @@ import "./globals.css";
 import { PageWrapper } from "@/app/shared/PageWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
-import Navbar from "../components_Calendar/Navbar";
 import Footer from "../components_Calendar/Footer";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { ModalEvent } from "../components_Calendar/ModalEvent";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { useState } from "react";
 import SettingsSidebar from "../components_SettingsSidebar/SettingsSidebar";
-
+import SmallCalendar from "../components_Calendar/SmallCalendar";
 
 export const LayoutContent = ({ children, screenType }: any) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,15 +27,13 @@ export const LayoutContent = ({ children, screenType }: any) => {
   return (
     <>
       <Header onSettingsClick={() => setSidebarOpen(true)} />
-      {/* <Header/> */}
       <main className="flex-1 overflow-y-auto pt-[60px] max-lg:pb-[60px]">
         <PageWrapper>
           {screenType === "desktop" && (
             <div className="max-lg:hidden">
-              <Navbar />
+              <SmallCalendar type={screenType} />
             </div>
           )}
-
           {type === "event" && (
             <ModalEvent
               isOpen={isOpen}
@@ -55,7 +52,7 @@ export const LayoutContent = ({ children, screenType }: any) => {
           {children}
         </PageWrapper>
       </main>
-      <Footer />
+      <Footer type={screenType} onSettingsClick={() => setSidebarOpen(true)} />
       <SettingsSidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
