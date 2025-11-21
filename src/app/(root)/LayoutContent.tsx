@@ -3,29 +3,32 @@
 import Header from "@/app/components_Calendar/Header";
 import "./globals.css";
 import { PageWrapper } from "@/app/shared/PageWrapper";
-import {  useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState} from "@/app/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store/store";
 import Navbar from "../components_Calendar/Navbar";
 import Footer from "../components_Calendar/Footer";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { ModalEvent } from "../components_Calendar/ModalEvent";
 import { useEventHandlers } from "../hooks/useEventHandlers";
-
+import { useState } from "react";
+import SettingsSidebar from "../components_SettingsSidebar/SettingsSidebar";
 
 
 export const LayoutContent = ({ children, screenType }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { type, isOpen, data } = useSelector((state: RootState) => state.modal);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
-      handelAddEvent,
-      handleDeleteEvent,
-      selectedEvent,
-      handelUpdateEvent,
-    } = useEventHandlers();
+    handelAddEvent,
+    handleDeleteEvent,
+    selectedEvent,
+    handelUpdateEvent,
+  } = useEventHandlers();
 
   return (
     <>
-      <Header />
+      <Header onSettingsClick={() => setSidebarOpen(true)} />
+      {/* <Header/> */}
       <main className="flex-1 overflow-y-auto pt-[60px] max-lg:pb-[60px]">
         <PageWrapper>
           {screenType === "desktop" && (
@@ -38,8 +41,10 @@ export const LayoutContent = ({ children, screenType }: any) => {
             <ModalEvent
               isOpen={isOpen}
               onClose={() => dispatch(closeElementModal())}
-               slotStart={data?.slotStart ?? new Date()}
-              slotEnd={data?.slotEnd ?? new Date(new Date().getTime() + 60 * 60 * 1000)}
+              slotStart={data?.slotStart ?? new Date()}
+              slotEnd={
+                data?.slotEnd ?? new Date(new Date().getTime() + 60 * 60 * 1000)
+              }
               selectedEvent={selectedEvent}
               handelAddEvent={handelAddEvent}
               handelUpdateEvent={handelUpdateEvent}
@@ -51,6 +56,10 @@ export const LayoutContent = ({ children, screenType }: any) => {
         </PageWrapper>
       </main>
       <Footer />
+      <SettingsSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
     </>
   );
 };
