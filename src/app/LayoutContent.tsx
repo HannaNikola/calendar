@@ -2,16 +2,17 @@
 
 import Header from "@/app/components_Calendar/Header";
 import "./globals.css";
-import { PageWrapper } from "@/app/shared/PageWrapper";
+import { PageWrapper } from "@/app/shared/ui/PageWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
-import Footer from "../components_Calendar/Footer";
-import { closeElementModal } from "../store/sharedComponent/modalReducer";
-import { ModalEvent } from "../components_Calendar/ModalEvent";
-import { useEventHandlers } from "../hooks/useEventHandlers";
 import { useState } from "react";
-import SettingsSidebar from "../components_SettingsSidebar/SettingsSidebar";
-import SmallCalendar from "../components_Calendar/SmallCalendar";
+import { useEventHandlers } from "./hooks/useEventHandlers";
+import SmallCalendar from "./components_Calendar/SmallCalendar";
+import { ModalEvent } from "./components_Calendar/ModalEvent";
+import { closeElementModal } from "./store/sharedComponent/modalReducer";
+import SettingsSidebar from "./components_SettingsSidebar/SettingsSidebar";
+import Footer from "./components_Calendar/Footer";
+
 
 export const LayoutContent = ({ children, screenType }: any) => {
   const dispatch = useDispatch<AppDispatch>();
