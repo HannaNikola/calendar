@@ -3,7 +3,7 @@ import { AppDispatch, RootState } from "../store/store";
 import { CalendarEvent } from "../types/typesApi";
 import { addEventApi, deleteEventApi, updateEventApi } from "../api/eventsApi";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core/index.js";
-import { toDate, toISOString } from "../utils/date";
+import { toDate, toISOString } from "../shared/utils/date";
 import {
   closeElementModal,
   openElementModal,

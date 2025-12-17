@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { useScreenType } from "../hooks/useScreenType";
 import { openElementModal } from "../store/sharedComponent/modalReducer";
-import { toISOString } from "../utils/date";
+import { toISOString } from "../shared/utils/date";
 
 const AddEventButton = () => {
   const dispatch = useDispatch<AppDispatch>();

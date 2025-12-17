@@ -3,12 +3,12 @@
 import "./globals.css";
 import { Provider, useDispatch } from "react-redux";
 import { AppDispatch, store } from "@/app/store/store";
-import { useScreenType } from "../hooks/useScreenType";
-import { LayoutContent } from "./LayoutContent";
 import { useEffect } from "react";
-import { fetchEventsApi } from "../api/eventsApi";
-import { fetchTodosApi } from "../api/todoApi";
 import { Toaster} from "sonner";
+import { fetchEventsApi } from "./api/eventsApi";
+import { fetchTodosApi } from "./api/todoApi";
+import { useScreenType } from "./hooks/useScreenType";
+import { LayoutContent } from "./LayoutContent";
 
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
