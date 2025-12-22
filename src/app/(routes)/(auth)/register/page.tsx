@@ -1,3 +1,4 @@
+'use client'
 import SignupForm from "@/app/components_auth/SignupForm"
 
 const RegisterPage= ()=> {

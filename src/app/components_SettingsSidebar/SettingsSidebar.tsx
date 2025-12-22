@@ -1,5 +1,6 @@
 import { LogOut } from "lucide-react";
 import { useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 interface SettingsSidebarProps {
   open: boolean;
@@ -10,6 +11,9 @@ export default function SettingsSidebar({
   open,
   onClose,
 }: SettingsSidebarProps) {
+
+  const router = useRouter()
+
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -52,7 +56,7 @@ export default function SettingsSidebar({
         <p className=" mb-140  text-main hidden sm:block">author@gmail.com</p>
         <button className="flex items-center justify-center w-[150px] whitespace-nowrap  transition-colors duration-500 text-main   hover:text-sky-hover">
           Leave an account
-          <LogOut size={15} className="ml-3" />
+          <LogOut onClick={()=>router.replace("/login")} size={15} className="ml-3" />
         </button>
       </div>
     </>
