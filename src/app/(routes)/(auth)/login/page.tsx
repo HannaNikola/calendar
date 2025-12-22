@@ -1,11 +1,13 @@
-import LoginForm from "@/app/components_auth/LoginForm"
+"use client";
 
- const LoginPage= ()=> {
-    return(
-        <div className=" flex w-[300px] bg-amber-300 ">
-            <LoginForm/>
-        </div>
-    )
-}
+import LoginForm from "@/app/components_auth/LoginForm";
 
-export default LoginPage
+const LoginPage = () => {
+  return (
+    <div className=" flex w-[300px] ">
+      <LoginForm />
+    </div>
+  );
+};
+
+export default LoginPage;
