@@ -21,10 +21,7 @@ export default function Navbar({
   const screenType = useScreenType();
   const { events } = useSelector((state: RootState) => state.eventData);
 
-
-
   return (
-  
     <div className="flex w-full justify-between gap-2 ">
       <nav className="flex w-full gap-2 ">
         <Link
@@ -39,8 +36,7 @@ export default function Navbar({
 
         <Link
           href="/task"
-           className="flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px]  sm:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
-          
+          className="flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px]  sm:px-4 sm:bg-navbar-button sm:hover:bg-navbar-button-hover sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
         >
           <BookOpenCheck size={18} className="shrink-0 ml-1" />
           <span className=" max-sm:hidden ml-2 text-main text-sm whitespace-nowrap ">
@@ -59,10 +55,10 @@ export default function Navbar({
           </span>
         </button>
       </TooltipDesktop>
-      {(screenType === 'mobail' ||  screenType === 'tablet') && (
-         <div  className="flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px]  sm:px-4 sm:bg-grey-button sm:hover:bg-gray-hover sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300">
-                <EddEventButton />
-              </div>
+      {(screenType === "mobail" || screenType === "tablet") && (
+        <div className="flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px]  sm:px-4 sm:bg-grey-button sm:hover:bg-gray-hover sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300">
+          <EddEventButton />
+        </div>
       )}
     </div>
   );

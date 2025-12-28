@@ -5,9 +5,7 @@ import { TooltipDesktop } from "@/app/shared/ui/Tooltip";
 import { CircleCheck, Star } from "lucide-react";
 import Link from "next/link";
 
-
 export default function Task() {
-  
   return (
     <div className="flex flex-col w-full ">
       <div className="flex flex-row gap-5 mb-4 justify-center">
@@ -30,7 +28,7 @@ export default function Task() {
       </div>
 
       <div className="flex w-full flex-col">
-        <AddTodoButton/>
+        <AddTodoButton />
         <TaskList />
       </div>
     </div>

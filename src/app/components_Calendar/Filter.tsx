@@ -26,9 +26,7 @@ export const Filter = () => {
   const selectedItem = useSelector((s: RootState) => s.filter.selectedItem);
   const result = useSelector(selectFilterResult);
   const modalIsOpen = useSelector((s: RootState) => s.modal?.isOpen);
- const { data } = useSelector(
-    (state: RootState) => state.modal
-  );
+  const { data } = useSelector((state: RootState) => state.modal);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -79,7 +77,7 @@ export const Filter = () => {
         openElementModal({
           mode: "update",
           type: "event",
-          data:{selectedId: item._id}
+          data: { selectedId: item._id },
         })
       );
 
@@ -142,9 +140,3 @@ export const Filter = () => {
 };
 
 export default Filter;
-
-
-
-
-
-

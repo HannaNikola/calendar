@@ -289,9 +289,9 @@ const EventSchema = Yup.object().shape({
 //               name="allDay"
 //               checked={allDay}
 //               onChange={(e) => setAllDay(e.target.checked)}
-//               className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
-//              before:flex before:items-center before:justify-center 
-//              checked:before:content-['✓'] checked:before:text-white 
+//               className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0
+//              before:flex before:items-center before:justify-center
+//              checked:before:content-['✓'] checked:before:text-white
 //              text-sm cursor-pointer transition"
 //             />
 //           </div>
@@ -309,9 +309,9 @@ const EventSchema = Yup.object().shape({
 //                     setAddTask(false);
 //                   }, 300);
 //                 }}
-//                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
-//                 before:flex before:items-center before:justify-center 
-//                 checked:before:content-['✓'] checked:before:text-white 
+//                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0
+//                 before:flex before:items-center before:justify-center
+//                 checked:before:content-['✓'] checked:before:text-white
 //                 text-sm cursor-pointer transition"
 //               />
 //             </div>
@@ -328,9 +328,9 @@ const EventSchema = Yup.object().shape({
 //                     setIsCompletedTask(false);
 //                   }, 300);
 //                 }}
-//                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
-//       before:flex before:items-center before:justify-center 
-//       checked:before:content-['✓'] checked:before:text-white 
+//                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0
+//       before:flex before:items-center before:justify-center
+//       checked:before:content-['✓'] checked:before:text-white
 //       text-sm cursor-pointer transition"
 //               />
 //             </div>
@@ -347,9 +347,9 @@ const EventSchema = Yup.object().shape({
 //                     setIsCompletedTask(false);
 //                   }, 300);
 //                 }}
-//                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
-//       before:flex before:items-center before:justify-center 
-//       checked:before:content-['✓'] checked:before:text-white 
+//                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0
+//       before:flex before:items-center before:justify-center
+//       checked:before:content-['✓'] checked:before:text-white
 //       text-sm cursor-pointer transition"
 //               />
 //             </div>
@@ -418,14 +418,6 @@ const EventSchema = Yup.object().shape({
 //     </ModalWrapper>
 //   );
 // };
-
-
-
-
-
-
-
-
 
 export const ModalEvent = ({
   onClose,
@@ -821,5 +813,3 @@ export const ModalEvent = ({
     </ModalWrapper>
   );
 };
-
-

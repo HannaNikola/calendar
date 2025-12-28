@@ -10,22 +10,21 @@ import {
 } from "../store/sharedComponent/modalReducer";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
 
-
-
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { data,  mode, isOpen } = useSelector(
-    (state: RootState) => state.modal
+  const { data, mode, isOpen } = useSelector((state: RootState) => state.modal);
+  const selectedEvent = useSelector((state: RootState) =>
+    data?.selectedId
+      ? state.eventData.events.find((item) => item._id === data.selectedId)
+      : undefined
   );
-  const selectedEvent = useSelector((state: RootState) =>data?.selectedId 
-   ? state.eventData.events.find((item) => item._id === data.selectedId)
-   : undefined
-)
 
   const handleSlotAction = (
     arg: DateSelectArg | DateClickArg,
-    setSlotData: React.Dispatch< React.SetStateAction<{ slotStart: Date | null; slotEnd: Date | null }>>
+    setSlotData: React.Dispatch<
+      React.SetStateAction<{ slotStart: Date | null; slotEnd: Date | null }>
+    >
   ) => {
     let start: Date;
     let end: Date;
@@ -51,21 +50,17 @@ export const useEventHandlers = () => {
     );
   };
 
- 
-
   const handleSelectEvent = (arg: EventClickArg) => {
     dispatch(
       openElementModal({
         mode: "update",
         type: "event",
-        data:{selectedId: arg.event.id },
+        data: { selectedId: arg.event.id },
       })
     );
   };
 
   const handelAddEvent = (eventData: CalendarEvent) => {
-    
-
     return dispatch(
       addEventApi({
         title: eventData.title,
@@ -74,19 +69,17 @@ export const useEventHandlers = () => {
         end: eventData.end ? new Date(eventData.end as any) : null,
         allDay: eventData.allDay ?? false,
         addTask: eventData.addTask ?? false,
-        isCompletedTask: eventData.isCompletedTask ?? false
+        isCompletedTask: eventData.isCompletedTask ?? false,
       })
     )
       .unwrap()
       .finally(() => dispatch(closeElementModal()));
   };
 
-  
-
- const handelUpdateEvent = (eventData: CalendarEvent) => {
+  const handelUpdateEvent = (eventData: CalendarEvent) => {
     if (!eventData._id) return;
 
-     return dispatch(
+    return dispatch(
       updateEventApi({
         id: eventData._id,
         eventData: {
@@ -96,7 +89,7 @@ export const useEventHandlers = () => {
           end: toDate(eventData.end),
           allDay: eventData.allDay,
           addTask: eventData.addTask,
-          isCompletedTask: eventData.isCompletedTask
+          isCompletedTask: eventData.isCompletedTask,
         },
       })
     )
@@ -104,18 +97,12 @@ export const useEventHandlers = () => {
       .finally(() => dispatch(closeElementModal()));
   };
 
-
-
   const handleDeleteEvent = () => {
     if (!selectedEvent?._id) return;
 
     dispatch(deleteEventApi(selectedEvent._id));
     dispatch(closeElementModal());
   };
-
-
-
-
 
   return {
     isOpen,
@@ -135,9 +122,3 @@ export const useEventHandlers = () => {
     handleDeleteEvent,
   };
 };
-
-
-
-
-
-

@@ -5,10 +5,6 @@ import { toast } from "sonner";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
-
-
-
-
 export const fetchTodosApi = createAsyncThunk(
   "allTodo/fethcAll",
   async (_, thunkAPI) => {
@@ -37,7 +33,6 @@ export const addTodoApi = createAsyncThunk(
       end?: Date | string | null;
       allDay?: boolean;
       eventId?: string | null;
-      
     },
     thunkAPI
   ) => {
@@ -57,66 +52,75 @@ export const addTodoApi = createAsyncThunk(
   }
 );
 
-
 export const updateTodotApi = createAsyncThunk(
-    "todoData/updateTodo",
-    async(payload:{id:string; todoData:Partial<CalendarTodo> }, thunkAPI)=>{
-        try{
-            const { ...sanitizedTodoData } = payload.todoData;
-            const response = await axios.patch(
-                `/api/todo/${payload.id}`, sanitizedTodoData
-            );
-            toast.success("The task was update successefully");
-            return response.data;
-        }catch(error){
-            const err = error as AxiosError;
-            return thunkAPI.rejectWithValue(
-               err.response?.data || "Something went wrong" 
-            )
-        }
-    }
-)
-
-export const  favoriteTodoApi = createAsyncThunk(
-    "todoData/ importantTodo",
-    async(payload:{id:string; isImportant: boolean }, thunkAPI)=>{
-try{
-    const response = await axios.patch(`/api/todo/${payload.id}`, {isImportant: payload.isImportant},)
-    return response.data;
-}catch(error){
-    const err = error as AxiosError;
-    return thunkAPI.rejectWithValue(err.response?.data || "Something went wrong" )
-}
-    }
-)
-
-
-
-export const completedTodoApi = createAsyncThunk(
-    "todoData/ completedTodo",
-    async(payload:{id:string; isCompletedTask: boolean}, thunkAPI)=>{
-        try{
-            const response = await axios.patch(`/api/todo/${payload.id}`, {isCompletedTask: payload.isCompletedTask})
-            toast.success("The task was completed successefully");
-            return response.data
-        }catch(error){
-            const err = error as AxiosError;
-            return thunkAPI.rejectWithValue(err.response?.data || "Something went wrong" )
-        }
-    }
-)
-export const deleteTodoApi = createAsyncThunk<string,string>(
-    "todoData/deleteTodo",
-    async(id:string, thunkAPI)=>{
-        try{
-            const response = await axios.delete(`/api/todo/${id}`);
-            toast.success("The task was deleted successefully");
-            return response.data.data._id
-        }catch(error){
-            const err = error as AxiosError;
+  "todoData/updateTodo",
+  async (
+    payload: { id: string; todoData: Partial<CalendarTodo> },
+    thunkAPI
+  ) => {
+    try {
+      const { ...sanitizedTodoData } = payload.todoData;
+      const response = await axios.patch(
+        `/api/todo/${payload.id}`,
+        sanitizedTodoData
+      );
+      toast.success("The task was update successefully");
+      return response.data;
+    } catch (error) {
+      const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
         err.response?.data || "Something went wrong"
-      )
-        }
+      );
     }
-)
+  }
+);
+
+export const favoriteTodoApi = createAsyncThunk(
+  "todoData/ importantTodo",
+  async (payload: { id: string; isImportant: boolean }, thunkAPI) => {
+    try {
+      const response = await axios.patch(`/api/todo/${payload.id}`, {
+        isImportant: payload.isImportant,
+      });
+      return response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      return thunkAPI.rejectWithValue(
+        err.response?.data || "Something went wrong"
+      );
+    }
+  }
+);
+
+export const completedTodoApi = createAsyncThunk(
+  "todoData/ completedTodo",
+  async (payload: { id: string; isCompletedTask: boolean }, thunkAPI) => {
+    try {
+      const response = await axios.patch(`/api/todo/${payload.id}`, {
+        isCompletedTask: payload.isCompletedTask,
+      });
+      toast.success("The task was completed successefully");
+      return response.data;
+    } catch (error) {
+      const err = error as AxiosError;
+      return thunkAPI.rejectWithValue(
+        err.response?.data || "Something went wrong"
+      );
+    }
+  }
+);
+export const deleteTodoApi = createAsyncThunk<string, string>(
+  "todoData/deleteTodo",
+  async (id: string, thunkAPI) => {
+    try {
+      const response = await axios.delete(`/api/todo/${id}`);
+      toast.success("The task was deleted successefully");
+      return response.data.data._id;
+    } catch (error) {
+      const err = error as AxiosError;
+      return thunkAPI.rejectWithValue(
+        err.response?.data || "Something went wrong"
+      );
+    }
+  }
+);

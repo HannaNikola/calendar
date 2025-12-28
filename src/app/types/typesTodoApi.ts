@@ -9,7 +9,7 @@ export interface CalendarTodo {
   end?: string | Date | null;
   allDay?: boolean;
   eventId?: string;
-  isOverdue?: boolean
+  isOverdue?: boolean;
 }
 
 export interface TodoStateProps {

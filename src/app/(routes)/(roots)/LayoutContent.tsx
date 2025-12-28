@@ -12,7 +12,6 @@ import { closeElementModal } from "../../store/sharedComponent/modalReducer";
 import SettingsSidebar from "../../components_SettingsSidebar/SettingsSidebar";
 import Footer from "../../components_Calendar/Footer";
 
-
 export const LayoutContent = ({ children, screenType }: any) => {
   const dispatch = useDispatch<AppDispatch>();
   const { type, isOpen, data } = useSelector((state: RootState) => state.modal);

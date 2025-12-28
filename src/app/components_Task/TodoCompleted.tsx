@@ -15,8 +15,6 @@ export const TodoCompleted = () => {
   const query = useSelector((state: RootState) => state.filter.query);
   const queryResult = useSelector(selectFilterResult);
 
-
-
   const isCompletedTodo = todos.filter((item) => item.isCompletedTask);
 
   const activeTodos: CalendarTodo[] = query
@@ -49,6 +47,3 @@ export const TodoCompleted = () => {
     </div>
   );
 };
-
-
-

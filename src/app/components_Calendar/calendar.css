@@ -23,7 +23,6 @@
 
 /* hover event*/
 
-
 .fc-event:hover {
   background-color: #2a76c0 !important;
   border-color: #2a76c0 !important;
@@ -47,15 +46,13 @@
   width: 100%;
   border: 1px;
   border-radius: 30px 30px 0px 0px !important;
-
 }
 
 .fc .fc-daygrid-day-frame {
   padding: 4px;
 }
 
-
-.fc-list{
+.fc-list {
   width: 100% !important;
 }
 /* button header styles */
@@ -65,8 +62,6 @@
   border-radius: 30px 30px 0px 0px !important;
   margin-bottom: 0 !important;
   padding: 4px 20px 4px 20px;
-  
-  
 }
 
 .fc .fc-button {
@@ -76,8 +71,6 @@
 .fc-header-toolbar {
   flex-direction: row;
   width: 100%;
-   
-  
 }
 .fc-toolbar-title {
   display: none;
@@ -94,15 +87,12 @@
 }
 
 @media (min-width: 530px) {
-  
   .fc .fc-button {
     font-size: 14px !important;
-
   }
 }
 
 @media (min-width: 640px) {
-  
   .fc .fc-button {
     font-size: 16px !important;
   }
@@ -141,36 +131,23 @@
 }
 
 .react-datepicker__navigation-icon::before {
-  border-color: black !important; 
+  border-color: black !important;
 }
-.react-datepicker{
+.react-datepicker {
   border: none;
-  background-color: #F3F4F6;
-  
+  background-color: #f3f4f6;
 }
 
-.react-datepicker__month-container{
-margin-bottom: 10px;
+.react-datepicker__month-container {
+  margin-bottom: 10px;
 }
 
-.mini-calendar .react-datepicker__header{
+.mini-calendar .react-datepicker__header {
   width: 260px;
 }
-
-
 
 /* style for tooltip tippy */
 .tippy-box[data-theme~="gray"] {
   background-color: #808080;
   color: white;
 }
-
-
-
-
-
-
-
- 
-  
-   

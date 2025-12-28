@@ -3,11 +3,7 @@ import * as Yup from "yup";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addTodoApi,
-  completedTodoApi,
-  favoriteTodoApi,
-} from "../api/todoApi";
+import { addTodoApi, completedTodoApi, favoriteTodoApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { Button } from "../shared/ui/Button";
 import { Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
@@ -36,7 +32,6 @@ interface ModalTodoProps {
 }
 
 export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
-
   const { handeDeleteTodo, handelUpdateTodo } = useTodoHandlers();
   const dispatch = useDispatch<AppDispatch>();
   const { todos } = useSelector((state: RootState) => state.todo);
@@ -48,14 +43,11 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const desRef = useRef<HTMLTextAreaElement | null>(null);
 
-
-
   useEffect(() => {
     if (!selectedItem) return;
     setTitle(selectedItem?.title || "");
     setDescription(selectedItem?.description || "");
-     setEndDay(selectedItem.end ? new Date(selectedItem.end) : null);
-   
+    setEndDay(selectedItem.end ? new Date(selectedItem.end) : null);
   }, [selectedItem]);
 
   useEffect(() => {
@@ -70,14 +62,11 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
     }
   }, [isOpen, title, description]);
 
-
-
-   const handelTodoSubmit = async () => {
+  const handelTodoSubmit = async () => {
     try {
       await TodoSchema.validate({ title, description });
 
       if (selectedItem?._id) {
-
         await handelUpdateTodo(selectedItem._id, {
           title,
           description,

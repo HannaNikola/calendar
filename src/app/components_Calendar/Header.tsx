@@ -23,8 +23,8 @@ export default function Header({ onSettingsClick }: AdaptiveProps) {
             <>
               {screenType === "desktop" && (
                 <div className="ml-2 hidden lg:block">
-              <Navbar type={screenType} onSettingsClick={onSettingsClick} />
-            </div>
+                  <Navbar type={screenType} onSettingsClick={onSettingsClick} />
+                </div>
               )}
             </>
           )}
