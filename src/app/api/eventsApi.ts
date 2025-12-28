@@ -6,11 +6,6 @@ import { toast } from "sonner";
 
 axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
 
-
-
-
-
-
 export const fetchEventsApi = createAsyncThunk(
   "allEvents/fetchAll",
   async (_, thunkAPI) => {
@@ -37,7 +32,7 @@ export const addEventApi = createAsyncThunk(
       allDay?: boolean;
       addTask?: boolean;
       isCompletedTask?: boolean;
-      isImportant?:boolean;
+      isImportant?: boolean;
       todoId?: string | null;
       colorEvent?: "none" | "home" | "work" | "isektor";
       repeat?: "none" | "daily" | "workday" | "weekend";
@@ -80,7 +75,7 @@ export const updateEventApi = createAsyncThunk(
         `/api/events/${payload.id}`,
         sanitizedEventData
       );
-     toast.success("Event was update successefully",{ duration: 1700 });
+      toast.success("Event was update successefully", { duration: 1700 });
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -90,8 +85,6 @@ export const updateEventApi = createAsyncThunk(
     }
   }
 );
-
-
 
 export const deleteEventApi = createAsyncThunk<string, string>(
   "eventsData/deleteEvent",
@@ -108,10 +101,3 @@ export const deleteEventApi = createAsyncThunk<string, string>(
     }
   }
 );
-
-
-
-
-
-
-

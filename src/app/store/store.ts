@@ -4,26 +4,19 @@ import logger from "redux-logger";
 import { filterReduser } from "./filters/filterReducer";
 import { todoReducer } from "./todo/todoReducer";
 import { modalReducer } from "./sharedComponent/modalReducer";
-
-
+import { authReducer } from "./auth/authReducer";
 
 export const store = configureStore({
   reducer: {
     eventData: eventReducer,
-    modal:modalReducer,
+    modal: modalReducer,
     filter: filterReduser,
-    todo: todoReducer
+    todo: todoReducer,
+    auth: authReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-    }).concat(logger),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({}).concat(logger),
   devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-
-
-
-

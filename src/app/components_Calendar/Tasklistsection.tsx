@@ -12,11 +12,11 @@ export const Tasklistsection = () => {
   const { todos } = useSelector((state: RootState) => state.todo);
   const [completedId, setCompletedId] = useState<string | null>(null);
 
-  const activeTodos = todos.filter(
-    (item) => !item.isCompletedTask && !item.isOverdue
-  ).sort((a,b)=>{
-return Number(b.isImportant) - Number(a.isImportant)
-  });
+  const activeTodos = todos
+    .filter((item) => !item.isCompletedTask && !item.isOverdue)
+    .sort((a, b) => {
+      return Number(b.isImportant) - Number(a.isImportant);
+    });
 
   const toggleExpand = (id: string) => {
     setexpandedId(expandedId === id ? null : id);
@@ -42,7 +42,7 @@ return Number(b.isImportant) - Number(a.isImportant)
                 <p className="text-sky-dark text-medium weight-extra mb-2">
                   {item.title}
                 </p>
-                 <p className="mb-2 text-small text-green-700">
+                <p className="mb-2 text-small text-green-700">
                   Deadline:
                   {item.end ? dayjs(item.end).format("DD/MM/YYYY HH:mm") : "—"}
                 </p>

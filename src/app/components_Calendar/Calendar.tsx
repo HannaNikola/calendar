@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import listPlugin from '@fullcalendar/list';
+import listPlugin from "@fullcalendar/list";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
@@ -17,11 +17,7 @@ import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
 import { fetchEventsApi } from "../api/eventsApi";
 
-
 type FullCalendarType = InstanceType<typeof FullCalendar>;
-
-
-
 
 const CalendarEl = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,10 +41,9 @@ const CalendarEl = () => {
     slotEnd: null,
   });
 
-  useEffect(()=>{
-    dispatch(fetchEventsApi())
-    
-  },[dispatch])
+  useEffect(() => {
+    dispatch(fetchEventsApi());
+  }, [dispatch]);
 
   useEffect(() => {
     if (status === "loading") {
@@ -62,7 +57,7 @@ const CalendarEl = () => {
   const parsedEvents = events.map((event) => ({
     ...event,
     id: event._id,
-    
+
     start: event.start ? new Date(event.start) : new Date(),
     end: event.end ? new Date(event.end) : new Date(),
     allDay: event.allDay ?? false,
@@ -91,9 +86,8 @@ const CalendarEl = () => {
       start: info.event.start!,
       end: info.event.end!,
       allDay: info.event.allDay,
-      isCompletedTask: (info.event as any).isCompletedTask
-      
-    }
+      isCompletedTask: (info.event as any).isCompletedTask,
+    };
 
     handelUpdateEvent(updatedEvent);
   };
@@ -126,7 +120,8 @@ const CalendarEl = () => {
             headerToolbar={{
               left: "prev,next today",
               center: "title",
-              right: "timeGridDay, timeGridWeek, dayGridMonth, listPlugin ,multiMonthYear",
+              right:
+                "timeGridDay, timeGridWeek, dayGridMonth, listPlugin ,multiMonthYear",
             }}
             views={{
               timeGridDay: {
@@ -140,10 +135,10 @@ const CalendarEl = () => {
                 dayMaxEventRows: isMobileWidth ? 6 : 3,
                 fixedWeekCount: false,
               },
-               listPlugin :{
-                type:'listWeek',
-                buttonText: "list"
-               },
+              listPlugin: {
+                type: "listWeek",
+                buttonText: "list",
+              },
               multiMonthYear: {
                 type: "multiMonth",
                 duration: { months: 12 },
@@ -185,18 +180,3 @@ const CalendarEl = () => {
 };
 
 export default CalendarEl;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

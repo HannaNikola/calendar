@@ -4,7 +4,6 @@ import { TooltipDesktop } from "@/app/shared/ui/Tooltip";
 import { BookOpenCheck, CircleCheck, Star } from "lucide-react";
 import Link from "next/link";
 
-
 export default function Favorite() {
   return (
     <div className="w-full ">

@@ -18,9 +18,6 @@ export const ModalWrapper = ({
 }: ModalWrapperProps) => {
   const [visible, setIsVisible] = useState(isOpen);
   const [animate, setanimAte] = useState(false);
-  
-
-  
 
   useEffect(() => {
     if (isOpen) {
@@ -31,9 +28,7 @@ export const ModalWrapper = ({
       const timer = setTimeout(() => setIsVisible(true), 300);
       return () => clearTimeout(timer);
     }
-  },[isOpen]);
-
-  
+  }, [isOpen]);
 
   const handelOverlowClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -51,8 +46,7 @@ export const ModalWrapper = ({
     >
       <div
         className={`relative bg-white rounded-lg shadow-lg  p-4 transform transition-all duration-300
-          ${animate ? "scale-100 opacity-100" : "scale-95 opacity-0"
-        }
+          ${animate ? "scale-100 opacity-100" : "scale-95 opacity-0"}
            ${className}`}
       >
         {withCloseButton && (

@@ -1,14 +1,12 @@
-'use client'
-import SignupForm from "@/app/components_auth/SignupForm"
+"use client";
+import SignupForm from "@/app/components_auth/SignupForm";
 
-const RegisterPage= ()=> {
-    return(
-        <div>
-            <SignupForm/>
-        </div>
-    )
-}
+const RegisterPage = () => {
+  return (
+    <div>
+      <SignupForm />
+    </div>
+  );
+};
 
-export default RegisterPage
-
-
+export default RegisterPage;

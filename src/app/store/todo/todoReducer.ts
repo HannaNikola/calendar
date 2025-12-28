@@ -1,21 +1,23 @@
-import { addTodoApi, fetchTodosApi, updateTodotApi, deleteTodoApi, favoriteTodoApi, completedTodoApi } from "@/app/api/todoApi";
+import {
+  addTodoApi,
+  fetchTodosApi,
+  updateTodotApi,
+  deleteTodoApi,
+  favoriteTodoApi,
+  completedTodoApi,
+} from "@/app/api/todoApi";
 import { TodoStateProps } from "@/app/types/typesTodoApi";
 import { createSlice } from "@reduxjs/toolkit";
-
-
-
-
 
 const initialState: TodoStateProps = {
   todos: [],
   status: "idle",
   error: null,
- 
 };
 
 const todolSlice = createSlice({
   name: "todos",
-  
+
   initialState,
 
   reducers: {},
@@ -52,47 +54,48 @@ const todolSlice = createSlice({
           item._id === action.payload._id ? action.payload : item
         );
       })
-      .addCase(updateTodotApi.rejected,(state, action)=>{
-        state.status = 'failed';
-        state.error = action.error.message || "Unknown error";
-
-      })
-      .addCase(deleteTodoApi.pending,(state)=>{
-        state.status = 'loading'
-      })
-      .addCase(deleteTodoApi.fulfilled, (state, action)=>{
-        state.status = 'succeeded';
-        state.todos = state.todos.filter((item)=> item._id !== action.payload)
-      })
-      .addCase(deleteTodoApi.rejected, (state, action)=>{
-        state.status = 'failed'
+      .addCase(updateTodotApi.rejected, (state, action) => {
+        state.status = "failed";
         state.error = action.error.message || "Unknown error";
       })
-      .addCase(favoriteTodoApi.pending, (state)=>{
-        state.status='loading'
+      .addCase(deleteTodoApi.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(favoriteTodoApi.fulfilled, (state, action)=>{
-        state.status = 'succeeded';
-        state.todos = state.todos.map((item)=> item._id === action.payload._id ? action.payload : item)
+      .addCase(deleteTodoApi.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.todos = state.todos.filter((item) => item._id !== action.payload);
       })
-      .addCase(favoriteTodoApi.rejected,(state, action)=>{
-        state.status = 'failed';
+      .addCase(deleteTodoApi.rejected, (state, action) => {
+        state.status = "failed";
         state.error = action.error.message || "Unknown error";
       })
-      .addCase(completedTodoApi.pending, (state)=>{
-        state.status='loading'
+      .addCase(favoriteTodoApi.pending, (state) => {
+        state.status = "loading";
       })
-      .addCase(completedTodoApi.fulfilled, (state, action)=>{
-        state.status="succeeded";
-        state.todos = state.todos.map((item)=> item._id === action.payload._id ? action.payload : item)
+      .addCase(favoriteTodoApi.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.todos = state.todos.map((item) =>
+          item._id === action.payload._id ? action.payload : item
+        );
       })
-      .addCase(completedTodoApi.rejected, (state, action)=>{
-        state.status = 'failed',
+      .addCase(favoriteTodoApi.rejected, (state, action) => {
+        state.status = "failed";
         state.error = action.error.message || "Unknown error";
       })
+      .addCase(completedTodoApi.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(completedTodoApi.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.todos = state.todos.map((item) =>
+          item._id === action.payload._id ? action.payload : item
+        );
+      })
+      .addCase(completedTodoApi.rejected, (state, action) => {
+        (state.status = "failed"),
+          (state.error = action.error.message || "Unknown error");
+      });
   },
 });
 
 export const todoReducer = todolSlice.reducer;
-
-

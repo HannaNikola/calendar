@@ -1,9 +1,8 @@
 "use client";
 
-import { Provider, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AppDispatch, store } from "@/app/store/store";
 import { useEffect } from "react";
-import { Toaster } from "sonner";
 import { fetchEventsApi } from "../../api/eventsApi";
 import { fetchTodosApi } from "../../api/todoApi";
 import { useScreenType } from "../../hooks/useScreenType";
@@ -28,15 +27,8 @@ export default function RootLayout({
   const screenType = useScreenType();
 
   return (
-    <Provider store={store}>
-      <Toaster
-        duration={1200}
-        position="top-center"
-        toastOptions={{ className: "sonner-center" }}
-      />
-      <LayoutWrapper>
-        <LayoutContent screenType={screenType}>{children}</LayoutContent>
-      </LayoutWrapper>
-    </Provider>
+    <LayoutWrapper>
+      <LayoutContent screenType={screenType}>{children}</LayoutContent>
+    </LayoutWrapper>
   );
 }

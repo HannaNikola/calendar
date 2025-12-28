@@ -1,14 +1,13 @@
-
 export interface CalendarEvent {
   _id?: string;
-  title: string; 
+  title: string;
   description?: string;
   start?: string | Date | null;
   end?: string | Date | null;
   allDay?: boolean;
   addTask?: boolean;
   isCompletedTask: boolean;
-  todoId?: string | null; 
+  todoId?: string | null;
   colorEvent?: "none" | "home" | "work" | "isektor";
   repeat?: "none" | "daily" | "workday" | "weekend";
   reminder?: {
@@ -17,7 +16,6 @@ export interface CalendarEvent {
     notified?: boolean;
   };
 }
-
 
 export interface EventStateProps {
   events: CalendarEvent[];

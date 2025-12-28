@@ -1,11 +1,7 @@
 import dayjs from "dayjs";
 
-export const useTodoExpired = (end: string | Date | null) =>{
+export const useTodoExpired = (end: string | Date | null) => {
+  if (!end) return false;
 
-    if(!end) return false
-
-    return dayjs().isAfter(dayjs(end));
-    
-}
-
-
+  return dayjs().isAfter(dayjs(end));
+};

@@ -13,11 +13,10 @@ import { useScreenType } from "../hooks/useScreenType";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
 import dayjs from "dayjs";
 
-
 export const TaskItem = ({ item }: { item: CalendarTodo }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { handeDeleteTodo } = useTodoHandlers();
-  const { data} = useSelector((state: RootState) => state.modal);
+  const { data } = useSelector((state: RootState) => state.modal);
   const expired = useTodoExpired(item.end ?? null);
   const colorBorder = expired
     ? "border-red-400 bg-red-50"
@@ -25,14 +24,22 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
       ? "border-amber-300 bg-amber-50"
       : "border-grey-border bg-sky-50 ";
 
-  const formattedEnd = item.end ? dayjs(item.end).format("DD/MM/YYYY HH:mm") : "—";
+  const formattedEnd = item.end
+    ? dayjs(item.end).format("DD/MM/YYYY HH:mm")
+    : "—";
   const [localCompleted, setLocalCompleted] = useState(item.isCompletedTask);
   const screenType = useScreenType();
 
   return (
     <li
       onClick={() =>
-        dispatch(openElementModal({ type: "todo", mode:"editTodo", data:{selectedId: item._id} }))
+        dispatch(
+          openElementModal({
+            type: "todo",
+            mode: "editTodo",
+            data: { selectedId: item._id },
+          })
+        )
       }
       className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder}`}
     >

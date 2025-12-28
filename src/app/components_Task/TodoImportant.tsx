@@ -15,7 +15,6 @@ export const TodoImportant = () => {
   const query = useSelector((state: RootState) => state.filter.query);
   const queryResult = useSelector(selectFilterResult);
 
-  
   const importantTodos = todos.filter((todo) => todo.isImportant);
 
   const activeTodos: CalendarTodo[] = query

@@ -23,7 +23,10 @@ const FilterSlice = createSlice({
     setFilterQuery(state, action: PayloadAction<string>) {
       state.query = action.payload;
     },
-    setFilterEntity(state, action: PayloadAction<"event" | "todo" | "favorite" | "completed" | null>) {
+    setFilterEntity(
+      state,
+      action: PayloadAction<"event" | "todo" | "favorite" | "completed" | null>
+    ) {
       state.entity = action.payload;
       state.selectedItem = null;
     },

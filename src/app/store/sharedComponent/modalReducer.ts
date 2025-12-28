@@ -1,14 +1,8 @@
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import {
-  ModalState,
-  ModalPayload
-} from "@/app/types/typesModal";
+import { ModalState, ModalPayload } from "@/app/types/typesModal";
 
-
-
-  const initialState: ModalState = {
+const initialState: ModalState = {
   isOpen: false,
   type: null,
   mode: null,
@@ -19,10 +13,7 @@ const modalElementSlice = createSlice({
   initialState,
 
   reducers: {
-    openElementModal: (
-      state,
-      action: PayloadAction<ModalPayload >
-    ) => {
+    openElementModal: (state, action: PayloadAction<ModalPayload>) => {
       state.isOpen = true;
       state.type = action.payload.type;
       state.mode = action.payload.mode ?? null;
@@ -40,8 +31,3 @@ const modalElementSlice = createSlice({
 export const { openElementModal, closeElementModal } =
   modalElementSlice.actions;
 export const modalReducer = modalElementSlice.reducer;
-
-
-
-
-
