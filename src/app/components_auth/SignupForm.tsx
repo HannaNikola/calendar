@@ -87,7 +87,7 @@ export function SignupForm() {
       <div className="flex  justify-between ">
         <Button
           type="submit"
-          onClick={() => router.push("/calendar")}
+          onClick={() => router.push("/login")}
           variant="default"
         >
           Login
