@@ -74,10 +74,10 @@ export function LoginForm() {
       <div className="flex  justify-between ">
         <Button
           type="submit"
-          onClick={() => router.push("/calendar")}
+          onClick={() => router.push("/register")}
           variant="default"
         >
-          Login
+          Register
         </Button>
         <Button onClick={() => router.push("/")} variant="default">
           Back
