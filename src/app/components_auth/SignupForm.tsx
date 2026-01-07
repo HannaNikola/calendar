@@ -1,12 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { registerApi } from "../api/authApi";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { toast } from "sonner";
+import { EyeClosed } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -22,6 +24,7 @@ export function SignupForm() {
   const { isAuthenticated, status } = useSelector(
     (state: RootState) => state.auth
   );
+  const [show, setShow] = useState(false);
   const isLoading = status === "loading";
 
   useEffect(() => {
@@ -32,7 +35,7 @@ export function SignupForm() {
   }, [isAuthenticated, status, router]);
 
   return (
-    <div className="flex flex-col w-[370px] h-[276px] items-center justify-center ">
+    <div className="flex flex-col w-[370px] h-[300px] items-center justify-center ">
       <h1 className="text-medium">Create your account</h1>
       <Formik
         initialValues={{ name: "", email: "", password: "" }}
@@ -65,7 +68,7 @@ export function SignupForm() {
               )}
             </div>
 
-            <div className="mb-6">
+            <div className="mb-6 relative">
               <Field
                 name="password"
                 type="password"
@@ -75,6 +78,12 @@ export function SignupForm() {
               {touched.password && errors.password && (
                 <div className="text-red-500">{errors.password}</div>
               )}
+              <span
+        onClick={() => setShow(!show)}
+        className="absolute  top-2 right-3 cursor-pointer select-none"
+      >
+        {show ? <EyeClosed/> : <Eye/>}
+      </span>
             </div>
 
             <button
