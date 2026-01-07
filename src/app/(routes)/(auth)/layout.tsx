@@ -39,7 +39,7 @@ export default function AuthLayout({
 
   return (
     <PageWrapper>
-      <div className=" flex flex-col w-full px-3 py-2 items-center justify-center bg-gray-light-background">
+      <div className=" min-h-[100dvh] flex flex-col w-full px-3  py-2 items-center justify-center bg-gray-light-background">
         <div className="flex justify-between mb-4 w-[370px] shadow-[0_1px_0_rgba(0,0,0,0.1)]">
           <Link
             className={`flex text-h1 p-3 transition-all duration-300 ${isLogin ? "border-b-2 border-sky-200 text-sky-medium " : "border-none"}`}
