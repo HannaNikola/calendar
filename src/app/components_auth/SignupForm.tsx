@@ -1,12 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Button } from "../shared/ui/Button";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AppDispatch, RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { registerApi } from "../api/authApi";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { toast } from "sonner";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -22,53 +22,55 @@ export function SignupForm() {
   const { isAuthenticated, status } = useSelector(
     (state: RootState) => state.auth
   );
+  const isLoading = status === "loading";
 
   useEffect(() => {
     if (isAuthenticated && status === "succeeded") {
+      toast.success("Registration successful");
       router.push("/calendar");
     }
   }, [isAuthenticated, status, router]);
 
   return (
-    <div className="w-[370px] p-2 ">
+    <div className="flex flex-col w-[370px] h-[276px] items-center justify-center ">
+      <h1 className="text-medium">Create your account</h1>
       <Formik
         initialValues={{ name: "", email: "", password: "" }}
         validationSchema={SignupSchema}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values) => {
           dispatch(registerApi(values));
-          setSubmitting(false);
         }}
       >
         {({ errors, touched }) => (
-          <Form className="w-full mb-4 mt-8">
-            <div>
+          <Form className="w-full my-2 ">
+            <div className="mb-6">
               <Field
                 name="name"
                 placeholder="Name"
-                className="mb-3 w-full p-2 h-[40px] border-2 rounded-md"
+                className=" w-full p-2 h-[40px] outline-none border-none rounded-md bg-input-form-main transition-all duration-200 ease-in-out focus:ring-1  focus:ring-input-form-ring hover:bg-input-form-hover shadow-sm"
               />
               {touched.name && errors.name && (
                 <div className="text-red-500">{errors.name}</div>
               )}
             </div>
 
-            <div>
+            <div className="mb-6">
               <Field
                 name="email"
                 placeholder="Email"
-                className="mb-3 w-full p-2 h-[40px] border-2 rounded-md"
+                className=" w-full p-2 h-[40px] outline-none border-none rounded-md bg-input-form-main transition-all duration-200 ease-in-out focus:ring-1  focus:ring-input-form-ring hover:bg-input-form-hover shadow-sm"
               />
               {touched.email && errors.email && (
                 <div className="text-red-500">{errors.email}</div>
               )}
             </div>
 
-            <div>
+            <div className="mb-6">
               <Field
                 name="password"
                 type="password"
                 placeholder="Password"
-                className="mb-3 w-full p-2 h-[40px] border-2 rounded-md"
+                className=" w-full p-2 h-[40px] outline-none border-none rounded-md bg-input-form-main transition-all duration-200 ease-in-out focus:ring-1  focus:ring-input-form-ring hover:bg-input-form-hover shadow-sm"
               />
               {touched.password && errors.password && (
                 <div className="text-red-500">{errors.password}</div>
@@ -76,26 +78,22 @@ export function SignupForm() {
             </div>
 
             <button
+              disabled={isLoading}
               type="submit"
-              className="w-full px-4 py-1 bg-grey-button hover:bg-gray-hover text-main  rounded-2xl  shadow-sm"
+              className={`w-full px-4 py-1 rounded-2xl shadow-sm
+     hover:bg-navbar-button-hover
+    text-main
+    flex items-center justify-center gap-2
+    disabled:opacity-60 disabled:cursor-not-allowed ${isLoading ? "bg-navbar-button-hover" : "bg-sky-100"}`}
             >
-              Sign Up
+              {isLoading && (
+                <span className="h-4 w-4 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+              )}
+              <span>{isLoading ? "Sign up..." : "Sign up"}</span>
             </button>
           </Form>
         )}
       </Formik>
-      <div className="flex  justify-between ">
-        <Button
-          type="submit"
-          onClick={() => router.push("/login")}
-          variant="default"
-        >
-          Login
-        </Button>
-        <Button onClick={() => router.push("/")} variant="default">
-          Back
-        </Button>
-      </div>
     </div>
   );
 }

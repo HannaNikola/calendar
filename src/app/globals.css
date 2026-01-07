@@ -23,8 +23,13 @@
 
   /* input color */
   --color-input-light: #e0f2fe; /*sky-100*/
-  --color-hover-input: #bae6fd; /*sky-200*/
-  --color-checkboks: #0284c7 /*sky-600*/;
+  --color-hover-input: #d1d5db; /*sky-200*/
+  --color-checkboks: #d1d5db /*sky-600*/;
+
+  /* input registr form */
+  --color-input-form-main: #e5e7eb; /* gray-200 */
+  --color-input-form-hover: #d1d5db ; /* gray-300 */
+  --color-input-form-ring: #d1d5db ; /* gray-300 */
 
   /* text color */
   --color-main: #333333; /* black */
@@ -33,6 +38,7 @@
   --color-dark-text-hover: #bae6fd; /*sky-200*/
   --color-alert-text: #b91c1c; /* red-700 */
   --color-alert-text-hover: #ff0000; /* red-300 */
+  --color-sky-medium: #0ea5e9; /* sky-500 */
 
   /* button color */
   --color-navbar-button: #e0f2fe; /*sky-100*/

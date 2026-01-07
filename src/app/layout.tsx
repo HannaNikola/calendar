@@ -11,11 +11,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full w-full">
+    <html lang="en" className="h-full w-full ">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body className="h-full w-full overflow-x-hidden flex flex-col">
+      {/* <body className="h-full w-full overflow-x-hidden flex flex-col"> */}
+      <body className="h-full w-full overflow-x-hidden flex flex-col items-center justify-center">
         <Provider store={store}>
           <Toaster
             duration={1200}
@@ -28,3 +29,8 @@ export default function RootLayout({
     </html>
   );
 }
+
+
+
+
+
