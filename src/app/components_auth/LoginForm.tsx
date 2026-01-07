@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { AppDispatch, RootState } from "../store/store";
 import { loginApi } from "@/app/api/authApi";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { EyeClosed } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -21,6 +23,7 @@ export function LoginForm() {
   const { isAuthenticated, status } = useSelector(
     (state: RootState) => state.auth
   );
+  const [show, setShow] = useState(false);
   const isLoading = status === "loading";
 
   useEffect(() => {
@@ -31,7 +34,7 @@ export function LoginForm() {
   }, [isAuthenticated, status, router]);
 
   return (
-    <div className="flex flex-col  w-[370px] h-[276px] items-center justify-center  ">
+    <div className="flex flex-col  w-[370px] h-[300px] items-center justify-center  ">
       <h1 className="text-medium">Sign in</h1>
       <Formik
         initialValues={{ email: "", password: "" }}
@@ -53,16 +56,22 @@ export function LoginForm() {
               )}
             </div>
 
-            <div className="mb-6">
+            <div className="mb-6 relative ">
               <Field
                 name="password"
-                type="password"
+                type={show ? "text" : "password"}
                 placeholder="Password"
                 className=" w-full p-2 h-[40px] outline-none border-none rounded-md bg-input-form-main transition-all duration-200 ease-in-out focus:ring-1  focus:ring-input-form-ring hover:bg-input-form-hover shadow-sm"
               />
               {touched.password && errors.password && (
                 <div className="text-red-500">{errors.password}</div>
               )}
+              <span
+        onClick={() => setShow(!show)}
+        className="absolute  top-2 right-3 cursor-pointer select-none"
+      >
+        {show ? <EyeClosed/> : <Eye/>}
+      </span>
             </div>
             <button
               disabled={isLoading}
