@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function Task() {
   return (
-    <div className="flex flex-col w-full ">
+    <div className="flex flex-col w-full">
       <div className="flex flex-row gap-5 mb-4 justify-center">
         <TooltipDesktop content="All your favorite task">
           <Link
@@ -27,7 +27,7 @@ export default function Task() {
         </TooltipDesktop>
       </div>
 
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col ml-3">
         <AddTodoButton />
         <TaskList />
       </div>
