@@ -1,15 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { CalendarTodo } from "../types/typesTodoApi";
 import { toast } from "sonner";
-
-axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
+import { api } from "./api";
 
 export const fetchTodosApi = createAsyncThunk(
   "allTodo/fethcAll",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get("/api/todo");
+      const response = await api.get("/api/todo");
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -40,7 +39,7 @@ export const addTodoApi = createAsyncThunk(
       const payload = {
         ...newTodo,
       };
-      const response = await axios.post("/api/todo", payload);
+      const response = await api.post("/api/todo", payload);
       toast.success("The task was created successefully");
       return response.data;
     } catch (error) {
@@ -60,7 +59,7 @@ export const updateTodotApi = createAsyncThunk(
   ) => {
     try {
       const { ...sanitizedTodoData } = payload.todoData;
-      const response = await axios.patch(
+      const response = await api.patch(
         `/api/todo/${payload.id}`,
         sanitizedTodoData
       );
@@ -79,7 +78,7 @@ export const favoriteTodoApi = createAsyncThunk(
   "todoData/ importantTodo",
   async (payload: { id: string; isImportant: boolean }, thunkAPI) => {
     try {
-      const response = await axios.patch(`/api/todo/${payload.id}`, {
+      const response = await api.patch(`/api/todo/${payload.id}`, {
         isImportant: payload.isImportant,
       });
       return response.data;
@@ -96,7 +95,7 @@ export const completedTodoApi = createAsyncThunk(
   "todoData/ completedTodo",
   async (payload: { id: string; isCompletedTask: boolean }, thunkAPI) => {
     try {
-      const response = await axios.patch(`/api/todo/${payload.id}`, {
+      const response = await api.patch(`/api/todo/${payload.id}`, {
         isCompletedTask: payload.isCompletedTask,
       });
       toast.success("The task was completed successefully");
@@ -113,7 +112,7 @@ export const deleteTodoApi = createAsyncThunk<string, string>(
   "todoData/deleteTodo",
   async (id: string, thunkAPI) => {
     try {
-      const response = await axios.delete(`/api/todo/${id}`);
+      const response = await api.delete(`/api/todo/${id}`);
       toast.success("The task was deleted successefully");
       return response.data.data._id;
     } catch (error) {

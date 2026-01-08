@@ -1,6 +1,8 @@
 import { LogOut } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 interface SettingsSidebarProps {
   open: boolean;
@@ -12,7 +14,10 @@ export default function SettingsSidebar({
   onClose,
 }: SettingsSidebarProps) {
   const router = useRouter();
-
+  const { user} = useSelector(
+    (state: RootState) => state.auth
+  );
+console.log("user", user)
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -51,8 +56,8 @@ export default function SettingsSidebar({
           <h2 className=" flex text-lg justify-center font-medium">Settings</h2>
           <button onClick={onClose}>✕</button>
         </div>
-
-        <p className=" mb-140  text-main hidden sm:block">author@gmail.com</p>
+         
+        <p className=" mb-140  text-main hidden sm:block">{user?.name}</p>
         <button className="flex items-center justify-center w-[150px] whitespace-nowrap  transition-colors duration-500 text-main   hover:text-sky-hover">
           Leave an account
           <LogOut

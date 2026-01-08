@@ -1,16 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { CalendarEvent } from "../types/typesApi";
 import { toISOString } from "../shared/utils/date";
 import { toast } from "sonner";
-
-axios.defaults.baseURL = "https://calendar-back-end-s3b2.onrender.com";
+import { api } from "./api";
 
 export const fetchEventsApi = createAsyncThunk(
   "allEvents/fetchAll",
   async (_, thunkAPI) => {
     try {
-      const response = await axios.get("/api/events");
+      const response = await api.get("/api/events");
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -53,7 +52,7 @@ export const addEventApi = createAsyncThunk(
 
         addTask: newEvent.addTask,
       };
-      const response = await axios.post("/api/events", payload);
+      const response = await api.post("/api/events", payload);
       toast.success("Event was created successefully");
       return response.data;
     } catch (error) {
@@ -71,7 +70,7 @@ export const updateEventApi = createAsyncThunk(
     try {
       const { _id, ...sanitizedEventData } = payload.eventData;
 
-      const response = await axios.patch(
+      const response = await api.patch(
         `/api/events/${payload.id}`,
         sanitizedEventData
       );
@@ -90,7 +89,7 @@ export const deleteEventApi = createAsyncThunk<string, string>(
   "eventsData/deleteEvent",
   async (id: string, thunkApi) => {
     try {
-      const response = await axios.delete(`/api/events/${id}`);
+      const response = await api.delete(`/api/events/${id}`);
       toast.success("The event was delete successefully");
       return response.data.data._id;
     } catch (error) {
