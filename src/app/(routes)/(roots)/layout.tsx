@@ -1,7 +1,7 @@
 "use client";
 
 import { useDispatch } from "react-redux";
-import { AppDispatch, store } from "@/app/store/store";
+import { AppDispatch} from "@/app/store/store";
 import { useEffect } from "react";
 import { fetchEventsApi } from "../../api/eventsApi";
 import { fetchTodosApi } from "../../api/todoApi";
