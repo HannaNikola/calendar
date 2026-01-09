@@ -49,8 +49,3 @@ api.interceptors.response.use(
   }
 );
 
-// Logout — очистка HttpOnly cookie и Redux state
-
-// AuthGuard / private route — блокировка страниц для неавторизованных
-
-// Optional: добавить Redux state для isRefreshing, чтобы UI мог показывать «Loading…»
