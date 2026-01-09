@@ -17,7 +17,6 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      {/* <body className="h-full w-full overflow-x-hidden flex flex-col"> */}
       <body className="h-full w-full overflow-x-hidden flex flex-col items-center justify-center">
         <Provider store={store}>
           <AuthInitializer>

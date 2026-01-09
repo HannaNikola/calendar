@@ -11,6 +11,13 @@ import { AxiosError } from "axios";
 // authRouter.get("/current", tokenAuth, authCurrent);
 // authRouter.delete("/delete", tokenAuth, authDeleteUser);
 
+// Logout — очистка HttpOnly cookie и Redux state
+
+// AuthGuard / private route — блокировка страниц для неавторизованных
+
+// Optional: добавить Redux state для isRefreshing, чтобы UI мог показывать «Loading…»
+
+
 export const registerApi = createAsyncThunk(
   "auth/register",
   async (data: { email: string; password: string; name: string }, thunkAPI) => {
