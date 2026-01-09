@@ -44,7 +44,7 @@ console.log("user", user)
       {/* Sidebar */}
       <div
         className={`
-          fixed top-17 right-5 rounded-2xl h-[500px] max-lg:h-[700px] p-4
+          fixed top-17 right-5 rounded-2xl h-[500px]  p-4
           w-[350px]
           bg-white shadow-xl z-50
           transition-transform duration-300
