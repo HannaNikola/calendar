@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerApi, loginApi, fetchCurrentUser } from "@/app/api/authApi";
+import { registerApi, loginApi, fetchCurrentUser, fetchLogoutUser } from "@/app/api/authApi";
 
 
 
@@ -63,6 +63,17 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
         state.status = "idle";
+      })
+      .addCase(fetchLogoutUser.pending,(state)=>{
+        state.status = 'loading';
+      })
+      .addCase(fetchLogoutUser.fulfilled, (state)=>{
+        state.user = null;
+        state.isAuthenticated = false;
+        state.status = 'idle';
+      })
+      .addCase(fetchLogoutUser.rejected,(state)=>{
+       state.status = 'idle'
       })
   },
 });

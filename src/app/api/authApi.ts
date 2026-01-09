@@ -60,14 +60,16 @@ export const fetchCurrentUser = createAsyncThunk(
   }
 );
 
-// export const fetchLogoutUser = createAsyncThunk(
-//     "auth/fetchLogoutUser",
-//     async(_, thunkAPI)=>{
-//         try{
-//             const response =  await axios.post("/api/users/logout")
-//             return response.data.user
-//         }catch(error: any){
-//          return thunkAPI.rejectWithValue(error.response?.data || null);
-//         }
-//     }
-// )
+export const fetchLogoutUser = createAsyncThunk(
+    "auth/logout",
+    async(_, thunkAPI)=>{
+        try{
+            await api.post("/api/users/logout");
+       return true;
+        }catch(error: any){
+         return thunkAPI.rejectWithValue(error.response?.data || null);
+        }
+    }
+)
+
+
