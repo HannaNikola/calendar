@@ -1,4 +1,10 @@
+import { AxiosRequestConfig } from "axios";
 import { api } from "./api";
+
+interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
+  _retry?: boolean;
+}
+
 
 let isRefreshing = false;
 let refreshSubscribers: (() => void)[] = [];
