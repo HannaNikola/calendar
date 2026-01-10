@@ -30,27 +30,44 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(registerApi.pending, (state) => {
+    //   .addCase(registerApi.pending, (state) => {
+    //     state.status = "loading";
+    //   })
+    //   .addCase(registerApi.fulfilled, (state, action) => {
+    //     state.status = "succeeded";
+    //     state.user = action.payload;
+    //     state.isAuthenticated = true;
+    //   })
+    //   .addCase(registerApi.rejected, (state, action) => {
+    //     state.status = "failed";
+    //   })
+     .addCase(registerApi.pending, (state) => {
         state.status = "loading";
+        state.error = null;
       })
       .addCase(registerApi.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.user = action.payload;
         state.isAuthenticated = true;
+        state.error = null
       })
       .addCase(registerApi.rejected, (state, action) => {
         state.status = "failed";
+        state.error = action.payload as string
       })
       .addCase(loginApi.pending, (state) => {
         state.status = "loading";
+        state.error = null
       })
       .addCase(loginApi.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.user = action.payload;
         state.isAuthenticated = true;
+        state.error = null;
       })
       .addCase(loginApi.rejected, (state, action) => {
         state.status = "failed";
+        state.error = action.payload as string;
       })
       //   .addCase(fetchCurrentUser.pending,(state)=>{
       //     state.status = 'loading'
