@@ -21,7 +21,7 @@ const SignupSchema = Yup.object().shape({
 export function SignupForm() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { isAuthenticated, status } = useSelector(
+  const { isAuthenticated, status, error } = useSelector(
     (state: RootState) => state.auth
   );
   const [show, setShow] = useState(false);
@@ -71,7 +71,7 @@ export function SignupForm() {
             <div className="mb-6 relative">
               <Field
                 name="password"
-                type="password"
+                type={show ? "password" : "text"}
                 placeholder="Password"
                 className=" w-full p-2 h-[40px] outline-none border-none rounded-md bg-input-form-main transition-all duration-200 ease-in-out focus:ring-1  focus:ring-input-form-ring hover:bg-input-form-hover shadow-sm"
               />
@@ -85,7 +85,11 @@ export function SignupForm() {
                 {show ? <EyeClosed /> : <Eye />}
               </span>
             </div>
-
+            {error && (
+              <div className="text-red-500 text-sm mb-2 text-center">
+                {error}
+              </div>
+            )}
             <button
               disabled={isLoading}
               type="submit"

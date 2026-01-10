@@ -11,9 +11,7 @@ import { AxiosError } from "axios";
 // authRouter.get("/current", tokenAuth, authCurrent);
 // authRouter.delete("/delete", tokenAuth, authDeleteUser);
 
-// Logout — очистка HttpOnly cookie и Redux state
 
-// AuthGuard / private route — блокировка страниц для неавторизованных
 
 // Optional: добавить Redux state для isRefreshing, чтобы UI мог показывать «Loading…»
 
@@ -23,14 +21,13 @@ export const registerApi = createAsyncThunk(
     try {
       const response = await api.post("/api/users/register", data);
       return response.data.user;
-    } catch (error) {
-      const err = error as AxiosError;
-      return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
-      );
+    } catch (error:any) {
+        const message = error.response?.data?.message || error.response?.data?.error || "User already exists" 
+    return thunkAPI.rejectWithValue(message)
     }
   }
 );
+
 
 export const loginApi = createAsyncThunk(
   "auth/login",
@@ -38,11 +35,14 @@ export const loginApi = createAsyncThunk(
     try {
       const response = await api.post("/api/users/login", data);
       return response.data.user;
-    } catch (error) {
-      const err = error as AxiosError;
-      return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
-      );
+    } catch (error: any) {
+      const message =
+        (error.response?.data?.message as string) ||
+        (error.response?.data?.error as string) ||
+        error.message ||
+        "Invalid email or password";
+      return thunkAPI.rejectWithValue(message);
+      
     }
   }
 );

@@ -7,8 +7,8 @@ import { AppDispatch, RootState } from "../store/store";
 import { loginApi } from "@/app/api/authApi";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { EyeClosed } from 'lucide-react';
-import { Eye } from 'lucide-react';
+import { EyeClosed } from "lucide-react";
+import { Eye } from "lucide-react";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -20,7 +20,7 @@ const LoginSchema = Yup.object().shape({
 export function LoginForm() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { isAuthenticated, status } = useSelector(
+  const { isAuthenticated, status, error } = useSelector(
     (state: RootState) => state.auth
   );
   const [show, setShow] = useState(false);
@@ -59,7 +59,7 @@ export function LoginForm() {
             <div className="mb-6 relative ">
               <Field
                 name="password"
-                type={show ? "text" : "password"}
+                type={show ? "password" : "text"}
                 placeholder="Password"
                 className=" w-full p-2 h-[40px] outline-none border-none rounded-md bg-input-form-main transition-all duration-200 ease-in-out focus:ring-1  focus:ring-input-form-ring hover:bg-input-form-hover shadow-sm"
               />
@@ -67,12 +67,17 @@ export function LoginForm() {
                 <div className="text-red-500">{errors.password}</div>
               )}
               <span
-        onClick={() => setShow(!show)}
-        className="absolute  top-2 right-3 cursor-pointer select-none"
-      >
-        {show ? <EyeClosed/> : <Eye/>}
-      </span>
+                onClick={() => setShow(!show)}
+                className="absolute  top-2 right-3 cursor-pointer select-none"
+              >
+                {show ? <EyeClosed /> : <Eye />}
+              </span>
             </div>
+            {error && (
+              <div className="text-red-500 text-sm mb-2 text-center">
+                {error}
+              </div>
+            )}
             <button
               disabled={isLoading}
               type="submit"
