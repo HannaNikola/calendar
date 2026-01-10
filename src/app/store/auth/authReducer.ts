@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerApi, loginApi, fetchCurrentUser, fetchLogoutUser } from "@/app/api/authApi";
+import {
+  registerApi,
+  loginApi,
+  fetchCurrentUser,
+  fetchLogoutUser,
+} from "@/app/api/authApi";
 
-
-
-
-
- interface Auth {
+interface Auth {
   user: {
     id: string;
     email: string;
@@ -51,32 +52,30 @@ const authSlice = createSlice({
       .addCase(loginApi.rejected, (state, action) => {
         state.status = "failed";
       })
-    //   .addCase(fetchCurrentUser.pending,(state)=>{
-    //     state.status = 'loading'
-    //   })
-      .addCase(fetchCurrentUser.fulfilled,(state,action)=>{
+      //   .addCase(fetchCurrentUser.pending,(state)=>{
+      //     state.status = 'loading'
+      //   })
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.isAuthenticated = !! action.payload
+        state.isAuthenticated = !!action.payload;
         state.status = "succeeded";
       })
-      .addCase(fetchCurrentUser.rejected, (state, action)=>{
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
         state.user = null;
         state.isAuthenticated = false;
         state.status = "idle";
       })
-      .addCase(fetchLogoutUser.pending,(state)=>{
-        state.status = 'loading';
+      .addCase(fetchLogoutUser.pending, (state) => {
+        state.status = "idle";
       })
-      .addCase(fetchLogoutUser.fulfilled, (state)=>{
+      .addCase(fetchLogoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
-        state.status = 'idle';
+        state.status = "idle";
       })
-      .addCase(fetchLogoutUser.rejected,(state)=>{
-       state.status = 'idle'
-      })
+      .addCase(fetchLogoutUser.rejected, (state) => {
+        state.status = "idle";
+      });
   },
 });
 export const authReducer = authSlice.reducer;
-
-

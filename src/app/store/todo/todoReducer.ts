@@ -1,3 +1,4 @@
+import { fetchLogoutUser } from "@/app/api/authApi";
 import {
   addTodoApi,
   fetchTodosApi,
@@ -94,7 +95,8 @@ const todolSlice = createSlice({
       .addCase(completedTodoApi.rejected, (state, action) => {
         (state.status = "failed"),
           (state.error = action.error.message || "Unknown error");
-      });
+      })
+      .addCase(fetchLogoutUser.fulfilled, () => initialState);
   },
 });
 

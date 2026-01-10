@@ -6,6 +6,7 @@ import {
   updateEventApi,
 } from "@/app/api/eventsApi";
 import { EventStateProps } from "@/app/types/typesApi";
+import { fetchLogoutUser } from "@/app/api/authApi";
 
 const initialState: EventStateProps = {
   events: [],
@@ -68,7 +69,8 @@ const eventSlice = createSlice({
       .addCase(deleteEventApi.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Unknown error";
-      });
+      })
+      .addCase(fetchLogoutUser.fulfilled, () => initialState);
   },
 });
 

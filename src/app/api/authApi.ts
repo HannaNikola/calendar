@@ -17,7 +17,6 @@ import { AxiosError } from "axios";
 
 // Optional: добавить Redux state для isRefreshing, чтобы UI мог показывать «Loading…»
 
-
 export const registerApi = createAsyncThunk(
   "auth/register",
   async (data: { email: string; password: string; name: string }, thunkAPI) => {
@@ -61,15 +60,18 @@ export const fetchCurrentUser = createAsyncThunk(
 );
 
 export const fetchLogoutUser = createAsyncThunk(
-    "auth/logout",
-    async(_, thunkAPI)=>{
-        try{
-            await api.post("/api/users/logout");
-       return true;
-        }catch(error: any){
-         return thunkAPI.rejectWithValue(error.response?.data || null);
-        }
+  "auth/logout",
+  async (_, thunkAPI) => {
+    try {
+      await api.post("/api/users/logout");
+      return true;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response?.data || null);
     }
-)
+  }
+);
+
+
+
 
 

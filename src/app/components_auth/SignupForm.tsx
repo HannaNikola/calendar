@@ -7,8 +7,8 @@ import { registerApi } from "../api/authApi";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { toast } from "sonner";
-import { EyeClosed } from 'lucide-react';
-import { Eye } from 'lucide-react';
+import { EyeClosed } from "lucide-react";
+import { Eye } from "lucide-react";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -79,11 +79,11 @@ export function SignupForm() {
                 <div className="text-red-500">{errors.password}</div>
               )}
               <span
-        onClick={() => setShow(!show)}
-        className="absolute  top-2 right-3 cursor-pointer select-none"
-      >
-        {show ? <EyeClosed/> : <Eye/>}
-      </span>
+                onClick={() => setShow(!show)}
+                className="absolute  top-2 right-3 cursor-pointer select-none"
+              >
+                {show ? <EyeClosed /> : <Eye />}
+              </span>
             </div>
 
             <button
@@ -107,13 +107,3 @@ export function SignupForm() {
   );
 }
 export default SignupForm;
-
-
-
-
-
-
-
-
-
-
