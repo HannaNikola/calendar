@@ -7,7 +7,7 @@ import { fetchEventsApi } from "../../api/eventsApi";
 import { fetchTodosApi } from "../../api/todoApi";
 import { useScreenType } from "../../hooks/useScreenType";
 import { LayoutContent } from "./LayoutContent";
-import { useRouter } from "next/navigation";
+
 
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,12 +30,8 @@ export default function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const screenType = useScreenType();
-  const { isAuthenticated, status } = useSelector(
-    (state: RootState) => state.auth
-  );
-
+ 
   return (
     <LayoutWrapper>
       <LayoutContent screenType={screenType}>{children}</LayoutContent>
