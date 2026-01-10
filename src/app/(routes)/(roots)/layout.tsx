@@ -36,23 +36,6 @@ export default function PrivateLayout({
     (state: RootState) => state.auth
   );
 
-  // 🔐 Guard
-  useEffect(() => {
-    if (status === "succeeded" && !isAuthenticated) {
-      router.replace("/login");
-    }
-  }, [status, isAuthenticated, router]);
-
-  if (status === "loading") {
-    return (
-      <div className="h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) return null;
-
   return (
     <LayoutWrapper>
       <LayoutContent screenType={screenType}>{children}</LayoutContent>
