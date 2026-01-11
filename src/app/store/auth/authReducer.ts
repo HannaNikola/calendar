@@ -4,6 +4,7 @@ import {
   loginApi,
   fetchCurrentUser,
   fetchLogoutUser,
+  fetchDeletedUser,
 } from "@/app/api/authApi";
 
 interface Auth {
@@ -30,18 +31,8 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    //   .addCase(registerApi.pending, (state) => {
-    //     state.status = "loading";
-    //   })
-    //   .addCase(registerApi.fulfilled, (state, action) => {
-    //     state.status = "succeeded";
-    //     state.user = action.payload;
-    //     state.isAuthenticated = true;
-    //   })
-    //   .addCase(registerApi.rejected, (state, action) => {
-    //     state.status = "failed";
-    //   })
-     .addCase(registerApi.pending, (state) => {
+
+      .addCase(registerApi.pending, (state) => {
         state.status = "loading";
         state.error = null;
       })
@@ -49,15 +40,15 @@ const authSlice = createSlice({
         state.status = "succeeded";
         state.user = action.payload;
         state.isAuthenticated = true;
-        state.error = null
+        state.error = null;
       })
       .addCase(registerApi.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload as string
+        state.error = action.payload as string;
       })
       .addCase(loginApi.pending, (state) => {
         state.status = "loading";
-        state.error = null
+        state.error = null;
       })
       .addCase(loginApi.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -69,15 +60,12 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       })
-      //   .addCase(fetchCurrentUser.pending,(state)=>{
-      //     state.status = 'loading'
-      //   })
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isAuthenticated = !!action.payload;
         state.status = "succeeded";
       })
-      .addCase(fetchCurrentUser.rejected, (state, action) => {
+      .addCase(fetchCurrentUser.rejected, (state) => {
         state.user = null;
         state.isAuthenticated = false;
         state.status = "idle";
@@ -91,6 +79,17 @@ const authSlice = createSlice({
         state.status = "idle";
       })
       .addCase(fetchLogoutUser.rejected, (state) => {
+        state.status = "idle";
+      })
+      .addCase(fetchDeletedUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchDeletedUser.fulfilled, (state) => {
+        state.status = "idle";
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      .addCase(fetchDeletedUser.rejected, (state) => {
         state.status = "idle";
       });
   },

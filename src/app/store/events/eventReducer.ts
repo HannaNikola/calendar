@@ -6,7 +6,7 @@ import {
   updateEventApi,
 } from "@/app/api/eventsApi";
 import { EventStateProps } from "@/app/types/typesApi";
-import { fetchLogoutUser } from "@/app/api/authApi";
+import { fetchDeletedUser, fetchLogoutUser } from "@/app/api/authApi";
 
 const initialState: EventStateProps = {
   events: [],
@@ -70,7 +70,8 @@ const eventSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message || "Unknown error";
       })
-      .addCase(fetchLogoutUser.fulfilled, () => initialState);
+      .addCase(fetchLogoutUser.fulfilled, () => initialState)
+      .addCase(fetchDeletedUser.fulfilled, ()=> initialState)
   },
 });
 
