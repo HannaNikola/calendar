@@ -11,8 +11,6 @@ import { AxiosError } from "axios";
 // authRouter.get("/current", tokenAuth, authCurrent);
 // authRouter.delete("/delete", tokenAuth, authDeleteUser);
 
-
-
 // Optional: добавить Redux state для isRefreshing, чтобы UI мог показывать «Loading…»
 
 export const registerApi = createAsyncThunk(
@@ -21,13 +19,15 @@ export const registerApi = createAsyncThunk(
     try {
       const response = await api.post("/api/users/register", data);
       return response.data.user;
-    } catch (error:any) {
-        const message = error.response?.data?.message || error.response?.data?.error || "User already exists" 
-    return thunkAPI.rejectWithValue(message)
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "User already exists";
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
-
 
 export const loginApi = createAsyncThunk(
   "auth/login",
@@ -42,7 +42,6 @@ export const loginApi = createAsyncThunk(
         error.message ||
         "Invalid email or password";
       return thunkAPI.rejectWithValue(message);
-      
     }
   }
 );
@@ -71,7 +70,16 @@ export const fetchLogoutUser = createAsyncThunk(
   }
 );
 
-
-
+export const fetchDeletedUser = createAsyncThunk(
+  "auth/delete",
+  async (_, thunkAPI) => {
+    try {
+      await api.delete("api/users/delete");
+      return 
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(null);
+    }
+  }
+);
 
 
