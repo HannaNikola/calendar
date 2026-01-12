@@ -1,9 +1,10 @@
 import { LogOut } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { fetchDeletedUser, fetchLogoutUser } from "../api/authApi";
+import { ModalWrapper } from "../shared/ui/ModalWrapper";
 
 interface SettingsSidebarProps {
   open: boolean;
@@ -17,7 +18,9 @@ export default function SettingsSidebar({
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { user } = useSelector((state: RootState) => state.auth);
-  console.log("user", user);
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -57,13 +60,16 @@ export default function SettingsSidebar({
           <button onClick={onClose}>✕</button>
         </div>
 
-        <div className="flex flex-col bg-sky-100 h-[110px] justify-center items-center mb-10">
+        <div className="flex flex-col bg-sky-100 h-[110px] rounded-xl justify-center items-center mb-10">
           <div className="flex  mt-3 mb-3 w-11 h-11 border-2 rounded-4xl "></div>
           <p className=" flex  text-main  sm:block">{user?.name}Name</p>
         </div>
 
-        <div className="flex flex-col mt-60">
-          <button className="flex items-center justify-center w-full mb-3 bg-sky-100 whitespace-nowrap  transition-colors duration-500 text-main   hover:text-sky-hover">
+        <div className="flex flex-col mt-58">
+          <button
+            type="button"
+            className="flex items-center py-1 px-17 justify-center w-full mb-3 bg-sky-100 rounded-sm whitespace-nowrap  transition-colors duration-500 text-main   hover:bg-navbar-button-hover"
+          >
             Leave an account
             <LogOut
               onClick={() => {
@@ -75,16 +81,47 @@ export default function SettingsSidebar({
             />
           </button>
           <button
-            className="w-full bg-alert-button"
+            type="button"
+            className="w-full bg-alert-button rounded-sm py-1 px-17 hover:bg-alert-button-hover"
             onClick={() => {
-              dispatch(fetchDeletedUser());
-              router.replace("/register");
+              setDeleteOpen(true);
             }}
           >
             Delete account
           </button>
         </div>
       </div>
+      {deleteOpen && (
+        <ModalWrapper
+          isOpen={deleteOpen}
+          onClose={() => setDeleteOpen(false)}
+          className="w-[350px] top-17 right-5 p-5 "
+        >
+          <div>
+            <p>
+              This action is irreversible. All your events, todos, and profile
+              data will be permanently deleted.
+            </p>
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                onClick={() => setDeleteOpen(false)}
+                className="hover:bg-sky-100  px-3 py-1 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-red-500 hover:bg-alert-button-hover text-white px-3 py-1 rounded"
+                onClick={() => {
+                  dispatch(fetchDeletedUser());
+                  router.replace("/register");
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </ModalWrapper>
+      )}
     </>
   );
 }
