@@ -67,15 +67,16 @@ export default function SettingsSidebar({
 
         <div className="flex flex-col mt-58">
           <button
+           onClick={() => {
+                dispatch(fetchLogoutUser());
+                router.replace("/login");
+              }}
             type="button"
             className="flex items-center py-1 px-17 justify-center w-full mb-3 bg-sky-100 rounded-sm whitespace-nowrap  transition-colors duration-500 text-main   hover:bg-navbar-button-hover"
           >
             Leave an account
             <LogOut
-              onClick={() => {
-                dispatch(fetchLogoutUser());
-                router.replace("/login");
-              }}
+             
               size={15}
               className="ml-3"
             />
