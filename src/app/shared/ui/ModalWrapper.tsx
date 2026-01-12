@@ -37,7 +37,7 @@ export const ModalWrapper = ({
   };
 
   if (!visible) return null;
-  // if (!isOpen) return null;
+
   return (
     <div
       onClick={handelOverlowClick}
