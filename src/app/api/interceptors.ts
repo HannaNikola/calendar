@@ -5,7 +5,6 @@ interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
-
 let isRefreshing = false;
 let refreshSubscribers: (() => void)[] = [];
 
@@ -52,12 +51,5 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
-
-
-
-
-
-
-

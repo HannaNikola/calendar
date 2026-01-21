@@ -22,4 +22,3 @@ export function middleware(req: NextRequest) {
 export const config = {
   matcher: ["/calendar/:path*", "/todos/:path*", "/login", "/register"],
 };
-
