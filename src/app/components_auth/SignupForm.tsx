@@ -22,23 +22,16 @@ export function SignupForm() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { isAuthenticated, status, error } = useSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
   const [show, setShow] = useState(false);
   const isLoading = status === "loading";
 
-  // useEffect(() => {
-  //   if (isAuthenticated && status === "succeeded") {
-  //     toast.success("Registration successful");
-  //     // router.push("/calendar");
-  //   }
-  // }, [isAuthenticated, status, router]);
-
- useEffect(() => {
-  if (status === "succeeded") {
-    toast.success("Check your email to verify your account");
-  }
-}, [status]);
+  useEffect(() => {
+    if (status === "succeeded") {
+      toast.success("Check your email to verify your account");
+    }
+  }, [status]);
 
   return (
     <div className="flex flex-col w-[370px] h-[300px] items-center justify-center ">

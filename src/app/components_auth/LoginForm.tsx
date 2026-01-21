@@ -95,6 +95,7 @@ export function LoginForm() {
           </Form>
         )}
       </Formik>
+      <p onClick={()=>{toast.error('This option not ready yeat') }}className="text-blue-500 underline hover:text-blue-200">forgot password?</p>
     </div>
   );
 }
