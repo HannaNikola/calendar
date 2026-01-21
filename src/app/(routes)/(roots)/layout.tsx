@@ -8,11 +8,10 @@ import { fetchTodosApi } from "../../api/todoApi";
 import { useScreenType } from "../../hooks/useScreenType";
 import { LayoutContent } from "./LayoutContent";
 
-
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated, status } = useSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function PrivateLayout({
   children: React.ReactNode;
 }) {
   const screenType = useScreenType();
- 
+
   return (
     <LayoutWrapper>
       <LayoutContent screenType={screenType}>{children}</LayoutContent>
