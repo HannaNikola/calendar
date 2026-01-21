@@ -12,6 +12,7 @@ interface Auth {
     id: string;
     email: string;
     name?: string;
+    emailVerified?: boolean;
   } | null;
   isAuthenticated: boolean;
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -38,8 +39,9 @@ const authSlice = createSlice({
       })
       .addCase(registerApi.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.user = action.payload;
-        state.isAuthenticated = true;
+        // state.user = action.payload;
+        state.user = null;
+        state.isAuthenticated = false;
         state.error = null;
       })
       .addCase(registerApi.rejected, (state, action) => {

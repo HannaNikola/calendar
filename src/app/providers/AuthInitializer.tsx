@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { fetchCurrentUser } from "../api/authApi";
 
+
 export default function AuthInitializer({
   children,
 }: {
@@ -18,3 +19,6 @@ export default function AuthInitializer({
 
   return <>{children}</>;
 }
+
+
+
