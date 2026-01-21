@@ -18,7 +18,7 @@ export const registerApi = createAsyncThunk(
   async (data: { email: string; password: string; name: string }, thunkAPI) => {
     try {
       const response = await api.post("/api/users/register", data);
-      return response.data.user;
+      return response.data;
     } catch (error: any) {
       const message =
         error.response?.data?.message ||
