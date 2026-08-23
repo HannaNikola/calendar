@@ -8,12 +8,12 @@ import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { CalendarTodo } from "../types/typesTodoApi";
 import { useTodoExpired } from "../hooks/useTodoExpired";
 import { useState } from "react";
-import "tippy.js/dist/tippy.css";
+// import "tippy.js/dist/tippy.css";
 import { useScreenType } from "../hooks/useScreenType";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
 import dayjs from "dayjs";
 
-export const TaskItem = ({ item }: { item: CalendarTodo }) => {
+export const TaskItem = ({ item, className}: { item: CalendarTodo ; className?: string; }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { handeDeleteTodo } = useTodoHandlers();
   const { data } = useSelector((state: RootState) => state.modal);
@@ -41,7 +41,7 @@ export const TaskItem = ({ item }: { item: CalendarTodo }) => {
           })
         )
       }
-      className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder}`}
+       className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder} ${className ?? ""}`}
     >
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
