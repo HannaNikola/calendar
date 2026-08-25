@@ -12,7 +12,7 @@ import { AppDispatch, RootState } from "@/app/store/store";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
-import "tippy.js/dist/tippy.css";
+// import "tippy.js/dist/tippy.css";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
 import { fetchEventsApi } from "../api/eventsApi";
