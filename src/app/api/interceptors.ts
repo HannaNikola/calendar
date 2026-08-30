@@ -1,20 +1,29 @@
-import { AxiosRequestConfig } from "axios";
 import { api } from "./api";
 
-interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
-  _retry?: boolean;
-}
+type Subscriber = {
+  resolve: () => void;
+  reject: (error: unknown) => void;
+};
 
 let isRefreshing = false;
-let refreshSubscribers: (() => void)[] = [];
 
-function onRefreshed() {
-  refreshSubscribers.forEach((cb) => cb());
+let refreshSubscribers: Subscriber[] = [];
+
+function onRefreshSuccess() {
+  refreshSubscribers.forEach(({ resolve }) => resolve());
   refreshSubscribers = [];
 }
 
-function addRefreshSubscriber(cb: () => void) {
-  refreshSubscribers.push(cb);
+function onRefreshFailed(error: unknown) {
+  refreshSubscribers.forEach(({ reject }) => reject(error));
+  refreshSubscribers = [];
+}
+
+function addRefreshSubscriber(
+  resolve: () => void,
+  reject: (error: unknown) => void,
+) {
+  refreshSubscribers.push({ resolve, reject });
 }
 
 api.interceptors.response.use(
@@ -23,33 +32,34 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      if (isRefreshing) {
-        return new Promise((resolve) => {
-          addRefreshSubscriber(() => {
-            resolve(api(originalRequest));
-          });
-        });
-      }
-
-      isRefreshing = true;
-
-      try {
-        await api.post("/api/users/refresh");
-        isRefreshing = false;
-        onRefreshed();
-
-        return api(originalRequest);
-      } catch (refreshError) {
-        isRefreshing = false;
-
-        window.location.href = "/login";
-        return Promise.reject(refreshError);
-      }
+    if (error.response?.status !== 401 || originalRequest._retry) {
+      return Promise.reject(error);
     }
 
-    return Promise.reject(error);
+    originalRequest._retry = true;
+
+    if (isRefreshing) {
+      return new Promise((resolve, reject) => {
+        addRefreshSubscriber(() => resolve(api(originalRequest)), reject);
+      });
+    }
+
+    isRefreshing = true;
+
+    try {
+      await api.post("/api/users/refresh");
+
+      onRefreshSuccess();
+
+      return api(originalRequest);
+    } catch (refreshError) {
+      onRefreshFailed(refreshError);
+
+      window.dispatchEvent(new Event("auth:login-required"));
+
+      return Promise.reject(refreshError);
+    } finally {
+      isRefreshing = false;
+    }
   },
 );

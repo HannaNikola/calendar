@@ -3,10 +3,7 @@
 import * as Yup from "yup";
 import { useEffect, useRef, useState } from "react";
 import { CalendarEvent } from "../types/typesApi";
-// import "flatpickr/dist/themes/airbnb.css";
 import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-// import "../components_Calendar/calendar.css";
 import { Button } from "@/app/shared/ui/Button";
 import { toast } from "sonner";
 import { useEventHandlers } from "../hooks/useEventHandlers";
@@ -17,6 +14,7 @@ import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
 import { CheckCheck } from "lucide-react";
+
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -32,7 +30,7 @@ export const ModalEvent = ({
 }: EventModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { mode, data, isOpen } = useSelector((state: RootState) => state.modal);
+  const { mode, isOpen } = useSelector((state: RootState) => state.modal);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
@@ -49,6 +47,7 @@ export const ModalEvent = ({
 
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
     useEventHandlers();
+
 
   useEffect(() => {
     if (isOpen) {
@@ -97,7 +96,7 @@ export const ModalEvent = ({
         setEndTime(defaultEnd);
       }
     }
-  }, [allDay]);
+   }, [allDay, endDay , endTime, startDay, startTime]);
 
   const combineDateTime = (
     date: Date | null,
@@ -135,6 +134,7 @@ export const ModalEvent = ({
     if (startDay && date < startDay) setStartDay(date);
   };
 
+
   const handleSubmit = async () => {
     try {
       await EventSchema.validate({ title });
@@ -152,7 +152,7 @@ export const ModalEvent = ({
             )
           : combineDateTime(startDay, startTime);
 
-      let end =
+      const end =
         allDay && endDay
           ? new Date(
               endDay.getFullYear(),
@@ -271,7 +271,7 @@ export const ModalEvent = ({
               placeholderText="Select the day"
               className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
             />
-            <DatePicker
+              <DatePicker
               selected={endTime}
               onChange={(date) => setEndTime(date)}
               disabled={allDay}
@@ -283,7 +283,7 @@ export const ModalEvent = ({
               timeCaption="Time"
               placeholderText="Select the time"
               className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
-            />
+            />  
           </div>
         </div>
         <div className="flex justify-between items-center mb-4 ">

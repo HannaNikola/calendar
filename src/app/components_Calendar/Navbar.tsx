@@ -6,20 +6,11 @@ import { CalendarDays } from "lucide-react";
 import { BookOpenCheck } from "lucide-react";
 import EddEventButton from "./EddEventButton";
 import { AdaptiveProps } from "../types/typesAdaptive";
-import { usePathname } from "next/navigation";
 import { useScreenType } from "../hooks/useScreenType";
-import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
 
-export default function Navbar({
-  type,
-  position,
-  onSettingsClick,
-}: AdaptiveProps) {
-  const pathname = usePathname();
+export default function Navbar({ onSettingsClick }: AdaptiveProps) {
   const screenType = useScreenType();
-  const { events } = useSelector((state: RootState) => state.eventData);
 
   return (
     <div className="flex w-full justify-between gap-2 ">

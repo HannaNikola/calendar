@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "./api";
+import { AxiosError } from "axios";
 
 // authRouter.post("/logout-all", tokenAuth, authLogoutAll);
 // Optional: добавить Redux state для isRefreshing, чтобы UI мог показывать «Loading…»
@@ -65,10 +66,14 @@ export const fetchDeletedUser = createAsyncThunk(
   "auth/delete",
   async (_, thunkAPI) => {
     try {
-      await api.delete("api/users/delete");
+      await api.delete("/api/users/delete");
       return;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(null);
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      console.error("Failed to delete user:", axiosError);
+      return thunkAPI.rejectWithValue(
+        axiosError.response?.data?.message ?? "Failed to delete user",
+      );
     }
   },
 );

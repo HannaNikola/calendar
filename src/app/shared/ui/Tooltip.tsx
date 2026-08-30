@@ -1,6 +1,5 @@
 "use client";
 import { useScreenType } from "@/app/hooks/useScreenType";
-import { options } from "@fullcalendar/core/preact.js";
 import React, { useEffect, useRef } from "react";
 import tippy, { Instance, Props } from "tippy.js";
 import "tippy.js/dist/tippy.css";

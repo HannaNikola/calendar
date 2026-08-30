@@ -70,7 +70,7 @@ export const useCalendarLayout = (
     }
 
     calendarApi.updateSize();
-  }, [screenType, isMobileWidth, isTabletWidth, calendarRef, containerRef]);
+   }, [ isMobileWidth, isTabletWidth, calendarRef, containerRef]);
 
   useEffect(() => {
     checkViewport();

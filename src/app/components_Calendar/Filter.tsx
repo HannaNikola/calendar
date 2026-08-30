@@ -23,10 +23,8 @@ export const Filter = () => {
   const query = useSelector((s: RootState) => s.filter.query);
   const entity = useSelector((s: RootState) => s.filter.entity);
   const isFocused = useSelector((s: RootState) => s.filter.isFocused);
-  const selectedItem = useSelector((s: RootState) => s.filter.selectedItem);
   const result = useSelector(selectFilterResult);
   const modalIsOpen = useSelector((s: RootState) => s.modal?.isOpen);
-  const { data } = useSelector((state: RootState) => state.modal);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -78,7 +76,7 @@ export const Filter = () => {
           mode: "update",
           type: "event",
           data: { selectedId: item._id },
-        })
+        }),
       );
 
       dispatch(clearFilter());

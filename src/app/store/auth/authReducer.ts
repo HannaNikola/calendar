@@ -37,7 +37,7 @@ const authSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(registerApi.fulfilled, (state, action) => {
+      .addCase(registerApi.fulfilled, (state) => {
         state.status = "succeeded";
         state.user = null;
         state.isAuthenticated = false;

@@ -1,16 +1,13 @@
 "use client";
 
 import EddEventButton from "./EddEventButton";
-import { AdaptiveProps } from "../types/typesAdaptive";
-import { usePathname } from "next/navigation";
 import { useScreenType } from "../hooks/useScreenType";
 import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
 
-export default function SmallCalendar({ type, position }: AdaptiveProps) {
-  const pathname = usePathname();
+export default function SmallCalendar() {
   const screenType = useScreenType();
   const { events } = useSelector((state: RootState) => state.eventData);
 
@@ -49,7 +46,7 @@ export default function SmallCalendar({ type, position }: AdaptiveProps) {
         return `<strong>${e.title}</strong><br>${start}–${end}`;
       })
       .join(
-        "<hr style='border:none;border-top:1px solid #ddd;margin:4px 0' />"
+        "<hr style='border:none;border-top:1px solid #ddd;margin:4px 0' />",
       );
 
     return (

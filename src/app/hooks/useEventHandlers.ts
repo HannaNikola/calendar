@@ -17,14 +17,14 @@ export const useEventHandlers = () => {
   const selectedEvent = useSelector((state: RootState) =>
     data?.selectedId
       ? state.eventData.events.find((item) => item._id === data.selectedId)
-      : undefined
+      : undefined,
   );
 
   const handleSlotAction = (
     arg: DateSelectArg | DateClickArg,
     setSlotData: React.Dispatch<
       React.SetStateAction<{ slotStart: Date | null; slotEnd: Date | null }>
-    >
+    >,
   ) => {
     let start: Date;
     let end: Date;
@@ -46,7 +46,7 @@ export const useEventHandlers = () => {
           slotEnd: toISOString(end),
           selectedId: null,
         },
-      })
+      }),
     );
   };
 
@@ -56,7 +56,7 @@ export const useEventHandlers = () => {
         mode: "update",
         type: "event",
         data: { selectedId: arg.event.id },
-      })
+      }),
     );
   };
 
@@ -70,7 +70,7 @@ export const useEventHandlers = () => {
         allDay: eventData.allDay ?? false,
         addTask: eventData.addTask ?? false,
         isCompletedTask: eventData.isCompletedTask ?? false,
-      })
+      }),
     )
       .unwrap()
       .finally(() => dispatch(closeElementModal()));
@@ -91,7 +91,7 @@ export const useEventHandlers = () => {
           addTask: eventData.addTask,
           isCompletedTask: eventData.isCompletedTask,
         },
-      })
+      }),
     )
       .unwrap()
       .finally(() => dispatch(closeElementModal()));
