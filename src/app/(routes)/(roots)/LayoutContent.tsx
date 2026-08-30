@@ -30,7 +30,7 @@ export const LayoutContent = ({ children, screenType }: any) => {
         <PageWrapper>
           {screenType === "desktop" && (
             <div className="max-lg:hidden">
-              <SmallCalendar type={screenType} />
+              <SmallCalendar />
             </div>
           )}
           {type === "event" && (
