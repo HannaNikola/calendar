@@ -6,7 +6,6 @@ import { ModalTodo } from "./ModalTodo";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { selectFilterResult } from "../store/filters/selector";
 import { CalendarTodo } from "../types/typesTodoApi";
-import { fetchTodosApi } from "../api/todoApi";
 
 export const TodoImportant = () => {
   const dispatch = useDispatch<AppDispatch>();

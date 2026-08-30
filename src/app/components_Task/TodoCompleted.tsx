@@ -4,7 +4,6 @@ import { AppDispatch, RootState } from "../store/store";
 import { TaskItem } from "./TaskItem";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 import { ModalTodo } from "./ModalTodo";
-import { fetchTodosApi } from "../api/todoApi";
 import { selectFilterResult } from "../store/filters/selector";
 import { CalendarTodo } from "../types/typesTodoApi";
 

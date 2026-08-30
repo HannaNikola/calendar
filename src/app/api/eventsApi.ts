@@ -14,10 +14,10 @@ export const fetchEventsApi = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 
 export const addEventApi = createAsyncThunk(
@@ -41,7 +41,7 @@ export const addEventApi = createAsyncThunk(
         notified?: boolean;
       };
     },
-    thunkAPI
+    thunkAPI,
   ) => {
     try {
       const payload = {
@@ -58,31 +58,32 @@ export const addEventApi = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 
 export const updateEventApi = createAsyncThunk(
   "eventsData/updateEvent",
   async (payload: { id: string; eventData: CalendarEvent }, thunkApi) => {
     try {
-      const { _id, ...sanitizedEventData } = payload.eventData;
+      const sanitizedEventData = { ...payload.eventData };
+      delete sanitizedEventData._id;
 
       const response = await api.patch(
         `/api/events/${payload.id}`,
-        sanitizedEventData
+        sanitizedEventData,
       );
       toast.success("Event was update successefully", { duration: 1700 });
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
       return thunkApi.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 
 export const deleteEventApi = createAsyncThunk<string, string>(
@@ -95,8 +96,8 @@ export const deleteEventApi = createAsyncThunk<string, string>(
     } catch (error) {
       const err = error as AxiosError;
       return thunkApi.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );

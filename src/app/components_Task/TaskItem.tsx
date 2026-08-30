@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { completedTodoApi, favoriteTodoApi } from "../api/todoApi";
-import { AppDispatch, RootState } from "../store/store";
+import { AppDispatch } from "../store/store";
 import { Circle, CircleCheckBig, Star, Trash2 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
 import { openElementModal } from "../store/sharedComponent/modalReducer";
@@ -8,15 +8,18 @@ import { useTodoHandlers } from "../hooks/useTodoHandlers";
 import { CalendarTodo } from "../types/typesTodoApi";
 import { useTodoExpired } from "../hooks/useTodoExpired";
 import { useState } from "react";
-// import "tippy.js/dist/tippy.css";
-import { useScreenType } from "../hooks/useScreenType";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
 import dayjs from "dayjs";
 
-export const TaskItem = ({ item, className}: { item: CalendarTodo ; className?: string; }) => {
+export const TaskItem = ({
+  item,
+  className,
+}: {
+  item: CalendarTodo;
+  className?: string;
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const { handeDeleteTodo } = useTodoHandlers();
-  const { data } = useSelector((state: RootState) => state.modal);
   const expired = useTodoExpired(item.end ?? null);
   const colorBorder = expired
     ? "border-red-400 bg-red-50"
@@ -28,7 +31,6 @@ export const TaskItem = ({ item, className}: { item: CalendarTodo ; className?: 
     ? dayjs(item.end).format("DD/MM/YYYY HH:mm")
     : "—";
   const [localCompleted, setLocalCompleted] = useState(item.isCompletedTask);
-  const screenType = useScreenType();
 
   return (
     <li
@@ -38,10 +40,10 @@ export const TaskItem = ({ item, className}: { item: CalendarTodo ; className?: 
             type: "todo",
             mode: "editTodo",
             data: { selectedId: item._id },
-          })
+          }),
         )
       }
-       className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder} ${className ?? ""}`}
+      className={`flex w-full justify-between mb-2 border rounded-md px-3 py-3 ${colorBorder} ${className ?? ""}`}
     >
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
@@ -72,7 +74,7 @@ export const TaskItem = ({ item, className}: { item: CalendarTodo ; className?: 
                 favoriteTodoApi({
                   id: item._id,
                   isImportant: !item.isImportant,
-                })
+                }),
               );
             }}
             className="hover:animate-pulse"
@@ -96,7 +98,7 @@ export const TaskItem = ({ item, className}: { item: CalendarTodo ; className?: 
                     completedTodoApi({
                       id: item._id,
                       isCompletedTask: !item.isCompletedTask,
-                    })
+                    }),
                   );
                 }
               }, 500);

@@ -1,32 +1,34 @@
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import tseslint from "typescript-eslint";
 
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+export default defineConfig([
+  ...nextVitals,
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+  ...tseslint.configs.recommended,
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 
-export default [
-  ...compat.extends("next/core-web-vitals", "next", "next/typescript"),
   {
     rules: {
-      //  allow any
+      // allow any
       "@typescript-eslint/no-explicit-any": "off",
 
-      //  allow @ts-ignore
+      // allow @ts-ignore
       "@typescript-eslint/ban-ts-comment": "off",
 
-      //  warning instead of error
-      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      // warning instead of error
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ],
+
       "@typescript-eslint/no-unused-expressions": "warn",
+
       "@next/next/no-assign-module-variable": "warn",
 
-      //  consoles allow
-      "no-console": "off"
-    }
-  }
-];
+      // allow console
+      "no-console": "off",
+    },
+  },
+]);

@@ -52,7 +52,7 @@ const todolSlice = createSlice({
       .addCase(updateTodotApi.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.todos = state.todos.map((item) =>
-          item._id === action.payload._id ? action.payload : item
+          item._id === action.payload._id ? action.payload : item,
         );
       })
       .addCase(updateTodotApi.rejected, (state, action) => {
@@ -76,7 +76,7 @@ const todolSlice = createSlice({
       .addCase(favoriteTodoApi.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.todos = state.todos.map((item) =>
-          item._id === action.payload._id ? action.payload : item
+          item._id === action.payload._id ? action.payload : item,
         );
       })
       .addCase(favoriteTodoApi.rejected, (state, action) => {
@@ -89,15 +89,15 @@ const todolSlice = createSlice({
       .addCase(completedTodoApi.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.todos = state.todos.map((item) =>
-          item._id === action.payload._id ? action.payload : item
+          item._id === action.payload._id ? action.payload : item,
         );
       })
       .addCase(completedTodoApi.rejected, (state, action) => {
-        (state.status = "failed"),
-          (state.error = action.error.message || "Unknown error");
+        state.status = "failed";
+        state.error = action.error.message || "Unknown error";
       })
       .addCase(fetchLogoutUser.fulfilled, () => initialState)
-      .addCase(fetchDeletedUser.fulfilled, ()=> initialState)
+      .addCase(fetchDeletedUser.fulfilled, () => initialState);
   },
 });
 

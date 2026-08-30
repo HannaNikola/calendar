@@ -13,10 +13,10 @@ export const fetchTodosApi = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 
 export const addTodoApi = createAsyncThunk(
@@ -33,7 +33,7 @@ export const addTodoApi = createAsyncThunk(
       allDay?: boolean;
       eventId?: string | null;
     },
-    thunkAPI
+    thunkAPI,
   ) => {
     try {
       const payload = {
@@ -45,33 +45,33 @@ export const addTodoApi = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 
 export const updateTodotApi = createAsyncThunk(
   "todoData/updateTodo",
   async (
     payload: { id: string; todoData: Partial<CalendarTodo> },
-    thunkAPI
+    thunkAPI,
   ) => {
     try {
       const { ...sanitizedTodoData } = payload.todoData;
       const response = await api.patch(
         `/api/todo/${payload.id}`,
-        sanitizedTodoData
+        sanitizedTodoData,
       );
       toast.success("The task was update successefully");
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 
 export const favoriteTodoApi = createAsyncThunk(
@@ -85,10 +85,10 @@ export const favoriteTodoApi = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 
 export const completedTodoApi = createAsyncThunk(
@@ -103,10 +103,10 @@ export const completedTodoApi = createAsyncThunk(
     } catch (error) {
       const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );
 export const deleteTodoApi = createAsyncThunk<string, string>(
   "todoData/deleteTodo",
@@ -118,8 +118,8 @@ export const deleteTodoApi = createAsyncThunk<string, string>(
     } catch (error) {
       const err = error as AxiosError;
       return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong"
+        err.response?.data || "Something went wrong",
       );
     }
-  }
+  },
 );

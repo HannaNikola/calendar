@@ -12,18 +12,14 @@ import { AppDispatch, RootState } from "@/app/store/store";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
-// import "tippy.js/dist/tippy.css";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
-import { fetchEventsApi } from "../api/eventsApi";
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
 
 const CalendarEl = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const { events, status } = useSelector((state: RootState) => state.eventData);
-
-  const screenType = useScreenType();
+ const screenType = useScreenType();
   const { handleSelectEvent, handleSlotAction, handelUpdateEvent } =
     useEventHandlers();
 
@@ -33,7 +29,7 @@ const CalendarEl = () => {
 
   const { adjustCalendarLayout, isMobileWidth, calendarClasses } =
     useCalendarLayout(calendarRef, containerRef, screenType);
-  const [slotData, setSlotData] = useState<{
+    const [slotData, setSlotData] = useState<{
     slotStart: Date | null;
     slotEnd: Date | null;
   }>({
@@ -41,9 +37,6 @@ const CalendarEl = () => {
     slotEnd: null,
   });
 
-  useEffect(() => {
-    dispatch(fetchEventsApi());
-  }, [dispatch]);
 
   useEffect(() => {
     if (status === "loading") {
@@ -137,6 +130,7 @@ const CalendarEl = () => {
                 fixedWeekCount: false,
               },
               listPlugin: {
+
                 type: "listWeek",
                 buttonText: "list",
               },

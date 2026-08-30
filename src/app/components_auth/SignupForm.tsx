@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+
 import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,10 +20,7 @@ const SignupSchema = Yup.object().shape({
 
 export function SignupForm() {
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-  const { isAuthenticated, status, error } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const { status, error } = useSelector((state: RootState) => state.auth);
   const [show, setShow] = useState(false);
   const isLoading = status === "loading";
 

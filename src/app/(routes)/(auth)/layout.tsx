@@ -2,7 +2,7 @@
 
 import { PageWrapper } from "@/app/shared/ui/PageWrapper";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Transition } from "framer-motion";
 
@@ -11,7 +11,6 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
   const pathname = usePathname();
   const isLogin = pathname === "/login";
   const isRegister = pathname === "/register";
