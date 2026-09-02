@@ -15,7 +15,6 @@ import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
 import { CheckCheck } from "lucide-react";
 
-
 const EventSchema = Yup.object().shape({
   title: Yup.string()
     .max(70, "Title must be less than 100 characters")
@@ -47,7 +46,6 @@ export const ModalEvent = ({
 
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
     useEventHandlers();
-
 
   useEffect(() => {
     if (isOpen) {
@@ -96,7 +94,7 @@ export const ModalEvent = ({
         setEndTime(defaultEnd);
       }
     }
-   }, [allDay, endDay , endTime, startDay, startTime]);
+  }, [allDay, endDay, endTime, startDay, startTime]);
 
   const combineDateTime = (
     date: Date | null,
@@ -115,25 +113,61 @@ export const ModalEvent = ({
   };
 
   const handleStartTimeChange = (time: Date | null) => {
+    if (!time) return;
+
     setStartTime(time);
-    if (time && isNew) {
+
+    if (isNew) {
       const oneHourLater = new Date(
         1970,
         0,
         1,
         time.getHours() + 1,
+
         time.getMinutes(),
       );
+
       setEndTime(oneHourLater);
+      return;
+    }
+
+    if (
+      startDay &&
+      endDay &&
+      endTime &&
+      startDay.toDateString() === endDay.toDateString()
+    ) {
+      const startMinutes = time.getHours() * 60 + time.getMinutes();
+
+      const endMinutes = endTime.getHours() * 60 + endTime.getMinutes();
+
+      if (startMinutes > endMinutes) {
+        setEndTime(new Date(time));
+      }
     }
   };
 
   const handleEndDayChange = (date: Date | null) => {
     if (!date) return;
-    setEndDay(date);
-    if (startDay && date < startDay) setStartDay(date);
-  };
 
+    setEndDay(date);
+
+    if (
+      startDay &&
+      startTime &&
+      date.toDateString() === startDay.toDateString()
+    ) {
+      const startMinutes = startTime.getHours() * 60 + startTime.getMinutes();
+
+      const endMinutes = endTime
+        ? endTime.getHours() * 60 + endTime.getMinutes()
+        : null;
+
+      if (endMinutes === null || endMinutes < startMinutes) {
+        setEndTime(new Date(startTime));
+      }
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -271,7 +305,7 @@ export const ModalEvent = ({
               placeholderText="Select the day"
               className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
             />
-              <DatePicker
+            <DatePicker
               selected={endTime}
               onChange={(date) => setEndTime(date)}
               disabled={allDay}
@@ -281,9 +315,17 @@ export const ModalEvent = ({
               timeFormat="HH:mm"
               timeIntervals={5}
               timeCaption="Time"
+              minTime={
+                startDay &&
+                endDay &&
+                startDay.toDateString() === endDay.toDateString()
+                  ? startTime ?? undefined
+                  : new Date(1970, 0, 1, 0, 0)
+              }
+              maxTime={new Date(1970, 0, 1, 23, 55)}
               placeholderText="Select the time"
-              className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
-            />  
+              className="rounded w-[150px] lg:w-[250px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
+            />
           </div>
         </div>
         <div className="flex justify-between items-center mb-4 ">
