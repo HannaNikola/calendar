@@ -17,3 +17,6 @@ export interface TodoStateProps {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
+
+
+

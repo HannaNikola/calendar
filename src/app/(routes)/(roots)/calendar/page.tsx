@@ -1,5 +1,5 @@
 "use client";
-import CalendarEl from "@/app/components_Calendar/Calendar";
+import { CalendarEl } from "@/app/components_Calendar/Calendar";
 import { Tasklistsection } from "@/app/components_Calendar/Tasklistsection";
 import { useScreenType } from "@/app/hooks/useScreenType";
 
