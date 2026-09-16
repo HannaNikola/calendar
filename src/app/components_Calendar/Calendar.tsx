@@ -7,36 +7,36 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import listPlugin from "@fullcalendar/list";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
+import { useTodoHandlers } from "../hooks/useTodoHandlers";
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
 
-const CalendarEl = () => {
+export const CalendarEl = () => {
   const { events, status } = useSelector((state: RootState) => state.eventData);
- const screenType = useScreenType();
+  const screenType = useScreenType();
   const { handleSelectEvent, handleSlotAction, handelUpdateEvent } =
     useEventHandlers();
-
+  const { handelUpdateTodo } = useTodoHandlers();
   const [showLoader, setShowLoader] = useState(false);
   const calendarRef = useRef<FullCalendarType | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { adjustCalendarLayout, isMobileWidth, calendarClasses } =
     useCalendarLayout(calendarRef, containerRef, screenType);
-    const [slotData, setSlotData] = useState<{
+  const [slotData, setSlotData] = useState<{
     slotStart: Date | null;
     slotEnd: Date | null;
   }>({
     slotStart: null,
     slotEnd: null,
   });
-
 
   useEffect(() => {
     if (status === "loading") {
@@ -54,6 +54,10 @@ const CalendarEl = () => {
     start: event.start ? new Date(event.start) : new Date(),
     end: event.end ? new Date(event.end) : new Date(),
     allDay: event.allDay ?? false,
+    extendedProps: {
+      todoID: event.todoId,
+      isCompletedTask: event.isCompletedTask,
+    },
   }));
 
   const handleMouseEnter = ({ el, event }: any) => {
@@ -73,16 +77,25 @@ const CalendarEl = () => {
   };
 
   const handleEventDrop = (info: EventDropArg) => {
+    const todo = info.event.extendedProps.todoId;
+
     const updatedEvent = {
       _id: info.event.id,
       title: info.event.title,
       start: info.event.start!,
       end: info.event.end!,
       allDay: info.event.allDay,
-      isCompletedTask: (info.event as any).isCompletedTask,
+      isCompletedTask: info.event.extendedProps.isCompletedTask,
     };
 
     handelUpdateEvent(updatedEvent);
+    if (todo?._id) {
+      handelUpdateTodo(todo._id, {
+        start: info.event.start!,
+        end: info.event.end!,
+        allDay: info.event.allDay,
+      });
+    }
   };
 
   return (
@@ -130,7 +143,6 @@ const CalendarEl = () => {
                 fixedWeekCount: false,
               },
               listPlugin: {
-
                 type: "listWeek",
                 buttonText: "list",
               },
@@ -173,5 +185,3 @@ const CalendarEl = () => {
     </section>
   );
 };
-
-export default CalendarEl;

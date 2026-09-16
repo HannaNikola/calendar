@@ -7,7 +7,7 @@ type DivRef = React.RefObject<HTMLDivElement | null>;
 export const useCalendarLayout = (
   calendarRef: FullCalendarApiRef,
   containerRef: DivRef,
-  screenType: ReturnType<typeof useScreenType>
+   screenType: ReturnType<typeof useScreenType>
 ) => {
   const MOBILE_BREAKPOINT = 672;
   const TABLET_BREAKPOINT = 1024;
