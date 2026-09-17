@@ -6,6 +6,10 @@ import { AppDispatch, RootState } from "../store/store";
 import { fetchDeletedUser, fetchLogoutUser } from "../api/authApi";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 
+import { toast } from "sonner";
+import StatusMessage from "../shared/ui/StatusMessage";
+import ToastWrapper from "../shared/ui/ToastWrapper";
+
 interface SettingsSidebarProps {
   open: boolean;
   onClose: () => void;
@@ -20,12 +24,13 @@ export default function SettingsSidebar({
   const { user } = useSelector((state: RootState) => state.auth);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deletedOpen, setDeletedOpen] = useState(false);
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     },
-    [onClose]
+    [onClose],
   );
 
   useEffect(() => {
@@ -33,6 +38,24 @@ export default function SettingsSidebar({
 
     return () => window.removeEventListener("keydown", handleKey);
   }, [handleKey]);
+
+  const handleDeleteAccount = async () => {
+    try {
+      await dispatch(fetchDeletedUser()).unwrap();
+
+      setDeleteOpen(false);
+      setDeletedOpen(true);
+
+      setTimeout(() => {
+        router.replace("/register");
+      }, 3000);
+    } catch (error) {
+      console.error("Failed to delete account:", error);
+
+      toast.error("Failed to delete account");
+    }
+  };
+  console.log(user?.name);
 
   return (
     <>
@@ -62,24 +85,20 @@ export default function SettingsSidebar({
 
         <div className="flex flex-col bg-sky-100 h-[110px] rounded-xl justify-center items-center mb-10">
           <div className="flex  mt-3 mb-3 w-11 h-11 border-2 rounded-4xl "></div>
-          <p className=" flex  text-main  sm:block">{user?.name}Name</p>
+          <p className=" flex  text-main  sm:block">{user?.name}</p>
         </div>
 
         <div className="flex flex-col mt-58">
           <button
-           onClick={() => {
-                dispatch(fetchLogoutUser());
-                router.replace("/login");
-              }}
+            onClick={() => {
+              dispatch(fetchLogoutUser());
+              router.replace("/login");
+            }}
             type="button"
             className="flex items-center py-1 px-17 justify-center w-full mb-3 bg-sky-100 rounded-sm whitespace-nowrap  transition-colors duration-500 text-main   hover:bg-navbar-button-hover"
           >
             Leave an account
-            <LogOut
-             
-              size={15}
-              className="ml-3"
-            />
+            <LogOut size={15} className="ml-3" />
           </button>
           <button
             type="button"
@@ -96,32 +115,30 @@ export default function SettingsSidebar({
         <ModalWrapper
           isOpen={deleteOpen}
           onClose={() => setDeleteOpen(false)}
-          className="w-[350px] top-17 right-5 p-5 "
+          className="flex w-[350px] top-17 right-5 p-5 "
         >
-          <div>
-            <p>
-              This action is irreversible. All your events, todos, and profile
-              data will be permanently deleted.
-            </p>
-            <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={() => setDeleteOpen(false)}
-                className="hover:bg-sky-100  px-3 py-1 rounded"
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-red-500 hover:bg-alert-button-hover text-white px-3 py-1 rounded"
-                onClick={() => {
-                  dispatch(fetchDeletedUser());
-                  router.replace("/register");
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
+          <>
+            <StatusMessage
+              type="delete"
+              title="DELETE"
+              description="Are you sure you want to delete your account? All of your data will be permanently deleted."
+              cancelText="Cancel"
+              confirmText="Delete"
+              onCancel={() => setDeleteOpen(false)}
+              onConfirm={handleDeleteAccount}
+            />
+          </>
         </ModalWrapper>
+      )}
+
+      {deletedOpen && (
+        <ToastWrapper>
+          <StatusMessage
+            type="success"
+            title="Success"
+            description="Your account has been successfully deleted."
+          />
+        </ToastWrapper>
       )}
     </>
   );
