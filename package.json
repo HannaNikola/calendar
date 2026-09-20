@@ -37,6 +37,7 @@
     "react-datepicker": "^8.4.0",
     "react-dom": "^19.2.3",
     "react-flatpickr": "^4.0.10",
+    "react-hot-toast": "^2.6.1",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
     "redux-logger": "^3.0.6",
@@ -61,10 +62,9 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
- "overrides": {
-  "minimatch@3.1.5": {
-    "brace-expansion": "1.1.18"
+  "overrides": {
+    "minimatch@3.1.5": {
+      "brace-expansion": "1.1.18"
+    }
   }
-}
-
 }

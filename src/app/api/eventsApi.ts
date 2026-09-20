@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { CalendarEvent } from "../types/typesApi";
 import { toISOString } from "../shared/utils/date";
-import { toast } from "sonner";
 import { api } from "./api";
+import { appToast } from "../shared/ui/AppToast";
 
 export const fetchEventsApi = createAsyncThunk(
   "allEvents/fetchAll",
@@ -53,7 +53,7 @@ export const addEventApi = createAsyncThunk(
         addTask: newEvent.addTask,
       };
       const response = await api.post("/api/events", payload);
-      toast.success("Event was created successefully");
+      appToast.success("Event was created successefully");
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -75,7 +75,7 @@ export const updateEventApi = createAsyncThunk(
         `/api/events/${payload.id}`,
         sanitizedEventData,
       );
-      toast.success("Event was update successefully", { duration: 1700 });
+      appToast.success("Event was update successefully");
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -91,7 +91,7 @@ export const deleteEventApi = createAsyncThunk<string, string>(
   async (id: string, thunkApi) => {
     try {
       const response = await api.delete(`/api/events/${id}`);
-      toast.success("The event was delete successefully");
+      appToast.delete("The event was delete successefully");
       return response.data.data._id;
     } catch (error) {
       const err = error as AxiosError;

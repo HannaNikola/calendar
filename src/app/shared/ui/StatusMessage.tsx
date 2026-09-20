@@ -1,5 +1,5 @@
 type StatusMessageProps = {
-  type: "delete" | "success" | "confirm";
+  type: "delete" | "success" | "confirm" | "error";
   title?: string;
   description: string;
 
@@ -59,6 +59,8 @@ export default function StatusMessage({
             <path d="m16 9-5.5 5.5L8 12" />
           </svg>
         );
+        default:
+      return null;
     }
   };
   return (

@@ -5,10 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { fetchDeletedUser, fetchLogoutUser } from "../api/authApi";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
-
-import { toast } from "sonner";
 import StatusMessage from "../shared/ui/StatusMessage";
-import ToastWrapper from "../shared/ui/ToastWrapper";
+import { appToast } from "../shared/ui/AppToast";
 
 interface SettingsSidebarProps {
   open: boolean;
@@ -24,7 +22,6 @@ export default function SettingsSidebar({
   const { user } = useSelector((state: RootState) => state.auth);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [deletedOpen, setDeletedOpen] = useState(false);
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
@@ -44,7 +41,7 @@ export default function SettingsSidebar({
       await dispatch(fetchDeletedUser()).unwrap();
 
       setDeleteOpen(false);
-      setDeletedOpen(true);
+      appToast.success("Your account has been successfully deleted.");
 
       setTimeout(() => {
         router.replace("/register");
@@ -52,7 +49,7 @@ export default function SettingsSidebar({
     } catch (error) {
       console.error("Failed to delete account:", error);
 
-      toast.error("Failed to delete account");
+      // toast.error("Failed to delete account");
     }
   };
   console.log(user?.name);
@@ -129,16 +126,6 @@ export default function SettingsSidebar({
             />
           </>
         </ModalWrapper>
-      )}
-
-      {deletedOpen && (
-        <ToastWrapper>
-          <StatusMessage
-            type="success"
-            title="Success"
-            description="Your account has been successfully deleted."
-          />
-        </ToastWrapper>
       )}
     </>
   );

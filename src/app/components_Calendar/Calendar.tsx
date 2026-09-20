@@ -8,7 +8,7 @@ import multiMonthPlugin from "@fullcalendar/multimonth";
 import listPlugin from "@fullcalendar/list";
 import { useEffect, useRef, useState } from "react";
 import {  useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/app/store/store";
+import { RootState } from "@/app/store/store";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";

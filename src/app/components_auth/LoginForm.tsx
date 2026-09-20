@@ -6,9 +6,9 @@ import * as Yup from "yup";
 import { AppDispatch, RootState } from "../store/store";
 import { loginApi } from "@/app/api/authApi";
 import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { EyeClosed } from "lucide-react";
 import { Eye } from "lucide-react";
+import { appToast } from "../shared/ui/AppToast";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -21,14 +21,13 @@ export function LoginForm() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { isAuthenticated, status, error } = useSelector(
-    (state: RootState) => state.auth
+    (state: RootState) => state.auth,
   );
   const [show, setShow] = useState(false);
   const isLoading = status === "loading";
 
   useEffect(() => {
     if (isAuthenticated && status === "succeeded") {
-      toast.success("Login successful");
       router.push("/calendar");
     }
   }, [isAuthenticated, status, router]);
@@ -82,10 +81,10 @@ export function LoginForm() {
               disabled={isLoading}
               type="submit"
               className={`w-full px-4 py-1 rounded-2xl shadow-sm
-     hover:bg-navbar-button-hover
-    text-main
-    flex items-center justify-center gap-2
-    disabled:opacity-60 disabled:cursor-not-allowed ${isLoading ? "bg-navbar-button-hover" : "bg-sky-100"}`}
+              hover:bg-navbar-button-hover
+              text-main
+              flex items-center justify-center gap-2
+              disabled:opacity-60 disabled:cursor-not-allowed ${isLoading ? "bg-navbar-button-hover" : "bg-sky-100"}`}
             >
               {isLoading && (
                 <span className="h-4 w-4 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
@@ -95,7 +94,14 @@ export function LoginForm() {
           </Form>
         )}
       </Formik>
-      <p onClick={()=>{toast.error('This option not ready yeat') }}className="text-blue-500 underline hover:text-blue-200">forgot password?</p>
+      <p
+        onClick={() => {
+          appToast .error("This option not ready yeat");
+        }}
+        className="text-blue-500 underline hover:text-blue-200"
+      >
+        forgot password?
+      </p>
     </div>
   );
 }
