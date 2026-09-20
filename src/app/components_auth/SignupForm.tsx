@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerApi } from "../api/authApi";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { toast } from "sonner";
 import { EyeClosed } from "lucide-react";
 import { Eye } from "lucide-react";
+import { appToast } from "../shared/ui/AppToast";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -26,7 +26,7 @@ export function SignupForm() {
 
   useEffect(() => {
     if (status === "succeeded") {
-      toast.success("Check your email to verify your account");
+      appToast.success("Check your email to verify your account");
     }
   }, [status]);
 
