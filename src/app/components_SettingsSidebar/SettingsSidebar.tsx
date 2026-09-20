@@ -48,11 +48,14 @@ export default function SettingsSidebar({
       }, 3000);
     } catch (error) {
       console.error("Failed to delete account:", error);
-
-      // toast.error("Failed to delete account");
     }
   };
-  console.log(user?.name);
+  const formattedName = user?.name
+  ?.trim()
+  .toLowerCase()
+  .split(/\s+/)
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(" ");
 
   return (
     <>
@@ -82,7 +85,7 @@ export default function SettingsSidebar({
 
         <div className="flex flex-col bg-sky-100 h-[110px] rounded-xl justify-center items-center mb-10">
           <div className="flex  mt-3 mb-3 w-11 h-11 border-2 rounded-4xl "></div>
-          <p className=" flex  text-main  sm:block">{user?.name}</p>
+          <p className=" flex  text-main  sm:block">{formattedName}</p>
         </div>
 
         <div className="flex flex-col mt-58">
