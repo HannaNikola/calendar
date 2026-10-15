@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { AppDispatch} from "../store/store";
+import { AppDispatch } from "../store/store";
 import { fetchCurrentUser } from "../api/authApi";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function AuthInitializer({
   children,
@@ -11,15 +12,26 @@ export default function AuthInitializer({
   children: React.ReactNode;
 }) {
   const dispatch = useDispatch<AppDispatch>();
-  const initialized = useRef(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (initialized.current) return;
+    if (pathname === "/login") return;
 
-    initialized.current = true;
+    let cancelled = false;
 
-    dispatch(fetchCurrentUser());
-  }, [dispatch]);
+    dispatch(fetchCurrentUser())
+      .unwrap()
+      .catch(() => {
+        if (!cancelled) {
+          router.replace("/login");
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dispatch, router, pathname]);
 
   return <>{children}</>;
 }

@@ -8,7 +8,9 @@ export default function AuthRedirectListener() {
 
   useEffect(() => {
     const handleLoginRequired = () => {
-      router.push("/login");
+      if (window.location.pathname !== "/login") {
+        router.replace("/login");
+      }
     };
 
     window.addEventListener("auth:login-required", handleLoginRequired);
@@ -20,6 +22,8 @@ export default function AuthRedirectListener() {
 
   return null;
 }
+
+
 
 
 

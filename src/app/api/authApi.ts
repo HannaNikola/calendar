@@ -50,6 +50,9 @@ export const fetchCurrentUser = createAsyncThunk(
   },
 );
 
+
+ 
+
 export const fetchLogoutUser = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {

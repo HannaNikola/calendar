@@ -6,7 +6,6 @@ type Subscriber = {
 };
 
 let isRefreshing = false;
-
 let refreshSubscribers: Subscriber[] = [];
 
 function onRefreshSuccess() {
@@ -28,11 +27,22 @@ function addRefreshSubscriber(
 
 api.interceptors.response.use(
   (response) => response,
-
   async (error) => {
     const originalRequest = error.config;
+    const status = error.response?.status;
+    const url = originalRequest?.url ?? "";
 
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    if (status !== 401 || !originalRequest) {
+      return Promise.reject(error);
+    }
+
+    if (url.includes("/api/users/refresh")) {
+      window.dispatchEvent(new Event("auth:login-required"));
+      return Promise.reject(error);
+    }
+
+    if (originalRequest._retry) {
+      window.dispatchEvent(new Event("auth:login-required"));
       return Promise.reject(error);
     }
 
@@ -48,15 +58,11 @@ api.interceptors.response.use(
 
     try {
       await api.post("/api/users/refresh");
-
       onRefreshSuccess();
-
       return api(originalRequest);
     } catch (refreshError) {
       onRefreshFailed(refreshError);
-
       window.dispatchEvent(new Event("auth:login-required"));
-
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
