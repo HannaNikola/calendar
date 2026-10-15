@@ -4,7 +4,6 @@ import "./globals.css";
 import "../app/api/interceptors";
 import { Provider } from "react-redux";
 import { store } from "./store";
-import AuthInitializer from "./providers/AuthInitializer";
 import AuthRedirectListener from "./components_auth/AuthRedirectListener";
 import { Toaster } from "react-hot-toast";
 
@@ -20,7 +19,7 @@ export default function RootLayout({
       </head>
       <body className="h-full w-full overflow-x-hidden flex flex-col items-center justify-center">
         <Provider store={store}>
-          <AuthInitializer>
+          {/* <AuthInitializer> */}
             <AuthRedirectListener />
             <Toaster
               containerStyle={{
@@ -30,7 +29,7 @@ export default function RootLayout({
               }}
             />
             {children}
-          </AuthInitializer>
+          {/* </AuthInitializer> */}
         </Provider>
       </body>
     </html>

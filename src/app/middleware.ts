@@ -1,24 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
-  const accessToken = req.cookies.get("accessToken")?.value;
-  const { pathname } = req.nextUrl;
+const { pathname } = req.nextUrl;
+const accessToken = req.cookies.get("accessToken")?.value;
 
-  const privatePaths = ["/calendar", "/todos"];
+const isPrivatePage =
+pathname === "/calendar" ||
+pathname.startsWith("/calendar/") ||
+pathname === "/todos" ||
+pathname.startsWith("/todos/");
 
-  if (privatePaths.some((path) => pathname.startsWith(path))) {
-    if (!accessToken) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
-  }
+const isAuthPage =
+pathname === "/login" || pathname === "/register";
 
-  if (accessToken && (pathname === "/login" || pathname === "/register")) {
-    return NextResponse.redirect(new URL("/calendar", req.url));
-  }
+if (isPrivatePage && !accessToken) {
+return NextResponse.redirect(new URL("/login", req.url));
+}
 
-  return NextResponse.next();
+if (isAuthPage && accessToken) {
+return NextResponse.redirect(new URL("/calendar", req.url));
+}
+
+return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/calendar/:path*", "/todos/:path*", "/login", "/register"],
+matcher: ["/calendar/:path*", "/todos/:path*", "/login", "/register"],
 };
+
+
+

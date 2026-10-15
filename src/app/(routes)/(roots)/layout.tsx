@@ -7,6 +7,7 @@ import { fetchEventsApi } from "../../api/eventsApi";
 import { fetchTodosApi } from "../../api/todoApi";
 import { useScreenType } from "../../hooks/useScreenType";
 import { LayoutContent } from "./LayoutContent";
+import AuthInitializer from "@/app/providers/AuthInitializer";
 
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,8 +33,10 @@ export default function PrivateLayout({
   const screenType = useScreenType();
 
   return (
+    <AuthInitializer>
     <LayoutWrapper>
       <LayoutContent screenType={screenType}>{children}</LayoutContent>
     </LayoutWrapper>
+    </AuthInitializer>
   );
 }
