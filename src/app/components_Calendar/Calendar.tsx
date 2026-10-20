@@ -7,7 +7,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import listPlugin from "@fullcalendar/list";
 import { useEffect, useRef, useState } from "react";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { EventDropArg } from "@fullcalendar/core/index.js";
@@ -77,23 +77,48 @@ export const CalendarEl = () => {
   };
 
   const handleEventDrop = (info: EventDropArg) => {
-    const todo = info.event.extendedProps.todoId;
+    const event = info.event;
+    const todo = event.extendedProps.todoID;
+
+    if (!event.start) {
+      info.revert();
+      return;
+    }
+
+    const start = event.start;
+
+    const end = event.end
+      ? event.end
+      : event.allDay
+        ? new Date(
+            start.getFullYear(),
+            start.getMonth(),
+            start.getDate(),
+            23,
+            59,
+            59,
+            999,
+          )
+        : new Date(start.getTime() + 60 * 60 * 1000);
 
     const updatedEvent = {
-      _id: info.event.id,
-      title: info.event.title,
-      start: info.event.start!,
-      end: info.event.end!,
-      allDay: info.event.allDay,
-      isCompletedTask: info.event.extendedProps.isCompletedTask,
+      _id: event.id,
+      title: event.title,
+      start,
+      end,
+      allDay: event.allDay,
+      isCompletedTask: event.extendedProps.isCompletedTask,
     };
 
     handelUpdateEvent(updatedEvent);
-    if (todo?._id) {
-      handelUpdateTodo(todo._id, {
-        start: info.event.start!,
-        end: info.event.end!,
-        allDay: info.event.allDay,
+
+    const todoId = todo?._id ?? todo;
+
+    if (todoId) {
+      handelUpdateTodo(todoId, {
+        start,
+        end,
+        allDay: event.allDay,
       });
     }
   };
@@ -124,6 +149,7 @@ export const CalendarEl = () => {
               interactionPlugin,
             ]}
             initialView="timeGridWeek"
+            firstDay={1}
             headerToolbar={{
               left: "prev,next today",
               center: "title",
