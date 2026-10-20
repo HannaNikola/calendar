@@ -377,6 +377,7 @@ export const ModalEvent = ({
              text-sm cursor-pointer transition"
             />
           </div>
+
           {addTask ? (
             <div className="flex items-center justify-between ">
               <label className="mr-2 text-main">Mark is done</label>
@@ -395,25 +396,6 @@ export const ModalEvent = ({
                 before:flex before:items-center before:justify-center 
                 checked:before:content-['✓'] checked:before:text-white 
                 text-sm cursor-pointer transition"
-              />
-            </div>
-          ) : isCompletedTask ? (
-            <div className="flex items-center justify-between">
-              <label className="mr-2 text-main">Edit Task</label>
-              <input
-                type="checkbox"
-                checked={addTask}
-                onChange={(e) => {
-                  setAddTask(e.target.checked);
-                  if (timeoutRef.current) clearTimeout(timeoutRef.current);
-                  timeoutRef.current = setTimeout(() => {
-                    setIsCompletedTask(false);
-                  }, 300);
-                }}
-                className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
-      before:flex before:items-center before:justify-center 
-      checked:before:content-['✓'] checked:before:text-white 
-      text-sm cursor-pointer transition"
               />
             </div>
           ) : (
@@ -452,17 +434,6 @@ export const ModalEvent = ({
           />
         )}
       </div>
-      {isCompletedTask && (
-        <div className="flex">
-          <CheckCheck size={20} className=" mr-2 text-green-600 " />
-          <p className="text-sky-dark mb-4 line-clamp-1 ">
-            Done:
-            <span className="text-sky-dark line-through ml-1 mr-4 ">
-              {description}
-            </span>
-          </p>
-        </div>
-      )}
 
       <div className="flex flex-row justify-between">
         {isNew && (
