@@ -31,7 +31,7 @@ export default function Favorite() {
         </TooltipDesktop>
       </div>
 
-      <div className="  flex  flex-col items-center justify-center py-10">
+      <div className="  flex  flex-col items-center justify-center py-10 px-2">
         <TodoImportant />
       </div>
     </div>

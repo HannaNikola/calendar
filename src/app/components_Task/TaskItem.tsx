@@ -21,11 +21,14 @@ export const TaskItem = ({
   const dispatch = useDispatch<AppDispatch>();
   const { handeDeleteTodo } = useTodoHandlers();
   const expired = useTodoExpired(item.end ?? null);
-  const colorBorder = expired
-    ? "border-red-400 bg-red-50"
-    : item.isImportant
-      ? "border-amber-300 bg-amber-50"
-      : "border-grey-border bg-sky-50 ";
+
+  const colorBorder = item.isCompletedTask
+    ? "border-gray-400 bg-gray-200"
+    : expired
+      ? "border-red-400 bg-red-50"
+      : item.isImportant
+        ? "border-amber-300 bg-amber-50"
+        : "border-grey-border bg-sky-50 ";
 
   const formattedEnd = item.end
     ? dayjs(item.end).format("DD/MM/YYYY HH:mm")
