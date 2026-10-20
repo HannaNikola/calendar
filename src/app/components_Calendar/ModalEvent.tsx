@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { toDate } from "../shared/utils/date";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodoApi } from "../api/todoApi";
+import { addTodoApi, updateTodotApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
@@ -150,6 +150,19 @@ export const ModalEvent = ({
   const handleEndDayChange = (date: Date | null) => {
     if (!date) return;
 
+    if (
+      startDay &&
+      new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() <
+        new Date(
+          startDay.getFullYear(),
+          startDay.getMonth(),
+          startDay.getDate(),
+        ).getTime()
+    ) {
+      setEndDay(startDay);
+      return;
+    }
+
     setEndDay(date);
 
     if (
@@ -179,7 +192,7 @@ export const ModalEvent = ({
               startDay.getFullYear(),
               startDay.getMonth(),
               startDay.getDate(),
-              1,
+              0,
               0,
               0,
               0,
@@ -187,15 +200,15 @@ export const ModalEvent = ({
           : combineDateTime(startDay, startTime);
 
       const end =
-        allDay && endDay
+        allDay && (endDay || startDay)
           ? new Date(
-              endDay.getFullYear(),
-              endDay.getMonth(),
-              endDay.getDate(),
+              (endDay ?? startDay!).getFullYear(),
+              (endDay ?? startDay!).getMonth(),
+              (endDay ?? startDay!).getDate(),
               23,
-              0,
-              0,
-              0,
+              59,
+              59,
+              999,
             )
           : combineDateTime(endDay, endTime);
 
@@ -218,18 +231,40 @@ export const ModalEvent = ({
         ? await handelAddEvent(eventData)
         : await handelUpdateEvent(eventData);
 
-      if (addTask && createdEvent?._id && !createdEvent.todoId) {
-        await dispatch(
-          addTodoApi({
-            title: createdEvent.title,
-            description: createdEvent.description,
-            isImportant: false,
-            isCompletedTask: false,
-            end: createdEvent.end || null,
-            allDay: createdEvent.allDay,
-            eventId: createdEvent._id,
-          }),
-        );
+      if (addTask && createdEvent?._id) {
+        const todoIdToUpdate =
+          typeof createdEvent.todoId === "object" &&
+          createdEvent.todoId !== null
+            ? (createdEvent.todoId as any)._id
+            : createdEvent.todoId;
+
+        if (!todoIdToUpdate) {
+          await dispatch(
+            addTodoApi({
+              title: createdEvent.title,
+              description: createdEvent.description,
+              isImportant: false,
+              isCompletedTask: false,
+              start: createdEvent.start ?? null,
+              end: createdEvent.end ?? null,
+              allDay: createdEvent.allDay,
+              eventId: createdEvent._id,
+            }),
+          );
+        } else {
+          await dispatch(
+            updateTodotApi({
+              id: todoIdToUpdate,
+              todoData: {
+                title: createdEvent.title,
+                description: createdEvent.description,
+                start: createdEvent.start ?? null,
+                end: createdEvent.end ?? null,
+                allDay: createdEvent.allDay,
+              },
+            }),
+          );
+        }
       }
     } catch (error) {
       if (

@@ -19,7 +19,6 @@ export default function RootLayout({
       </head>
       <body className="h-full w-full overflow-x-hidden flex flex-col items-center justify-center">
         <Provider store={store}>
-          {/* <AuthInitializer> */}
             <AuthRedirectListener />
             <Toaster
               containerStyle={{
@@ -29,7 +28,6 @@ export default function RootLayout({
               }}
             />
             {children}
-          {/* </AuthInitializer> */}
         </Provider>
       </body>
     </html>
