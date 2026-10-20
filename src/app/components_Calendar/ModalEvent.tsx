@@ -258,6 +258,7 @@ export const ModalEvent = ({
               todoData: {
                 title: createdEvent.title,
                 description: createdEvent.description,
+                isCompletedTask: false,
                 start: createdEvent.start ?? null,
                 end: createdEvent.end ?? null,
                 allDay: createdEvent.allDay,

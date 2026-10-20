@@ -31,7 +31,7 @@ export default function Completed() {
         </TooltipDesktop>
       </div>
 
-      <div className="  flex w-full  flex-col items-center  py-10">
+      <div className="flex w-full  flex-col items-center py-10 px-2">
         <TodoCompleted />
       </div>
     </div>

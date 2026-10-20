@@ -27,7 +27,7 @@ export default function Task() {
         </TooltipDesktop>
       </div>
 
-      <div className="flex w-full flex-col ml-3">
+      <div className="flex w-full flex-col px-2">
         <AddTodoButton />
         <TaskList />
       </div>
