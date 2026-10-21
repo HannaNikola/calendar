@@ -13,7 +13,7 @@ import { addTodoApi, updateTodotApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
-import { CheckCheck } from "lucide-react";
+
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -231,14 +231,29 @@ export const ModalEvent = ({
         ? await handelAddEvent(eventData)
         : await handelUpdateEvent(eventData);
 
-      if (addTask && createdEvent?._id) {
-        const todoIdToUpdate =
+      if (createdEvent?._id) {
+        const todoId =
           typeof createdEvent.todoId === "object" &&
           createdEvent.todoId !== null
-            ? (createdEvent.todoId as any)._id
+            ? createdEvent.todoId._id
             : createdEvent.todoId;
+        // const todoId = createdEvent.todoId;
 
-        if (!todoIdToUpdate) {
+        if (todoId) {
+          await dispatch(
+            updateTodotApi({
+              id: todoId,
+              todoData: {
+                title: createdEvent.title,
+                description: createdEvent.description,
+                isCompletedTask,
+                start: createdEvent.start ?? null,
+                end: createdEvent.end ?? null,
+                allDay: createdEvent.allDay,
+              },
+            }),
+          ).unwrap();
+        } else if (addTask) {
           await dispatch(
             addTodoApi({
               title: createdEvent.title,
@@ -250,21 +265,7 @@ export const ModalEvent = ({
               allDay: createdEvent.allDay,
               eventId: createdEvent._id,
             }),
-          );
-        } else {
-          await dispatch(
-            updateTodotApi({
-              id: todoIdToUpdate,
-              todoData: {
-                title: createdEvent.title,
-                description: createdEvent.description,
-                isCompletedTask: false,
-                start: createdEvent.start ?? null,
-                end: createdEvent.end ?? null,
-                allDay: createdEvent.allDay,
-              },
-            }),
-          );
+          ).unwrap();
         }
       }
     } catch (error) {
@@ -388,7 +389,7 @@ export const ModalEvent = ({
                 onChange={(e) => {
                   setIsCompletedTask(e.target.checked);
                   if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
+                  setDescription("");
                   timeoutRef.current = setTimeout(() => {
                     setAddTask(false);
                   }, 300);

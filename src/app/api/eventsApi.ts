@@ -86,11 +86,13 @@ export const updateEventApi = createAsyncThunk(
   },
 );
 
+
+
 export const deleteEventApi = createAsyncThunk<string, string>(
   "eventsData/deleteEvent",
-  async (id: string, thunkApi) => {
+  async (_id: string, thunkApi) => {
     try {
-      const response = await api.delete(`/api/events/${id}`);
+      const response = await api.delete(`/api/events/${_id}`);
       appToast.delete("The event was delete successefully");
       return response.data.data._id;
     } catch (error) {

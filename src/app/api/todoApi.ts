@@ -39,6 +39,7 @@ export const addTodoApi = createAsyncThunk(
       const payload = {
         ...newTodo,
       };
+      
       const response = await api.post("/api/todo", payload);
       appToast.success("The task was created successefully");
       return response.data;

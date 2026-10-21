@@ -9,6 +9,7 @@ import {
   openElementModal,
 } from "../store/sharedComponent/modalReducer";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
+import { deleteTodoApi } from "../api/todoApi";
 
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -97,12 +98,34 @@ export const useEventHandlers = () => {
       .finally(() => dispatch(closeElementModal()));
   };
 
-  const handleDeleteEvent = () => {
-    if (!selectedEvent?._id) return;
+  // const handleDeleteEvent = () => {
+  //   if (!selectedEvent?._id) return;
 
-    dispatch(deleteEventApi(selectedEvent._id));
-    dispatch(closeElementModal());
-  };
+  //   dispatch(deleteEventApi(selectedEvent._id));
+  //   dispatch(closeElementModal());
+  // };
+
+const handleDeleteEvent = () => {
+  if (!selectedEvent?._id) return;
+
+  const todoId = selectedEvent.todoId as
+    | string
+    | { _id: string }
+    | null
+    | undefined;
+
+  dispatch(deleteEventApi(selectedEvent._id));
+
+  const id = typeof todoId === "string" ? todoId : todoId?._id;
+
+  if (id) {
+    dispatch(deleteTodoApi(id));
+  }
+
+  dispatch(closeElementModal());
+};
+
+
 
   return {
     isOpen,
@@ -122,3 +145,8 @@ export const useEventHandlers = () => {
     handleDeleteEvent,
   };
 };
+
+
+
+
+  
