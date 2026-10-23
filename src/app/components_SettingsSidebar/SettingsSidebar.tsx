@@ -119,7 +119,7 @@ export default function SettingsSidebar({
           <>
             <div className="w-full">
               <div className="flex flex-col items-center">
-                <div className="flex items-center justify-center w-10 h-10 bg-grey-light rounded-sm">
+                {/* <div className="flex items-center justify-center w-10 h-10 bg-grey-light rounded-sm"> */}
                   <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-grey-light">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +139,7 @@ export default function SettingsSidebar({
                       <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                     </svg>
                   </div>
-                </div>
+                {/* </div> */}
 
                 <p className="mt-3 text-medium font-semibold">DELETE</p>
 
