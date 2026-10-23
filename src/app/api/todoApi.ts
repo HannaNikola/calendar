@@ -99,7 +99,7 @@ export const completedTodoApi = createAsyncThunk(
       const response = await api.patch(`/api/todo/${payload.id}`, {
         isCompletedTask: payload.isCompletedTask,
       });
-      appToast.success("The task was completed successefully");
+      appToast.success('The task was successfully completed and moved to the "Completed" folder.');
       return response.data;
     } catch (error) {
       const err = error as AxiosError;

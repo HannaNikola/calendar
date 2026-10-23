@@ -9,7 +9,7 @@ const variantsButton = cva(
       variant: {
         default:
           " text-main hover:bg-navbar-button-hover bg-navbar-button rounded-2xl border-sky-dark-border hover:border-sky-hover-medium shadow-sm",
-        transper: "text-main text-main text-sm whitespace-nowrap",
+        transper: "text-main  text-sm whitespace-nowrap",
         alert:
           "text-alert-text hover:bg-alert-button-hover bg-alert-button  rounded-2xl border-alert-border hover:border-alert-hover shadow-sm",
         rounded:
@@ -47,3 +47,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
+
+
+
+
+
+
