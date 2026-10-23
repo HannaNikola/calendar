@@ -19,15 +19,17 @@ export default function RootLayout({
       </head>
       <body className="h-full w-full overflow-x-hidden flex flex-col items-center justify-center">
         <Provider store={store}>
-            <AuthRedirectListener />
-            <Toaster
-              containerStyle={{
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-              }}
-            />
-            {children}
+          <AuthRedirectListener />
+          <Toaster
+            position="bottom-right"
+            gutter={12}
+            containerStyle={{
+              bottom: 24,
+              right: 24,
+            }}
+          />
+
+          {children}
         </Provider>
       </body>
     </html>

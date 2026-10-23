@@ -53,7 +53,7 @@ export const addEventApi = createAsyncThunk(
         addTask: newEvent.addTask,
       };
       const response = await api.post("/api/events", payload);
-      appToast.success("Event was created successefully");
+      // appToast.success("Event was created successefully");
       return response.data;
     } catch (error) {
       const err = error as AxiosError;

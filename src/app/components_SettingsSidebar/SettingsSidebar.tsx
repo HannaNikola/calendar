@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { fetchDeletedUser, fetchLogoutUser } from "../api/authApi";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
-import StatusMessage from "../shared/ui/StatusMessage";
 import { appToast } from "../shared/ui/AppToast";
 
 interface SettingsSidebarProps {
@@ -51,11 +50,11 @@ export default function SettingsSidebar({
     }
   };
   const formattedName = user?.name
-  ?.trim()
-  .toLowerCase()
-  .split(/\s+/)
-  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-  .join(" ");
+    ?.trim()
+    .toLowerCase()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 
   return (
     <>
@@ -118,15 +117,56 @@ export default function SettingsSidebar({
           className="flex w-[350px] top-17 right-5 p-5 "
         >
           <>
-            <StatusMessage
-              type="delete"
-              title="DELETE"
-              description="Are you sure you want to delete your account? All of your data will be permanently deleted."
-              cancelText="Cancel"
-              confirmText="Delete"
-              onCancel={() => setDeleteOpen(false)}
-              onConfirm={handleDeleteAccount}
-            />
+            <div className="w-full">
+              <div className="flex flex-col items-center">
+                {/* <div className="flex items-center justify-center w-10 h-10 bg-grey-light rounded-sm"> */}
+                  <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-grey-light">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#f87171"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                    </svg>
+                  </div>
+                {/* </div> */}
+
+                <p className="mt-3 text-medium font-semibold">DELETE</p>
+
+                <p className="text-center text-black-medium">
+                  Are you sure you want to delete your account? All of your data
+                  will be permanently deleted.
+                </p>
+              </div>
+
+              <div className="flex justify-between gap-2 mt-4">
+                <button
+                  type="button"
+                  onClick={() => setDeleteOpen(false)}
+                  className="bg-grey-button hover:bg-sky-100 px-3 py-1 rounded"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleDeleteAccount}
+                  className="bg-alert-button hover:bg-alert-button-hover text-white px-3 py-1 rounded"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
           </>
         </ModalWrapper>
       )}
