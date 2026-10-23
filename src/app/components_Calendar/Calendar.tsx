@@ -127,7 +127,6 @@ export const CalendarEl = () => {
     <section className="flex flex-col w-full h-full ">
       {showLoader ? (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          {/* <svg className="mr-3 size-5 bg-700 animate-spin ..." viewBox="0 0 24 24"></svg> */}
           <div className="w-12 h-12 border-4 border-blue-400 border-dashed rounded-full border-t-transparent animate-spin" />
         </div>
       ) : (
@@ -178,6 +177,16 @@ export const CalendarEl = () => {
                 buttonText: "Year",
                 multiMonthMinWidth: 200,
               },
+            }}
+            dayHeaderContent={(arg) => {
+              const day = arg.date.getDate();
+              const month = arg.date.getMonth() + 1;
+
+              const weekday = arg.date.toLocaleDateString("en-US", {
+                weekday: "short",
+              });
+
+              return `${weekday} ${day}/${month}`;
             }}
             events={parsedEvents}
             editable={true}
