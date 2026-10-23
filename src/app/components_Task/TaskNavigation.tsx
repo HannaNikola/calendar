@@ -1,7 +1,7 @@
 import { Star, CircleCheckBig, ListTodo } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { TooltipDesktop } from "../shared/ui/Tooltip";
+
 
 const buttons = [
   {
