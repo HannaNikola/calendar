@@ -40,7 +40,7 @@ export default function TaskNavigation() {
             aria-current={isActive ? "page" : undefined}
             className={`
                 inline-flex items-center justify-center text-main text-sm whitespace-nowrap
-                 rounded-2xl w-[140px] px-4 py-2
+                 rounded-2xl w-[110px] sm:w-[200px] px-4 py-2
                  transition-colors ${isActive ? "bg-sky-200" : "bg-gray-200 hover:bg-gray-300"}`}
           >
             <Icon size={20} className={button.iconClassName} />
