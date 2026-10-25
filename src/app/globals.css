@@ -8,7 +8,7 @@
   --color-700: #b91c1c; /* red-700 */
   --color-gray-500: #6b7280;
   --color-grey-light: #b3b3b3; /*gray-light*/
-   --color-red-light: #f87171; /*red */
+  --color-red-light: #f87171; /*red */
 
   /* border color */
   --color-gray-light-border: #f3f4f6; /* gray-100 */
@@ -30,8 +30,8 @@
 
   /* input registr form */
   --color-input-form-main: #e5e7eb; /* gray-200 */
-  --color-input-form-hover: #d1d5db ; /* gray-300 */
-  --color-input-form-ring: #d1d5db ; /* gray-300 */
+  --color-input-form-hover: #d1d5db; /* gray-300 */
+  --color-input-form-ring: #d1d5db; /* gray-300 */
 
   /* text color */
   --color-main: #333333; /* black */
@@ -152,5 +152,3 @@
     transform: scale(1) translateY(0);
   }
 }
-
-
