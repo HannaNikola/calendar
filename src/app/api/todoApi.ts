@@ -39,7 +39,7 @@ export const addTodoApi = createAsyncThunk(
       const payload = {
         ...newTodo,
       };
-      
+
       const response = await api.post("/api/todo", payload);
       appToast.success("The task was created successefully");
       return response.data;
@@ -99,7 +99,9 @@ export const completedTodoApi = createAsyncThunk(
       const response = await api.patch(`/api/todo/${payload.id}`, {
         isCompletedTask: payload.isCompletedTask,
       });
-      appToast.success('The task was successfully completed and moved to the "Completed" folder.');
+      appToast.success(
+        'The task was successfully completed and moved to the "Completed" folder.',
+      );
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -109,21 +111,24 @@ export const completedTodoApi = createAsyncThunk(
     }
   },
 );
-export const deleteTodoApi = createAsyncThunk<string, string>(
-  "todoData/deleteTodo",
-  async (id: string, thunkAPI) => {
-    try {
-      const response = await api.delete(`/api/todo/${id}`);
-      appToast.delete("The task was deleted successefully");
-      return response.data.data._id;
-    } catch (error) {
-      const err = error as AxiosError;
-      return thunkAPI.rejectWithValue(
-        err.response?.data || "Something went wrong",
-      );
-    }
-  },
-);
+export const deleteTodoApi = createAsyncThunk<
+  { id: string; eventId: string | null },
+  string
+>("todoData/deleteTodo", async (id, thunkAPI) => {
+  try {
+    const response = await api.delete(`/api/todo/${id}`);
 
+    appToast.delete("The task was deleted successfully");
 
+    return {
+      id: response.data.data._id,
+      eventId: response.data.data.eventId ?? null,
+    };
+  } catch (error) {
+    const err = error as AxiosError;
 
+    return thunkAPI.rejectWithValue(
+      err.response?.data || "Something went wrong",
+    );
+  }
+});

@@ -64,7 +64,10 @@ const todolSlice = createSlice({
       })
       .addCase(deleteTodoApi.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.todos = state.todos.filter((item) => item._id !== action.payload);
+
+        state.todos = state.todos.filter(
+          (item) => item._id !== action.payload.id,
+        );
       })
       .addCase(deleteTodoApi.rejected, (state, action) => {
         state.status = "failed";
