@@ -51,9 +51,9 @@ export const TaskItem = ({
       <div className="flex w-full flex-col mr-3 ">
         <p className="text-sky-dark text-medium weight-extra">{item.title}</p>
 
-        <TooltipDesktop content={item.description}>
+        {/* <TooltipDesktop content={item.description}> */}
           <p className="text-small line-clamp-1 mb-3">{item.description}</p>
-        </TooltipDesktop>
+        {/* </TooltipDesktop> */}
         <p
           className={`mb-2 text-small text-alert-text ${expired ? "text-red-500 " : "text-green-700"}`}
         >
