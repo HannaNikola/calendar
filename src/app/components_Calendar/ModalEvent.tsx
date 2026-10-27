@@ -14,7 +14,6 @@ import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
 
-
 const EventSchema = Yup.object().shape({
   title: Yup.string()
     .max(70, "Title must be less than 100 characters")
@@ -64,21 +63,19 @@ export const ModalEvent = ({
     const start = toDate(selectedEvent?.start ?? slotStart ?? now);
     const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
 
+    const completed = selectedEvent?.isCompletedTask ?? false;
+
     setTitle(selectedEvent?.title ?? "");
     setDescription(selectedEvent?.description ?? "");
     setAllDay(selectedEvent?.allDay ?? false);
-    setAddTask(selectedEvent?.addTask ?? false);
-    setIsCompletedTask(selectedEvent?.isCompletedTask ?? false);
+
+    setIsCompletedTask(completed);
+    setAddTask(completed ? false : selectedEvent?.addTask ?? false);
+
     setStartDay(start);
     setEndDay(isNew ? start : end ?? start);
     setStartTime(start ? new Date(start) : new Date());
     setEndTime(end ? new Date(end) : new Date());
-
-    if (selectedEvent?.isCompletedTask) {
-      setAddTask(false);
-    } else {
-      setAddTask(selectedEvent?.addTask ?? false);
-    }
   }, [selectedEvent, slotStart, slotEnd, isNew]);
 
   useEffect(() => {

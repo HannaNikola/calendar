@@ -5,6 +5,7 @@ import {
   deleteEventApi,
   updateEventApi,
 } from "@/app/api/eventsApi";
+import { completedTodoApi, updateTodotApi } from "@/app/api/todoApi";
 import { EventStateProps } from "@/app/types/typesApi";
 import { fetchDeletedUser, fetchLogoutUser } from "@/app/api/authApi";
 import { deleteTodoApi } from "@/app/api/todoApi";
@@ -57,6 +58,36 @@ const eventSlice = createSlice({
       .addCase(updateEventApi.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Unknown error";
+      })
+      .addCase(updateTodotApi.fulfilled, (state, action) => {
+        const todo = action.payload;
+
+        if (!todo.eventId) return;
+        state.events = state.events.map((event) =>
+          event._id === todo.eventId
+            ? {
+                ...event,
+                title: todo.title,
+                description: todo.description,
+              }
+            : event,
+        );
+      })
+      .addCase(completedTodoApi.fulfilled, (state, action) => {
+        const todo = action.payload;
+
+        if (!todo.eventId) return;
+
+        state.events = state.events.map((event) =>
+          event._id === todo.eventId
+            ? {
+                ...event,
+                isCompletedTask: todo.isCompletedTask,
+                addTask: todo.isCompletedTask ? false : event.addTask,
+                description: todo.isCompletedTask ? "" : event.description,
+              }
+            : event,
+        );
       })
       .addCase(deleteEventApi.pending, (state) => {
         state.status = "loading";
