@@ -15,6 +15,7 @@ import tippy from "tippy.js";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
 import { useTodoHandlers } from "../hooks/useTodoHandlers";
+import { useSearchParams } from "next/navigation";
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
 
@@ -27,6 +28,8 @@ export const CalendarEl = () => {
   const [showLoader, setShowLoader] = useState(false);
   const calendarRef = useRef<FullCalendarType | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
+ 
 
   const { adjustCalendarLayout, isMobileWidth, calendarClasses } =
     useCalendarLayout(calendarRef, containerRef, screenType);
@@ -37,6 +40,23 @@ export const CalendarEl = () => {
     slotStart: null,
     slotEnd: null,
   });
+
+  useEffect(() => {
+    const date = searchParams.get("date");
+    const view = searchParams.get("view");
+
+    if (!date || view !== "day") return;
+
+    const calendarApi = calendarRef.current?.getApi();
+
+    if (!calendarApi) return;
+
+    const selectedDate = new Date(`${date}T12:00:00`);
+
+    if (Number.isNaN(selectedDate.getTime())) return;
+
+    calendarApi.changeView("timeGridDay", selectedDate);
+  }, [searchParams]);
 
   useEffect(() => {
     if (status === "loading") {
