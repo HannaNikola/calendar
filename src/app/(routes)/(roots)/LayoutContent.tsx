@@ -25,7 +25,7 @@ export const LayoutContent = ({ children, screenType }: any) => {
 
   return (
     <>
-      <Header onSettingsClick={() => setSidebarOpen(true)} />
+      <Header onSettingsClick={() => setSidebarOpen(true)} isSettingsOpen={sidebarOpen}/>
       <main className="flex-1 w-full overflow-y-auto pt-[60px] max-lg:pb-[60px]">
         <PageWrapper>
           {screenType === "desktop" && (

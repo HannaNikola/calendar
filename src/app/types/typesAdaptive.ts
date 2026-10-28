@@ -4,4 +4,5 @@ export type AdaptiveProps = {
   type?: TypesAdaptive;
   position?: "top" | "bottom";
   onSettingsClick?: () => void;
+  isSettingsOpen?: boolean;
 };

@@ -9,7 +9,10 @@ import { AdaptiveProps } from "../types/typesAdaptive";
 import { useScreenType } from "../hooks/useScreenType";
 import { usePathname } from "next/navigation";
 
-export default function Navbar({ onSettingsClick }: AdaptiveProps) {
+export default function Navbar({
+  onSettingsClick,
+  isSettingsOpen,
+}: AdaptiveProps) {
   const screenType = useScreenType();
   const pathname = usePathname();
 
@@ -19,6 +22,12 @@ export default function Navbar({ onSettingsClick }: AdaptiveProps) {
        sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300 ${isActive ? "bg-grey-button" : "bg-navbar-button hover:bg-navbar-button-hover"} 
       `;
   };
+  const settingsClass = `flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px]
+    sm:px-4 sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300 ${
+      isSettingsOpen
+        ? "bg-grey-button"
+        : "bg-navbar-button hover:bg-navbar-button-hover"
+    }`;
   return (
     <div className="flex w-full justify-between gap-2">
       <nav className="flex w-full gap-2 ">
@@ -36,11 +45,7 @@ export default function Navbar({ onSettingsClick }: AdaptiveProps) {
           </span>
         </Link>
       </nav>
-      <button
-        onClick={onSettingsClick}
-        className="flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px] sm:px-4 sm:bg-navbar-button
-            sm:hover:bg-navbar-button-hover sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300"
-      >
+      <button onClick={onSettingsClick} className={settingsClass}>
         <Cog size={18} />
         <span className=" max-sm:hidden ml-2 text-main text-sm whitespace-nowrap ">
           Settings
