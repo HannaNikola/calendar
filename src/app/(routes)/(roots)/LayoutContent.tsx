@@ -11,9 +11,11 @@ import { ModalEvent } from "../../components_Calendar/ModalEvent";
 import { closeElementModal } from "../../store/sharedComponent/modalReducer";
 import SettingsSidebar from "../../components_SettingsSidebar/SettingsSidebar";
 import Footer from "../../components_Calendar/Footer";
+import { usePathname } from "next/navigation";
 
 export const LayoutContent = ({ children, screenType }: any) => {
   const dispatch = useDispatch<AppDispatch>();
+  const pathname = usePathname();
   const { type, isOpen, data } = useSelector((state: RootState) => state.modal);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
@@ -22,15 +24,18 @@ export const LayoutContent = ({ children, screenType }: any) => {
     selectedEvent,
     handelUpdateEvent,
   } = useEventHandlers();
-
+  const mode = pathname.startsWith("/task") ? "task" : "calendar";
   return (
     <>
-      <Header onSettingsClick={() => setSidebarOpen(true)} isSettingsOpen={sidebarOpen}/>
+      <Header
+        onSettingsClick={() => setSidebarOpen(true)}
+        isSettingsOpen={sidebarOpen}
+      />
       <main className="flex-1 w-full overflow-y-auto pt-[60px] max-lg:pb-[60px]">
         <PageWrapper>
           {screenType === "desktop" && (
             <div className="max-lg:hidden">
-              <SmallCalendar />
+              <SmallCalendar mode={mode} />
             </div>
           )}
           {type === "event" && (
