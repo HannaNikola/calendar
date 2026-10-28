@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
-import { CheckCircle2, CircleAlert, Trash2, X } from "lucide-react";
+import { CheckCircle2, CircleAlert, Trash2, X, Info } from "lucide-react";
 
-type ToastType = "success" | "error" | "delete";
+type ToastType = "success" | "error" | "delete" | "info";
 
 const toastStyles = {
   success: {
@@ -21,6 +21,12 @@ const toastStyles = {
     accent: "border-l-4 border-l-red-400",
     iconColor: "text-red-500",
     title: "DELETE",
+  },
+  info: {
+    icon: Info,
+    accent: "border-l-4 border-l-blue-400",
+    iconColor: "text-blue",
+    title: "Info",
   },
 };
 
@@ -42,12 +48,10 @@ function showToast(type: ToastType, description: string) {
           ${t.visible ? "translate-x-0 opacity-100" : "translate-x-5 opacity-0"}
         `}
       >
-        
         <div className="mt-0.5 shrink-0">
           <Icon size={25} strokeWidth={2.2} className={style.iconColor} />
         </div>
 
-        
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold tracking-wide text-slate-700">
             {style.title}
@@ -85,4 +89,6 @@ export const appToast = {
   error: (description: string) => showToast("error", description),
 
   delete: (description: string) => showToast("delete", description),
+
+  info: (description: string) => showToast("info", description),
 };

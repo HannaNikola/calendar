@@ -6,6 +6,8 @@ import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
+import { useRouter } from "next/navigation";
+import { appToast } from "../shared/ui/AppToast";
 
 type SmallCalendarProps = {
   mode: "calendar" | "task";
@@ -15,8 +17,40 @@ export default function SmallCalendar({ mode }: SmallCalendarProps) {
   const screenType = useScreenType();
   const { events } = useSelector((state: RootState) => state.eventData);
   const { todos } = useSelector((state: RootState) => state.todo);
-
+  const router = useRouter();
   const renderDayContents = (day: number, date?: Date) => {
+    const handleDateClick = (date?: Date) => {
+      if (!date) return;
+
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const dateString = `${year}-${month}-${day}`;
+
+      if (mode === "calendar") {
+        const hasEvents = events.some((event) => {
+          if (!event.start) return false;
+
+          const eventDate = new Date(event.start);
+          return (
+            eventDate.getFullYear() === year &&
+            eventDate.getMonth() === date.getMonth() &&
+            eventDate.getDate() === date.getDate()
+          );
+        });
+
+        if (!hasEvents) {
+          appToast.info("There are no events on this day");
+          return;
+        }
+
+        router.push(`/calendar?date=${dateString}&view=day`);
+      }
+
+      if (mode === "task") {
+      }
+    };
+
     if (!date) return <span>{day}</span>;
 
     const dayStart = new Date(date);
@@ -38,17 +72,25 @@ export default function SmallCalendar({ mode }: SmallCalendarProps) {
             return deadline >= dayStart && deadline <= dayEnd;
           });
 
-    if (dayItems.length === 0) return <span>{day}</span>;
-
-    const cellColor = mode === "task" ? "bg-[#DDF2D1]" : "bg-[#FFE4CC]";
+    const cellColor =
+      dayItems.length === 0
+        ? "bg-transparent"
+        : mode === "task"
+          ? "bg-[#DDF2D1]"
+          : "bg-[#FFE4CC]";
 
     const dayContent = (
       <div
-        className={`flex h-full w-full items-center justify-center rounded-md ${cellColor}`}
+        onClick={() => handleDateClick(date)}
+        className={`flex h-full w-full cursor-pointer items-center justify-center rounded-md ${cellColor}`}
       >
         <span>{day}</span>
       </div>
     );
+
+    if (dayItems.length === 0) {
+      return dayContent;
+    }
 
     if (mode === "task") {
       const tooltipContent = dayItems
@@ -104,7 +146,6 @@ export default function SmallCalendar({ mode }: SmallCalendarProps) {
         </div>
       </TooltipDesktop>
     );
-    // );
   };
 
   return (
