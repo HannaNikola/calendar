@@ -18,40 +18,43 @@ export default function Navbar({
 
   const getLinkClass = (href: string) => {
     const isActive = pathname.startsWith(href);
-    return `flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px]  
-       sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300 ${isActive ? "bg-grey-button" : "bg-navbar-button hover:bg-navbar-button-hover"} 
+
+    return `flex flex-1 items-center px-4 py-2 md:h-[40px]  
+       rounded-4xl shadow-sm sm:transition-colors sm:duration-300 ${isActive ? "bg-grey-button" : "bg-navbar-button hover:bg-navbar-button-hover"} 
       `;
   };
-  const settingsClass = `flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px]
-    sm:px-4 sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300 ${
+
+  const settingsClass = `flex flex-1 items-center  px-2 py-2 md:h-[40px]
+    px-4 rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300 ${
       isSettingsOpen
         ? "bg-grey-button"
         : "bg-navbar-button hover:bg-navbar-button-hover"
     }`;
+
   return (
     <div className="flex w-full justify-between gap-2">
       <nav className="flex w-full gap-2 ">
         <Link href="/calendar" className={getLinkClass("/calendar")}>
           <CalendarDays size={18} className="shrink-0 ml-1" />
-          <span className="max-sm:hidden ml-2 text-main text-sm whitespace-nowrap">
+          <span className="  ml-2 text-main items-center  text-sm whitespace-nowrap">
             Calendar
           </span>
         </Link>
 
         <Link href="/task" className={getLinkClass("/task")}>
           <BookOpenCheck size={18} className="shrink-0 ml-1" />
-          <span className=" max-sm:hidden ml-2 text-main text-sm whitespace-nowrap ">
+          <span className=" ml-2 text-main items-center  text-sm whitespace-nowrap ">
             Your Task
           </span>
         </Link>
       </nav>
       <button onClick={onSettingsClick} className={settingsClass}>
         <Cog size={18} />
-        <span className=" max-sm:hidden ml-2 text-main text-sm whitespace-nowrap ">
+        <span className="  ml-2 text-main items-center text-sm whitespace-nowrap ">
           Settings
         </span>
       </button>
-      {(screenType === "mobail" || screenType === "tablet") && (
+      {screenType === "tablet" && (
         <div className="flex max-xl:flex-1 items-center px-2 py-2 md:h-[40px]  sm:px-4 sm:bg-grey-button sm:hover:bg-gray-hover sm:rounded-4xl sm:shadow-sm sm:transition-colors sm:duration-300">
           <EddEventButton />
         </div>
