@@ -18,7 +18,10 @@ export default function SmallCalendar({ mode }: SmallCalendarProps) {
   const { events } = useSelector((state: RootState) => state.eventData);
   const { todos } = useSelector((state: RootState) => state.todo);
   const router = useRouter();
+
+
   const renderDayContents = (day: number, date?: Date) => {
+
     const handleDateClick = (date?: Date) => {
       if (!date) return;
 
@@ -48,6 +51,7 @@ export default function SmallCalendar({ mode }: SmallCalendarProps) {
       }
 
       if (mode === "task") {
+        router.push(`/task/date?date=${dateString}`)
       }
     };
 
