@@ -4,7 +4,7 @@ import Header from "@/app/components_Calendar/Header";
 import { PageWrapper } from "@/app/shared/ui/PageWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store/store";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useEventHandlers } from "../../hooks/useEventHandlers";
 import SmallCalendar from "../../components_Calendar/SmallCalendar";
 import { ModalEvent } from "../../components_Calendar/ModalEvent";
@@ -52,8 +52,7 @@ export const LayoutContent = ({ children, screenType }: any) => {
               handleDeleteEvent={handleDeleteEvent}
             />
           )}
-
-          {children}
+          <Suspense>{children}</Suspense>
         </PageWrapper>
       </main>
       <Footer type={screenType} onSettingsClick={() => setSidebarOpen(true)} />
