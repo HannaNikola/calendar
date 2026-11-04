@@ -6,12 +6,14 @@ import { useScreenType } from "../hooks/useScreenType";
 import Navbar from "./Navbar";
 import { AdaptiveProps } from "../types/typesAdaptive";
 
-export default function Header({ onSettingsClick, isSettingsOpen }: AdaptiveProps) {
+export default function Header({
+  onSettingsClick,
+  isSettingsOpen,
+}: AdaptiveProps) {
   const query = useSelector((state: RootState) => state.filter.query);
   const isFocused = useSelector((state: RootState) => state.filter.isFocused);
   const screenType = useScreenType();
   const pathname = usePathname();
-  
 
   const shouldHide = isFocused || query.length > 0;
   return (
@@ -22,9 +24,13 @@ export default function Header({ onSettingsClick, isSettingsOpen }: AdaptiveProp
             pathname.startsWith("/task")) && <Filter />}
           {!shouldHide && (
             <>
-              {screenType === "desktop" && (
-                <div className="ml-2 hidden lg:block">
-                  <Navbar type={screenType} onSettingsClick={onSettingsClick} isSettingsOpen={isSettingsOpen} />
+              {(screenType === "tabletWide" || screenType === "desktop") && (
+                <div className="ml-2 hidden md:block">
+                  <Navbar
+                    type={screenType}
+                    onSettingsClick={onSettingsClick}
+                    isSettingsOpen={isSettingsOpen}
+                  />
                 </div>
               )}
             </>
