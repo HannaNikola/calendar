@@ -1,4 +1,4 @@
-export type TypesAdaptive = "mobail" | "tablet" | "desktop";
+export type TypesAdaptive = "mobail" | "tablet" | "tabletWide"| "desktop";
 
 export type AdaptiveProps = {
   type?: TypesAdaptive;
@@ -6,3 +6,10 @@ export type AdaptiveProps = {
   onSettingsClick?: () => void;
   isSettingsOpen?: boolean;
 };
+
+
+
+
+
+
+

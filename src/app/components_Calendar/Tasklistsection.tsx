@@ -7,6 +7,10 @@ import { TaskItem } from "../components_Task/TaskItem";
 import { ModalTodo } from "../components_Task/ModalTodo";
 import { closeElementModal } from "../store/sharedComponent/modalReducer";
 
+
+
+
+
 export const Tasklistsection = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { isOpen, type } = useSelector((state: RootState) => state.modal);
@@ -39,7 +43,7 @@ export const Tasklistsection = () => {
   const visibleTodos = showToday ? todayTodos : activeTodos;
   return (
     <>
-      <div className=" flex w-[200px] p-2 min-w-[260px] flex-col bg-sky-light-background rounded-2xl">
+      <div className=" flex p-2 min-w-[270px] flex-col bg-sky-light-background rounded-2xl">
         <h2 className="mb-4 text-center text-medium ">Your active task list</h2>
         <div className="flex gap-2 justify-center">
           <Button
