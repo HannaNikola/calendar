@@ -19,7 +19,6 @@ import { TooltipDesktop } from "../shared/ui/Tooltip";
 import dayjs from "dayjs";
 import { useScreenType } from "../hooks/useScreenType";
 
-
 export const TaskItem = ({
   item,
   className,
@@ -46,9 +45,7 @@ export const TaskItem = ({
     ? dayjs(item.end).format("DD/MM/YYYY HH:mm")
     : "—";
 
-  const [localCompleted, setLocalCompleted] = useState(
-    item.isCompletedTask
-  );
+  const [localCompleted, setLocalCompleted] = useState(item.isCompletedTask);
 
   const handleOpen = () => {
     dispatch(
@@ -56,7 +53,7 @@ export const TaskItem = ({
         type: "todo",
         mode: "editTodo",
         data: { selectedId: item._id },
-      })
+      }),
     );
   };
 
@@ -84,7 +81,6 @@ export const TaskItem = ({
         ${className ?? ""}
       `}
     >
-      
       <div className="min-w-0 w-full">
         <p className="min-w-0 truncate text-sky-dark text-medium weight-extra">
           {item.title}
@@ -94,7 +90,7 @@ export const TaskItem = ({
           {item.description}
         </p>
 
-        {/* Deadline на мобильной версии */}
+        
         <div className="mt-2 flex items-center  gap-2 @md:hidden">
           <AlarmClock
             size={16}
@@ -112,7 +108,7 @@ export const TaskItem = ({
           </p>
         </div>
 
-        {/* Update на мобильной версии */}
+        
         <div className="mt-3 flex justify-start @md:hidden">
           <Button variant="default" size="small" className="text-small">
             Update
@@ -124,9 +120,7 @@ export const TaskItem = ({
       <div className="hidden min-w-0 items-center mr-20 gap-2 @md:flex">
         <AlarmClock
           size={18}
-          className={`shrink-0 ${
-            expired ? "text-red-500" : "text-green-700"
-          }`}
+          className={`shrink-0 ${expired ? "text-red-500" : "text-green-700"}`}
         />
 
         <p
@@ -138,7 +132,7 @@ export const TaskItem = ({
         </p>
       </div>
 
-      {/* Все кнопки действий */}
+      
       <div
         className="
           flex shrink-0 flex-col
@@ -158,16 +152,14 @@ export const TaskItem = ({
                 favoriteTodoApi({
                   id: item._id,
                   isImportant: !item.isImportant,
-                })
+                }),
               );
             }}
             className="shrink-0 hover:animate-pulse"
           >
             <Star
               size={20}
-              className={
-                item.isImportant ? "fill-amber-300" : "stroke-black"
-              }
+              className={item.isImportant ? "fill-amber-300" : "stroke-black"}
             />
           </button>
         </TooltipDesktop>
@@ -186,7 +178,7 @@ export const TaskItem = ({
                     completedTodoApi({
                       id: item._id,
                       isCompletedTask: !item.isCompletedTask,
-                    })
+                    }),
                   );
                 }
               }, 500);
@@ -212,8 +204,7 @@ export const TaskItem = ({
             <Trash2 size={20} />
           </button>
         </TooltipDesktop>
-
-        {!isMobile && (
+        <div className="hidden @md:block">
           <TooltipDesktop content="Edit task">
             <button
               type="button"
@@ -226,20 +217,8 @@ export const TaskItem = ({
               <PencilLine size={20} />
             </button>
           </TooltipDesktop>
-        )}
+        </div>
       </div>
     </li>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
