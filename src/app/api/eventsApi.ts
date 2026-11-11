@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { CalendarEvent } from "../types/typesApi";
+import { EventUpdatePayload } from "../types/typesApi";
 import { toISOString } from "../shared/utils/date";
 import { api } from "./api";
 import { appToast } from "../shared/ui/AppToast";
@@ -25,14 +25,11 @@ export const addEventApi = createAsyncThunk(
   async (
     newEvent: {
       title: string;
-      description?: string;
       start?: Date | string | null;
       end?: Date | string | null;
       allDay?: boolean;
       addTask?: boolean;
       isCompletedTask?: boolean;
-      isImportant?: boolean;
-      todoId?: string | null;
       colorEvent?: "none" | "home" | "work" | "isektor";
       repeat?: "none" | "daily" | "workday" | "weekend";
       reminder?: {
@@ -66,14 +63,11 @@ export const addEventApi = createAsyncThunk(
 
 export const updateEventApi = createAsyncThunk(
   "eventsData/updateEvent",
-  async (payload: { id: string; eventData: CalendarEvent }, thunkApi) => {
+  async (payload: { id: string; eventData: EventUpdatePayload }, thunkApi) => {
     try {
-      const sanitizedEventData = { ...payload.eventData };
-      delete sanitizedEventData._id;
-
       const response = await api.patch(
         `/api/events/${payload.id}`,
-        sanitizedEventData,
+        payload.eventData,
       );
       appToast.success("Event was update successefully");
       return response.data;
@@ -85,8 +79,6 @@ export const updateEventApi = createAsyncThunk(
     }
   },
 );
-
-
 
 export const deleteEventApi = createAsyncThunk<string, string>(
   "eventsData/deleteEvent",
@@ -103,8 +95,3 @@ export const deleteEventApi = createAsyncThunk<string, string>(
     }
   },
 );
-
-
-
-
-

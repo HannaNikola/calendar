@@ -26,11 +26,9 @@ export const addTodoApi = createAsyncThunk(
       title: string;
       description?: string;
       isImportant?: boolean;
-      addTask?: boolean;
       isCompletedTask?: boolean;
       start?: Date | string | null;
       end?: Date | string | null;
-      allDay?: boolean;
       eventId?: string | null;
     },
     thunkAPI,
@@ -65,7 +63,7 @@ export const updateTodotApi = createAsyncThunk(
         sanitizedTodoData,
       );
       appToast.success("The task was update successefully");
-      console.log("update data", response.data)
+      console.log("update data", response.data);
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -103,7 +101,7 @@ export const completedTodoApi = createAsyncThunk(
       appToast.success(
         'The task was successfully completed and moved to the "Completed" folder.',
       );
-      
+
       return response.data;
     } catch (error) {
       const err = error as AxiosError;

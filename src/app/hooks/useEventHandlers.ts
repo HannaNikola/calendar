@@ -9,7 +9,6 @@ import {
   openElementModal,
 } from "../store/sharedComponent/modalReducer";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
-import { deleteTodoApi } from "../api/todoApi";
 
 export const useEventHandlers = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -65,16 +64,13 @@ export const useEventHandlers = () => {
     return dispatch(
       addEventApi({
         title: eventData.title,
-        description: eventData.description,
-        start: eventData.start ? new Date(eventData.start as any) : null,
-        end: eventData.end ? new Date(eventData.end as any) : null,
+        start: eventData.start ? new Date(eventData.start) : null,
+        end: eventData.end ? new Date(eventData.end) : null,
         allDay: eventData.allDay ?? false,
         addTask: eventData.addTask ?? false,
         isCompletedTask: eventData.isCompletedTask ?? false,
       }),
-    )
-      .unwrap()
-      .finally(() => dispatch(closeElementModal()));
+    ).unwrap();
   };
 
   const handelUpdateEvent = (eventData: CalendarEvent) => {
@@ -85,7 +81,6 @@ export const useEventHandlers = () => {
         id: eventData._id,
         eventData: {
           title: eventData.title,
-          description: eventData.description,
           start: toDate(eventData.start),
           end: toDate(eventData.end),
           allDay: eventData.allDay,
@@ -98,34 +93,12 @@ export const useEventHandlers = () => {
       .finally(() => dispatch(closeElementModal()));
   };
 
-  // const handleDeleteEvent = () => {
-  //   if (!selectedEvent?._id) return;
+  const handleDeleteEvent = () => {
+    if (!selectedEvent?._id) return;
 
-  //   dispatch(deleteEventApi(selectedEvent._id));
-  //   dispatch(closeElementModal());
-  // };
-
-const handleDeleteEvent = () => {
-  if (!selectedEvent?._id) return;
-
-  const todoId = selectedEvent.todoId as
-    | string
-    | { _id: string }
-    | null
-    | undefined;
-
-  dispatch(deleteEventApi(selectedEvent._id));
-
-  const id = typeof todoId === "string" ? todoId : todoId?._id;
-
-  if (id) {
-    dispatch(deleteTodoApi(id));
-  }
-
-  dispatch(closeElementModal());
-};
-
-
+    dispatch(deleteEventApi(selectedEvent._id));
+    dispatch(closeElementModal());
+  };
 
   return {
     isOpen,
@@ -145,8 +118,3 @@ const handleDeleteEvent = () => {
     handleDeleteEvent,
   };
 };
-
-
-
-
-  

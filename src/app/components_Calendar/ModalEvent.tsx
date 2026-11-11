@@ -9,10 +9,565 @@ import { toast } from "sonner";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { toDate } from "../shared/utils/date";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodoApi, updateTodotApi } from "../api/todoApi";
+import { addTodoApi, deleteTodoApi, updateTodotApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
+import { CalendarTodo } from "../types/typesTodoApi";
+
+// const EventSchema = Yup.object().shape({
+//   title: Yup.string()
+//     .max(70, "Title must be less than 100 characters")
+//     .required("itle can`t be empty"),
+// });
+
+// export const ModalEvent = ({
+//   onClose,
+//   slotStart,
+//   slotEnd,
+//   selectedEvent,
+// }: EventModalProps) => {
+//   const dispatch = useDispatch<AppDispatch>();
+
+//   const { mode, isOpen } = useSelector((state: RootState) => state.modal);
+//   const [title, setTitle] = useState("");
+//   const [description, setDescription] = useState("");
+//   const [startTime, setStartTime] = useState<Date | null>(null);
+//   const [endTime, setEndTime] = useState<Date | null>(null);
+//   const [startDay, setStartDay] = useState<Date | null>(null);
+//   const [endDay, setEndDay] = useState<Date | null>(null);
+//   const [allDay, setAllDay] = useState(false);
+//   const [addTask, setAddTask] = useState(false);
+//   const [isCompletedTask, setIsCompletedTask] = useState(false);
+//   const isNew = mode === "new";
+//   const desRef = useRef<HTMLTextAreaElement | null>(null);
+//   const titleRef = useRef<HTMLTextAreaElement | null>(null);
+//   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+//   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
+//     useEventHandlers();
+
+//   useEffect(() => {
+//     if (isOpen) {
+//       const adjustHeight = (el: HTMLTextAreaElement | null) => {
+//         if (!el) return;
+//         el.style.height = "auto";
+//         el.style.height = `${el.scrollHeight}px`;
+//       };
+//       adjustHeight(titleRef.current);
+//       adjustHeight(desRef.current);
+//     }
+//   }, [isOpen, title, description]);
+
+//   useEffect(() => {
+//     const now = new Date();
+//     const start = toDate(selectedEvent?.start ?? slotStart ?? now);
+//     const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
+
+//     const completed = selectedEvent?.isCompletedTask ?? false;
+
+//     setTitle(selectedEvent?.title ?? "");
+//     // setDescription(selectedEvent?.description ?? "");
+//     setAllDay(selectedEvent?.allDay ?? false);
+
+//     setIsCompletedTask(completed);
+//     setAddTask(completed ? false : selectedEvent?.addTask ?? false);
+
+//     setStartDay(start);
+//     setEndDay(isNew ? start : end ?? start);
+//     setStartTime(start ? new Date(start) : new Date());
+//     setEndTime(end ? new Date(end) : new Date());
+//   }, [selectedEvent, slotStart, slotEnd, isNew]);
+
+//   useEffect(() => {
+//     if (allDay) {
+//       setStartTime(null);
+//       setEndTime(null);
+//     } else {
+//       if (startDay && endDay && (!startTime || !endTime)) {
+//         const defaultStart = new Date(startDay);
+//         const defaultEnd = new Date(startDay);
+//         defaultEnd.setHours(defaultStart.getHours() + 1);
+//         setStartTime(defaultStart);
+//         setEndTime(defaultEnd);
+//       }
+//     }
+//   }, [allDay, endDay, endTime, startDay, startTime]);
+
+//   const combineDateTime = (
+//     date: Date | null,
+//     time: Date | null,
+//   ): Date | null => {
+//     if (!date || !time) return null;
+//     const result = new Date(date);
+//     result.setHours(time.getHours(), time.getMinutes(), 0, 0);
+//     return result;
+//   };
+
+//   const handleStartDayChange = (date: Date | null) => {
+//     if (!date) return;
+//     setStartDay(date);
+//     if (!endDay || endDay < date) setEndDay(date);
+//   };
+
+//   const handleStartTimeChange = (time: Date | null) => {
+//     if (!time) return;
+
+//     setStartTime(time);
+
+//     if (isNew) {
+//       const oneHourLater = new Date(
+//         1970,
+//         0,
+//         1,
+//         time.getHours() + 1,
+
+//         time.getMinutes(),
+//       );
+
+//       setEndTime(oneHourLater);
+//       return;
+//     }
+
+//     if (
+//       startDay &&
+//       endDay &&
+//       endTime &&
+//       startDay.toDateString() === endDay.toDateString()
+//     ) {
+//       const startMinutes = time.getHours() * 60 + time.getMinutes();
+
+//       const endMinutes = endTime.getHours() * 60 + endTime.getMinutes();
+
+//       if (startMinutes > endMinutes) {
+//         setEndTime(new Date(time));
+//       }
+//     }
+//   };
+
+//   const handleEndDayChange = (date: Date | null) => {
+//     if (!date) return;
+
+//     if (
+//       startDay &&
+//       new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime() <
+//         new Date(
+//           startDay.getFullYear(),
+//           startDay.getMonth(),
+//           startDay.getDate(),
+//         ).getTime()
+//     ) {
+//       setEndDay(startDay);
+//       return;
+//     }
+
+//     setEndDay(date);
+
+//     if (
+//       startDay &&
+//       startTime &&
+//       date.toDateString() === startDay.toDateString()
+//     ) {
+//       const startMinutes = startTime.getHours() * 60 + startTime.getMinutes();
+
+//       const endMinutes = endTime
+//         ? endTime.getHours() * 60 + endTime.getMinutes()
+//         : null;
+
+//       if (endMinutes === null || endMinutes < startMinutes) {
+//         setEndTime(new Date(startTime));
+//       }
+//     }
+//   };
+
+//   // const handleSubmit = async () => {
+//   //   try {
+//   //     await EventSchema.validate({ title });
+
+//   //     const start =
+//   //       allDay && startDay
+//   //         ? new Date(
+//   //             startDay.getFullYear(),
+//   //             startDay.getMonth(),
+//   //             startDay.getDate(),
+//   //             0,
+//   //             0,
+//   //             0,
+//   //             0,
+//   //           )
+//   //         : combineDateTime(startDay, startTime);
+
+//   //     const end =
+//   //       allDay && (endDay || startDay)
+//   //         ? new Date(
+//   //             (endDay ?? startDay!).getFullYear(),
+//   //             (endDay ?? startDay!).getMonth(),
+//   //             (endDay ?? startDay!).getDate(),
+//   //             23,
+//   //             59,
+//   //             59,
+//   //             999,
+//   //           )
+//   //         : combineDateTime(endDay, endTime);
+
+//   //     if (start && end && end < start) {
+//   //       end.setDate(end.getDate() + 1);
+//   //     }
+
+//   //     const eventData: CalendarEvent = {
+//   //       ...selectedEvent,
+//   //       description,
+//   //       title,
+//   //       start,
+//   //       end,
+//   //       allDay,
+//   //       addTask,
+//   //       isCompletedTask,
+//   //     };
+
+//   //     const createdEvent = isNew
+//   //       ? await handelAddEvent(eventData)
+//   //       : await handelUpdateEvent(eventData);
+
+//   //     if (createdEvent?._id) {
+//   //       const todoId =
+//   //         typeof createdEvent.todoId === "object" &&
+//   //         createdEvent.todoId !== null
+//   //           ? createdEvent.todoId._id
+//   //           : createdEvent.todoId;
+//   //       // const todoId = createdEvent.todoId;
+
+//   //       if (todoId) {
+//   //         await dispatch(
+//   //           updateTodotApi({
+//   //             id: todoId,
+//   //             todoData: {
+//   //               title: createdEvent.title,
+//   //               description: createdEvent.description,
+//   //               isCompletedTask,
+//   //               start: createdEvent.start ?? null,
+//   //               end: createdEvent.end ?? null,
+
+//   //             },
+//   //           }),
+//   //         ).unwrap();
+//   //       } else if (addTask) {
+//   //         await dispatch(
+//   //           addTodoApi({
+//   //             title: createdEvent.title,
+//   //             description: createdEvent.description,
+//   //             isImportant: false,
+//   //             isCompletedTask: false,
+//   //             start: createdEvent.start ?? null,
+//   //             end: createdEvent.end ?? null,
+
+//   //             eventId: createdEvent._id,
+//   //           }),
+//   //         ).unwrap();
+//   //       }
+//   //     }
+//   //   } catch (error) {
+//   //     if (
+//   //       typeof error === "object" &&
+//   //       error !== null &&
+//   //       "message" in error &&
+//   //       typeof error.message === "string"
+//   //     ) {
+//   //       toast.error(error.message);
+//   //     } else {
+//   //       toast.error("An unknown error occurred.");
+//   //     }
+//   //   }
+//   // };
+
+//  const handleSubmit = async () => {
+//   try {
+//     await EventSchema.validate({ title });
+
+//     const start =
+//       allDay && startDay
+//         ? new Date(
+//             startDay.getFullYear(),
+//             startDay.getMonth(),
+//             startDay.getDate(),
+//             0,
+//             0,
+//             0,
+//             0,
+//           )
+//         : combineDateTime(startDay, startTime);
+
+//     const end =
+//       allDay && (endDay || startDay)
+//         ? new Date(
+//             (endDay ?? startDay!).getFullYear(),
+//             (endDay ?? startDay!).getMonth(),
+//             (endDay ?? startDay!).getDate(),
+//             23,
+//             59,
+//             59,
+//             999,
+//           )
+//         : combineDateTime(endDay, endTime);
+
+//     if (start && end && end < start) {
+//       end.setDate(end.getDate() + 1);
+//     }
+
+//     const eventData: CalendarEvent = {
+//       ...selectedEvent,
+//       // description,
+//       title,
+//       start,
+//       end,
+//       allDay,
+//       addTask,
+//       isCompletedTask,
+//     };
+
+//     const createdEvent = isNew
+//       ? await handelAddEvent(eventData)
+//       : await handelUpdateEvent(eventData);
+
+//     if (createdEvent?._id && addTask) {
+//       if (isNew) {
+//         // Создаём новую задачу для нового Event
+//         await dispatch(
+//           addTodoApi({
+//             title: createdEvent.title,
+
+//             isImportant: false,
+//             isCompletedTask: false,
+//             start: createdEvent.start ?? null,
+//             end: createdEvent.end ?? null,
+//             eventId: createdEvent._id,
+//           }),
+//         ).unwrap();
+//       } else {
+//         // Обновляем существующую задачу
+//         const existingTodo = createdEvent.todoIds?.[0];
+
+//         if (existingTodo?._id) {
+//           await dispatch(
+//             updateTodotApi({
+//               id: existingTodo._id,
+//               todoData: {
+//                 title: createdEvent.title,
+//                  description: createdEvent.description,
+//                 isCompletedTask,
+//                 start: createdEvent.start ?? null,
+//                 end: createdEvent.end ?? null,
+//               },
+//             }),
+//           ).unwrap();
+//         }
+//       }
+//     }
+//   } catch (error) {
+//     if (
+//       typeof error === "object" &&
+//       error !== null &&
+//       "message" in error &&
+//       typeof error.message === "string"
+//     ) {
+//       toast.error(error.message);
+//     } else {
+//       toast.error("An unknown error occurred.");
+//     }
+//   }
+// };
+
+//   if (!isOpen) return null;
+
+//   return (
+//     <ModalWrapper
+//       isOpen={isOpen}
+//       onClose={onClose}
+//       className=" min-w-[300px] lg:min-w-[500px]"
+//     >
+//       <div className="flex">
+//         {isNew ? (
+//           <h1 className="flex-1 text-center  text-h2 mb-6">Create event</h1>
+//         ) : (
+//           <h1 className="flex-1 text-center  text-main mb-6">Update event</h1>
+//         )}
+//       </div>
+
+//       <div className="flex flex-col ">
+//         <textarea
+//           ref={titleRef}
+//           value={title}
+//           placeholder="write your title maximum 100 characters..."
+//           onChange={(e) => setTitle(e.target.value)}
+//           className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main placeholder:text-gray resize-none overflow-hidden min-h-[40px] shadow-lg"
+//           onInput={(e) => {
+//             e.currentTarget.style.height = "auto";
+//             e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+//           }}
+//         />
+
+//         <div className="mb-4 w-full">
+//           <div className="flex flex-1  mb-2 gap-2 w-full ">
+//             <DatePicker
+//               selected={startDay}
+//               onChange={handleStartDayChange}
+//               dateFormat="dd-MM-yyyy"
+//               placeholderText="Select the day"
+//               className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
+//             />
+//             <DatePicker
+//               selected={startTime}
+//               onChange={handleStartTimeChange}
+//               disabled={allDay}
+//               showTimeSelect
+//               showTimeSelectOnly
+//               dateFormat="HH:mm"
+//               timeFormat="HH:mm"
+//               timeIntervals={5}
+//               timeCaption="Время"
+//               placeholderText="Select the time"
+//               className="rounded w-[150px] lg:w-[250px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
+//             />
+//           </div>
+//           <div className="flex flex-1 mb-2 gap-2">
+//             <DatePicker
+//               selected={endDay}
+//               onChange={handleEndDayChange}
+//               dateFormat="dd-MM-yyyy"
+//               placeholderText="Select the day"
+//               className=" w-[150px] lg:w-[250px] rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
+//             />
+//             <DatePicker
+//               selected={endTime}
+//               onChange={(date) => setEndTime(date)}
+//               disabled={allDay}
+//               showTimeSelect
+//               showTimeSelectOnly
+//               dateFormat="HH:mm"
+//               timeFormat="HH:mm"
+//               timeIntervals={5}
+//               timeCaption="Time"
+//               minTime={
+//                 startDay &&
+//                 endDay &&
+//                 startDay.toDateString() === endDay.toDateString()
+//                   ? startTime ?? undefined
+//                   : new Date(1970, 0, 1, 0, 0)
+//               }
+//               maxTime={new Date(1970, 0, 1, 23, 55)}
+//               placeholderText="Select the time"
+//               className="rounded w-[150px] lg:w-[250px] bg-input-light focus:outline-none focus:bg-hover-input p-2 text-main shadow-md"
+//             />
+//           </div>
+//         </div>
+//         <div className="flex justify-between items-center mb-4 ">
+//           <div className="flex items-center justify-center ">
+//             <label className="flex text-main mr-2">All day event</label>
+//             <input
+//               type="checkbox"
+//               name="allDay"
+//               checked={allDay}
+//               onChange={(e) => setAllDay(e.target.checked)}
+//               className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0
+//              before:flex before:items-center before:justify-center
+//              checked:before:content-['✓'] checked:before:text-white
+//              text-sm cursor-pointer transition"
+//             />
+//           </div>
+
+//           {addTask ? (
+//             <div className="flex items-center justify-between ">
+//               <label className="mr-2 text-main">Mark is done</label>
+//               <input
+//                 type="checkbox"
+//                 checked={isCompletedTask}
+//                 onChange={(e) => {
+//                   setIsCompletedTask(e.target.checked);
+//                   if (timeoutRef.current) clearTimeout(timeoutRef.current);
+//                   setDescription("");
+//                   timeoutRef.current = setTimeout(() => {
+//                     setAddTask(false);
+//                   }, 300);
+//                 }}
+//                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0
+//                 before:flex before:items-center before:justify-center
+//                 checked:before:content-['✓'] checked:before:text-white
+//                 text-sm cursor-pointer transition"
+//               />
+//             </div>
+//           ) : (
+//             <div className="flex items-center justify-between">
+//               <label className="mr-2 text-main">Add Task</label>
+//               <input
+//                 type="checkbox"
+//                 checked={addTask}
+//                 onChange={(e) => {
+//                   setAddTask(e.target.checked);
+//                   if (timeoutRef.current) clearTimeout(timeoutRef.current);
+//                   timeoutRef.current = setTimeout(() => {
+//                     setIsCompletedTask(false);
+//                   }, 300);
+//                 }}
+//                 className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0
+//       before:flex before:items-center before:justify-center
+//       checked:before:content-['✓'] checked:before:text-white
+//       text-sm cursor-pointer transition"
+//               />
+//             </div>
+//           )}
+//         </div>
+//         {addTask && (
+//           <textarea
+//             ref={desRef}
+//             placeholder="Type your description maximum 600 characters ..."
+//             value={description}
+//             maxLength={600}
+//             onChange={(e) => setDescription(e.target.value)}
+//             className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 shadow-md"
+//             onInput={(e) => {
+//               e.currentTarget.style.height = "auto";
+//               e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+//             }}
+//           />
+//         )}
+//       </div>
+
+//       <div className="flex flex-row justify-between">
+//         {isNew && (
+//           <Button
+//             variant="default"
+//             size="default"
+//             type="submit"
+//             onClick={handleSubmit}
+//           >
+//             Save
+//           </Button>
+//         )}
+
+//         {!isNew && (
+//           <>
+//             <Button
+//               type="submit"
+//               variant="default"
+//               size="default"
+//               onClick={handleSubmit}
+//             >
+//               Update
+//             </Button>
+//             <Button
+//               variant="alert"
+//               size="default"
+//               type="submit"
+//               onClick={handleDeleteEvent}
+//             >
+//               Delete
+//             </Button>
+//           </>
+//         )}
+//       </div>
+//     </ModalWrapper>
+//   );
+// };
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
@@ -31,8 +586,10 @@ export const ModalEvent = ({
   const { mode, isOpen } = useSelector((state: RootState) => state.modal);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [titleTask, setTitleTask] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
+  const [deadlineTask, setDeadlineTask] = useState<Date | null>(null);
   const [startDay, setStartDay] = useState<Date | null>(null);
   const [endDay, setEndDay] = useState<Date | null>(null);
   const [allDay, setAllDay] = useState(false);
@@ -41,6 +598,7 @@ export const ModalEvent = ({
   const isNew = mode === "new";
   const desRef = useRef<HTMLTextAreaElement | null>(null);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
+  const titleTaskRef = useRef<HTMLTextAreaElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
@@ -54,9 +612,10 @@ export const ModalEvent = ({
         el.style.height = `${el.scrollHeight}px`;
       };
       adjustHeight(titleRef.current);
+      adjustHeight(titleTaskRef.current);
       adjustHeight(desRef.current);
     }
-  }, [isOpen, title, description]);
+  }, [isOpen, title, titleTask, description]);
 
   useEffect(() => {
     const now = new Date();
@@ -66,9 +625,7 @@ export const ModalEvent = ({
     const completed = selectedEvent?.isCompletedTask ?? false;
 
     setTitle(selectedEvent?.title ?? "");
-    setDescription(selectedEvent?.description ?? "");
     setAllDay(selectedEvent?.allDay ?? false);
-
     setIsCompletedTask(completed);
     setAddTask(completed ? false : selectedEvent?.addTask ?? false);
 
@@ -76,6 +633,18 @@ export const ModalEvent = ({
     setEndDay(isNew ? start : end ?? start);
     setStartTime(start ? new Date(start) : new Date());
     setEndTime(end ? new Date(end) : new Date());
+
+   const todo = selectedEvent?.todoIds?.[0];
+
+   setTitleTask(todo?.title ?? "");
+   setDescription(todo?.description ?? "");
+   setDeadlineTask(
+  todo
+    ? (todo.end ? toDate(todo.end) : null)
+    : (selectedEvent?.end ? toDate(selectedEvent.end) : null)
+);
+
+    
   }, [selectedEvent, slotStart, slotEnd, isNew]);
 
   useEffect(() => {
@@ -179,105 +748,139 @@ export const ModalEvent = ({
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      await EventSchema.validate({ title });
+  // const handleSubmit = async () => {
+  //   try {
+  //     await EventSchema.validate({ title });
 
-      const start =
-        allDay && startDay
-          ? new Date(
-              startDay.getFullYear(),
-              startDay.getMonth(),
-              startDay.getDate(),
-              0,
-              0,
-              0,
-              0,
-            )
-          : combineDateTime(startDay, startTime);
+  //     const start =
+  //       allDay && startDay
+  //         ? new Date(
+  //             startDay.getFullYear(),
+  //             startDay.getMonth(),
+  //             startDay.getDate(),
+  //             0,
+  //             0,
+  //             0,
+  //             0,
+  //           )
+  //         : combineDateTime(startDay, startTime);
 
-      const end =
-        allDay && (endDay || startDay)
-          ? new Date(
-              (endDay ?? startDay!).getFullYear(),
-              (endDay ?? startDay!).getMonth(),
-              (endDay ?? startDay!).getDate(),
-              23,
-              59,
-              59,
-              999,
-            )
-          : combineDateTime(endDay, endTime);
+  //     const end =
+  //       allDay && (endDay || startDay)
+  //         ? new Date(
+  //             (endDay ?? startDay!).getFullYear(),
+  //             (endDay ?? startDay!).getMonth(),
+  //             (endDay ?? startDay!).getDate(),
+  //             23,
+  //             59,
+  //             59,
+  //             999,
+  //           )
+  //         : combineDateTime(endDay, endTime);
 
-      if (start && end && end < start) {
-        end.setDate(end.getDate() + 1);
-      }
+  //     if (start && end && end < start) {
+  //       end.setDate(end.getDate() + 1);
+  //     }
 
-      const eventData: CalendarEvent = {
-        ...selectedEvent,
-        description,
-        title,
-        start,
-        end,
-        allDay,
-        addTask,
-        isCompletedTask,
-      };
+  
 
-      const createdEvent = isNew
-        ? await handelAddEvent(eventData)
-        : await handelUpdateEvent(eventData);
+  
+ 
+  
+ 
 
-      if (createdEvent?._id) {
-        const todoId =
-          typeof createdEvent.todoId === "object" &&
-          createdEvent.todoId !== null
-            ? createdEvent.todoId._id
-            : createdEvent.todoId;
-        // const todoId = createdEvent.todoId;
+const handleSubmit = async () => {
+  try {
+    await EventSchema.validate({ title });
 
-        if (todoId) {
-          await dispatch(
-            updateTodotApi({
-              id: todoId,
-              todoData: {
-                title: createdEvent.title,
-                description: createdEvent.description,
-                isCompletedTask,
-                start: createdEvent.start ?? null,
-                end: createdEvent.end ?? null,
-                allDay: createdEvent.allDay,
-              },
-            }),
-          ).unwrap();
-        } else if (addTask) {
-          await dispatch(
-            addTodoApi({
-              title: createdEvent.title,
-              description: createdEvent.description,
-              isImportant: false,
-              isCompletedTask: false,
-              start: createdEvent.start ?? null,
-              end: createdEvent.end ?? null,
-              allDay: createdEvent.allDay,
-              eventId: createdEvent._id,
-            }),
-          ).unwrap();
-        }
-      }
-    } catch (error) {
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "message" in error &&
-        typeof error.message === "string"
-      ) {
-        toast.error(error.message);
-      } else {
-        toast.error("An unknown error occurred.");
-      }
+    if (addTask && !titleTask.trim()) {
+      toast.error("Please enter a task title");
+      return;
     }
-  };
+
+    const start = allDay && startDay
+      ? new Date(
+          startDay.getFullYear(),
+          startDay.getMonth(),
+          startDay.getDate(),
+          0, 0, 0, 0
+        )
+      : combineDateTime(startDay, startTime);
+
+    const end = allDay && (endDay || startDay)
+      ? new Date(
+          (endDay ?? startDay!).getFullYear(),
+          (endDay ?? startDay!).getMonth(),
+          (endDay ?? startDay!).getDate(),
+          23, 59, 59, 999
+        )
+      : combineDateTime(endDay, endTime);
+
+    if (start && end && end < start) {
+      end.setDate(end.getDate() + 1);
+    }
+
+    const existingTodos = isNew
+      ? []
+      : (selectedEvent?.todoIds ?? []);
+
+    const existingTodo = existingTodos[0];
+
+    // Проверяем лимит только если действительно создаём новый Todo
+    if (addTask && !existingTodo && existingTodos.length >= 3) {
+      toast.error("An event can have a maximum of 3 tasks");
+      return;
+    }
+
+    const eventData: CalendarEvent = {
+      ...selectedEvent,
+      title,
+      start,
+      end,
+      allDay,
+      addTask,
+      isCompletedTask,
+    };
+
+    const savedEvent = isNew
+      ? await handelAddEvent(eventData)
+      : await handelUpdateEvent(eventData);
+
+    if (!savedEvent?._id || !addTask) return;
+
+    const todoData = {
+      title: titleTask.trim(),
+      description: description.trim(),
+      isCompletedTask,
+      start: start ?? null,
+      end: deadlineTask ?? end ?? null,
+      
+    };
+
+    if (existingTodo?._id) {
+      await dispatch(
+        updateTodotApi({
+          id: existingTodo._id,
+          todoData,
+        })
+      ).unwrap();
+    } else {
+      await dispatch(
+        addTodoApi({
+          ...todoData,
+          isImportant: false,
+          eventId: savedEvent._id,
+        })
+      ).unwrap();
+    }
+    onClose();
+
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to save event");
+  }
+};
+
 
   if (!isOpen) return null;
 
@@ -419,18 +1022,38 @@ export const ModalEvent = ({
           )}
         </div>
         {addTask && (
-          <textarea
-            ref={desRef}
-            placeholder="Type your description maximum 600 characters ..."
-            value={description}
-            maxLength={600}
-            onChange={(e) => setDescription(e.target.value)}
-            className="border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 shadow-md"
-            onInput={(e) => {
-              e.currentTarget.style.height = "auto";
-              e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-            }}
-          />
+          <div className=" w-full">
+            <textarea
+              ref={titleTaskRef}
+              value={titleTask}
+              maxLength={70}
+              placeholder="Task title"
+              rows={1}
+              onChange={(e) => setTitleTask(e.target.value)}
+              onInput={(e) => {
+                e.currentTarget.style.height = "auto";
+                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+              }}
+              className="w-full border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-2
+      text-main text-justify resize-none overflow-hidden min-h-[20px] shadow-md"
+            />
+            <textarea
+              ref={desRef}
+              placeholder="Type your description maximum 600 characters ..."
+              value={description}
+              maxLength={600}
+              onChange={(e) => setDescription(e.target.value)}
+              className=" w-full border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main 
+            text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 shadow-md"
+              onInput={(e) => {
+                e.currentTarget.style.height = "auto";
+                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
+              }}
+            />
+            <p>deadline:{deadlineTask
+    ? deadlineTask.toLocaleDateString("en-GB")
+    : "Not set"}</p>
+          </div>
         )}
       </div>
 

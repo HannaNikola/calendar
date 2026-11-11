@@ -33,7 +33,7 @@ const todolSlice = createSlice({
       })
       .addCase(fetchTodosApi.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Unknown error";
+        state.error = action.payload as string || "Unknown error";
       })
       .addCase(addTodoApi.pending, (state) => {
         state.status = "loading";
@@ -44,7 +44,7 @@ const todolSlice = createSlice({
       })
       .addCase(addTodoApi.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Unknown error";
+        state.error = action.payload as string || "Unknown error";
       })
       .addCase(updateTodotApi.pending, (state) => {
         state.status = "loading";
@@ -57,7 +57,7 @@ const todolSlice = createSlice({
       })
       .addCase(updateTodotApi.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Unknown error";
+        state.error = action.payload as string || "Unknown error";
       })
       .addCase(deleteTodoApi.pending, (state) => {
         state.status = "loading";
@@ -71,7 +71,7 @@ const todolSlice = createSlice({
       })
       .addCase(deleteTodoApi.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Unknown error";
+        state.error = action.payload as string || "Unknown error";
       })
       .addCase(favoriteTodoApi.pending, (state) => {
         state.status = "loading";
@@ -84,7 +84,7 @@ const todolSlice = createSlice({
       })
       .addCase(favoriteTodoApi.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Unknown error";
+        state.error = action.payload as string || "Unknown error";
       })
       .addCase(completedTodoApi.pending, (state) => {
         state.status = "loading";
@@ -97,7 +97,7 @@ const todolSlice = createSlice({
       })
       .addCase(completedTodoApi.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Unknown error";
+        state.error = action.payload as string || "Unknown error";
       })
       .addCase(fetchLogoutUser.fulfilled, () => initialState)
       .addCase(fetchDeletedUser.fulfilled, () => initialState);
