@@ -1,13 +1,14 @@
+import { CalendarTodo } from "./typesTodoApi";
+
 export interface CalendarEvent {
   _id?: string;
   title: string;
-  description?: string;
   start?: string | Date | null;
   end?: string | Date | null;
   allDay?: boolean;
   addTask?: boolean;
   isCompletedTask: boolean;
-  todoId?: string | null;
+  todoIds?: CalendarTodo[];
   colorEvent?: "none" | "home" | "work" | "isektor";
   repeat?: "none" | "daily" | "workday" | "weekend";
   reminder?: {
@@ -22,3 +23,13 @@ export interface EventStateProps {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
+
+export interface EventUpdatePayload
+  extends Partial<Omit<CalendarEvent, "_id" | "todoIds">> {
+  todoUpdates?: Partial<Omit<CalendarTodo, "_id" | "eventId">> &
+    {
+      id: string;
+    }[];
+}
+
+

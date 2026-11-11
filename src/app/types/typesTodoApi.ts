@@ -1,14 +1,15 @@
 export interface CalendarTodo {
   _id: string;
-  title?: string;
+  title: string;
   description?: string;
   isImportant?: boolean;
-  addTask?: boolean;
   isCompletedTask?: boolean;
   start?: string | Date | null;
   end?: string | Date | null;
-  allDay?: boolean;
-  eventId?: string;
+  eventId?: {
+    _id: string;
+    title: string;
+  } | null;
   isOverdue?: boolean;
 }
 
@@ -17,6 +18,12 @@ export interface TodoStateProps {
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
+
+
+
+
+
+
 
 
 

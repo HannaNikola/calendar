@@ -14,8 +14,7 @@ import { EventDropArg } from "@fullcalendar/core/index.js";
 import tippy from "tippy.js";
 import { useScreenType } from "../hooks/useScreenType";
 import { useCalendarLayout } from "../hooks/useCalendarLayout";
-import { useTodoHandlers } from "../hooks/useTodoHandlers";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 type FullCalendarType = InstanceType<typeof FullCalendar>;
 
@@ -24,13 +23,12 @@ export const CalendarEl = () => {
   const screenType = useScreenType();
   const { handleSelectEvent, handleSlotAction, handelUpdateEvent } =
     useEventHandlers();
-  const { handelUpdateTodo } = useTodoHandlers();
   const [showLoader, setShowLoader] = useState(false);
   const calendarRef = useRef<FullCalendarType | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
- 
-
+  const router = useRouter();
+  const pathname = usePathname();
   const { adjustCalendarLayout, isMobileWidth, calendarClasses } =
     useCalendarLayout(calendarRef, containerRef, screenType);
   const [slotData, setSlotData] = useState<{
@@ -54,9 +52,9 @@ export const CalendarEl = () => {
     const selectedDate = new Date(`${date}T12:00:00`);
 
     if (Number.isNaN(selectedDate.getTime())) return;
-
     calendarApi.changeView("timeGridDay", selectedDate);
-  }, [searchParams]);
+    router.replace(pathname, { scroll: false });
+  }, [searchParams, router, pathname]);
 
   useEffect(() => {
     if (status === "loading") {
@@ -75,7 +73,7 @@ export const CalendarEl = () => {
     end: event.end ? new Date(event.end) : new Date(),
     allDay: event.allDay ?? false,
     extendedProps: {
-      todoID: event.todoId,
+      todoID: event.todoIds,
       isCompletedTask: event.isCompletedTask,
     },
   }));
@@ -95,52 +93,22 @@ export const CalendarEl = () => {
       });
     }
   };
-
   const handleEventDrop = (info: EventDropArg) => {
-    const event = info.event;
-    const todo = event.extendedProps.todoID;
+    const { event } = info;
 
     if (!event.start) {
       info.revert();
       return;
     }
 
-    const start = event.start;
-
-    const end = event.end
-      ? event.end
-      : event.allDay
-        ? new Date(
-            start.getFullYear(),
-            start.getMonth(),
-            start.getDate(),
-            23,
-            59,
-            59,
-            999,
-          )
-        : new Date(start.getTime() + 60 * 60 * 1000);
-
-    const updatedEvent = {
+    handelUpdateEvent({
       _id: event.id,
       title: event.title,
-      start,
-      end,
+      start: event.start,
+      end: event.end,
       allDay: event.allDay,
-      isCompletedTask: event.extendedProps.isCompletedTask,
-    };
-
-    handelUpdateEvent(updatedEvent);
-
-    const todoId = todo?._id ?? todo;
-
-    if (todoId) {
-      handelUpdateTodo(todoId, {
-        start,
-        end,
-        allDay: event.allDay,
-      });
-    }
+      isCompletedTask: event.extendedProps.isCompletedTask ?? false,
+    });
   };
 
   return (

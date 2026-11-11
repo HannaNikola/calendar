@@ -5,7 +5,11 @@ import {
   deleteEventApi,
   updateEventApi,
 } from "@/app/api/eventsApi";
-import { completedTodoApi, updateTodotApi } from "@/app/api/todoApi";
+import {
+  addTodoApi,
+  completedTodoApi,
+  updateTodotApi,
+} from "@/app/api/todoApi";
 import { EventStateProps } from "@/app/types/typesApi";
 import { fetchDeletedUser, fetchLogoutUser } from "@/app/api/authApi";
 import { deleteTodoApi } from "@/app/api/todoApi";
@@ -40,7 +44,29 @@ const eventSlice = createSlice({
       })
       .addCase(addEventApi.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.events = [...state.events, action.payload];
+        state.events.push(action.payload);
+      })
+      .addCase(addTodoApi.fulfilled, (state, action) => {
+        const todo = action.payload;
+
+        const eventId =
+          typeof todo.eventId === "object" ? todo.eventId?._id : todo.eventId;
+
+        if (!eventId) return;
+
+        state.events = state.events.map((event) =>
+          event._id === eventId
+            ? {
+                ...event,
+                todoIds: [
+                  ...(event.todoIds ?? []).filter(
+                    (item) => item._id !== todo._id,
+                  ),
+                  todo,
+                ],
+              }
+            : event,
+        );
       })
       .addCase(addEventApi.rejected, (state, action) => {
         state.status = "failed";
@@ -59,32 +85,42 @@ const eventSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message || "Unknown error";
       })
+
       .addCase(updateTodotApi.fulfilled, (state, action) => {
         const todo = action.payload;
 
-        if (!todo.eventId) return;
+        const eventId =
+          typeof todo.eventId === "object" ? todo.eventId?._id : todo.eventId;
+
+        if (!eventId) return;
+
         state.events = state.events.map((event) =>
-          event._id === todo.eventId
+          event._id === eventId
             ? {
                 ...event,
-                title: todo.title,
-                description: todo.description,
+                todoIds: event.todoIds?.map((item) =>
+                  item._id === todo._id ? todo : item,
+                ),
               }
             : event,
         );
       })
+
       .addCase(completedTodoApi.fulfilled, (state, action) => {
         const todo = action.payload;
 
-        if (!todo.eventId) return;
+        const eventId =
+          typeof todo.eventId === "object" ? todo.eventId?._id : todo.eventId;
+
+        if (!eventId) return;
 
         state.events = state.events.map((event) =>
-          event._id === todo.eventId
+          event._id === eventId
             ? {
                 ...event,
-                isCompletedTask: todo.isCompletedTask,
-                addTask: todo.isCompletedTask ? false : event.addTask,
-                description: todo.isCompletedTask ? "" : event.description,
+                todoIds: event.todoIds?.map((item) =>
+                  item._id === todo._id ? todo : item,
+                ),
               }
             : event,
         );
@@ -107,7 +143,7 @@ const eventSlice = createSlice({
       .addCase(deleteTodoApi.fulfilled, (state, action) => {
         state.status = "succeeded";
 
-        const { eventId } = action.payload;
+        const { id, eventId } = action.payload;
 
         if (!eventId) return;
 
@@ -115,10 +151,7 @@ const eventSlice = createSlice({
           event._id === eventId
             ? {
                 ...event,
-                todoId: null,
-                addTask: false,
-                description: "",
-                isCompletedTask: false,
+                todoIds: event.todoIds?.filter((todo) => todo._id !== id),
               }
             : event,
         );
