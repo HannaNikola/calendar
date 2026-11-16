@@ -20,6 +20,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../components_Calendar/calendar.css";
 import "flatpickr/dist/themes/airbnb.css";
+import dayjs from "dayjs";
 
 
 const TodoSchema = Yup.object().shape({
@@ -57,13 +58,7 @@ export const ModalTodo = ({ isOpen, onClose }: ModalTodoProps) => {
   const desRef = useRef<HTMLTextAreaElement | null>(null);
 
   const formatDate = (date: string | Date) =>
-    new Date(date).toLocaleString("ru-RU", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  dayjs(date).format("DD/MM/YYYY HH:mm");
 
   useEffect(() => {
     if (!selectedItem) return;
