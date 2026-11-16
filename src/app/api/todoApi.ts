@@ -57,13 +57,11 @@ export const updateTodotApi = createAsyncThunk(
     thunkAPI,
   ) => {
     try {
-      const { ...sanitizedTodoData } = payload.todoData;
       const response = await api.patch(
         `/api/todo/${payload.id}`,
-        sanitizedTodoData,
+        payload.todoData,
       );
       appToast.success("The task was update successefully");
-      console.log("update data", response.data);
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
@@ -75,7 +73,7 @@ export const updateTodotApi = createAsyncThunk(
 );
 
 export const favoriteTodoApi = createAsyncThunk(
-  "todoData/ importantTodo",
+  "todoData/importantTodo",
   async (payload: { id: string; isImportant: boolean }, thunkAPI) => {
     try {
       const response = await api.patch(`/api/todo/${payload.id}`, {
@@ -92,7 +90,7 @@ export const favoriteTodoApi = createAsyncThunk(
 );
 
 export const completedTodoApi = createAsyncThunk(
-  "todoData/ completedTodo",
+  "todoData/completedTodo",
   async (payload: { id: string; isCompletedTask: boolean }, thunkAPI) => {
     try {
       const response = await api.patch(`/api/todo/${payload.id}`, {
@@ -111,7 +109,6 @@ export const completedTodoApi = createAsyncThunk(
     }
   },
 );
-
 
 export const deleteTodoApi = createAsyncThunk<
   { id: string; eventId: string | null },
