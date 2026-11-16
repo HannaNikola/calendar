@@ -48,6 +48,8 @@ export const TaskItem = ({
   const formattedEnd = item.end
     ? dayjs(item.end).format("DD/MM/YYYY HH:mm")
     : "—";
+  const formatDate = (date: string | Date) =>
+    dayjs(date).format("DD/MM/YYYY HH:mm");
 
   const [localCompleted, setLocalCompleted] = useState(item.isCompletedTask);
 
@@ -87,10 +89,15 @@ export const TaskItem = ({
     >
       <div className="min-w-0 w-full">
         {linkedEvents && (
-          <div className="flex mb-2 w-full min-w-0 border-2 p-2 rounded-2xl border-gray-200 bg-gray-medium-background overflow-hidden text-small">
+          <div className="flex mb-2 w-full min-w-0 border-2 p-1 rounded-2xl border-gray-200 bg-gray-medium-background overflow-hidden text-small">
             <CalendarDays size={20} className="mr-1 shrink-0" />
 
-            <p className="min-w-0 truncate">{linkedEvents.title}</p>
+            <p className="min-w-0 shrink-0 truncate mr-2">
+              {linkedEvents.title}
+            </p>
+            <p className="min-w-0 shrink-0 truncate text-main text-right ">
+              {linkedEvents?.start && formatDate(linkedEvents.start)}
+            </p>
           </div>
         )}
 
