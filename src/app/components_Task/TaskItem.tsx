@@ -1,6 +1,6 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { completedTodoApi, favoriteTodoApi } from "../api/todoApi";
-import { AppDispatch } from "../store/store";
+import { AppDispatch, RootState } from "../store/store";
 import {
   Circle,
   CircleCheckBig,
@@ -33,6 +33,15 @@ export const TaskItem = ({
   const screenType = useScreenType();
   const isMobile = screenType === "mobail";
 
+   const linkedEvents = useSelector((state: RootState) =>
+  state.eventData.events.find(
+    (event) =>
+      event._id ===
+      (typeof item.eventId === "object"
+        ? item.eventId?._id
+        : item.eventId),
+  ),
+);
   const colorBorder = item.isCompletedTask
     ? "border-l-gray-400 bg-gray-200"
     : expired
@@ -82,6 +91,10 @@ export const TaskItem = ({
       `}
     >
       <div className="min-w-0 w-full">
+        <div className="">
+          <p>{linkedEvents?.title}</p>
+          </div>
+        
         <p className="min-w-0 truncate text-sky-dark text-medium weight-extra">
           {item.title}
         </p>

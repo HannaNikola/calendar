@@ -45,7 +45,7 @@ export const ModalWrapper = ({
          ${animate ? "bg-black/50 opacity-100" : "opacity-0"}`}
     >
       <div
-        className={`relative bg-white rounded-lg shadow-lg  p-4 transform transition-all duration-300
+        className={`relative bg-white rounded-lg shadow-lg   px-5 py-6 transform transition-all duration-300
           ${animate ? "scale-100 opacity-100" : "scale-95 opacity-0"}
            ${className}`}
       >
