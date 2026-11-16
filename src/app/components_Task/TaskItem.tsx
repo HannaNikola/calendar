@@ -8,6 +8,7 @@ import {
   Trash2,
   PencilLine,
   AlarmClock,
+  CalendarDays,
 } from "lucide-react";
 import { Button } from "../shared/ui/Button";
 import { openElementModal } from "../store/sharedComponent/modalReducer";
@@ -17,7 +18,6 @@ import { useTodoExpired } from "../hooks/useTodoExpired";
 import { useState } from "react";
 import { TooltipDesktop } from "../shared/ui/Tooltip";
 import dayjs from "dayjs";
-import { useScreenType } from "../hooks/useScreenType";
 
 export const TaskItem = ({
   item,
@@ -30,18 +30,13 @@ export const TaskItem = ({
   const { handeDeleteTodo } = useTodoHandlers();
   const expired = useTodoExpired(item.end ?? null);
 
-  const screenType = useScreenType();
-  const isMobile = screenType === "mobail";
-
-   const linkedEvents = useSelector((state: RootState) =>
-  state.eventData.events.find(
-    (event) =>
-      event._id ===
-      (typeof item.eventId === "object"
-        ? item.eventId?._id
-        : item.eventId),
-  ),
-);
+  const linkedEvents = useSelector((state: RootState) =>
+    state.eventData.events.find(
+      (event) =>
+        event._id ===
+        (typeof item.eventId === "object" ? item.eventId?._id : item.eventId),
+    ),
+  );
   const colorBorder = item.isCompletedTask
     ? "border-l-gray-400 bg-gray-200"
     : expired
@@ -91,11 +86,15 @@ export const TaskItem = ({
       `}
     >
       <div className="min-w-0 w-full">
-        <div className="">
-          <p>{linkedEvents?.title}</p>
+        {linkedEvents && (
+          <div className="flex mb-2 w-full min-w-0 border-2 p-2 rounded-2xl border-gray-200 bg-gray-medium-background overflow-hidden text-small">
+            <CalendarDays size={20} className="mr-1 shrink-0" />
+
+            <p className="min-w-0 truncate">{linkedEvents.title}</p>
           </div>
-        
-        <p className="min-w-0 truncate text-sky-dark text-medium weight-extra">
+        )}
+
+        <p className=" min-w-0 truncate text-sky-dark text-medium weight-extra">
           {item.title}
         </p>
 
@@ -103,7 +102,6 @@ export const TaskItem = ({
           {item.description}
         </p>
 
-        
         <div className="mt-2 flex items-center  gap-2 @md:hidden">
           <AlarmClock
             size={16}
@@ -121,7 +119,6 @@ export const TaskItem = ({
           </p>
         </div>
 
-        
         <div className="mt-3 flex justify-start @md:hidden">
           <Button variant="default" size="small" className="text-small">
             Update
@@ -145,7 +142,6 @@ export const TaskItem = ({
         </p>
       </div>
 
-      
       <div
         className="
           flex shrink-0 flex-col
