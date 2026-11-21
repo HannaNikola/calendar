@@ -33,7 +33,6 @@ export const ModalEvent = ({
 
   const { mode, isOpen } = useSelector((state: RootState) => state.modal);
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [titleTask, setTitleTask] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
@@ -45,22 +44,23 @@ export const ModalEvent = ({
   const isNew = mode === "new";
   const desRef = useRef<HTMLTextAreaElement | null>(null);
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
-  const titleTaskRef = useRef<HTMLTextAreaElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [taskCards, setTaskCards] = useState<CalendarTodo[]>([]);
 
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
     useEventHandlers();
 
-
   const eventTodos = selectedEvent?.todoIds ?? [];
 
-  const activeTodos = eventTodos.filter((todo) => !todo.isCompletedTask);
+  const activeTodos = taskCards.filter((todo) => !todo.isCompletedTask);
 
   const canAddTodo = activeTodos.length < 3;
 
+  
   useEffect(() => {
-    if (taskCards.length === 0) {
+    const hasActiveTodos = taskCards.some((todo) => !todo.isCompletedTask);
+
+    if (!hasActiveTodos) {
       setAddTask(false);
     }
   }, [taskCards]);
@@ -73,10 +73,9 @@ export const ModalEvent = ({
         el.style.height = `${el.scrollHeight}px`;
       };
       adjustHeight(titleRef.current);
-      adjustHeight(titleTaskRef.current);
       adjustHeight(desRef.current);
     }
-  }, [isOpen, title, titleTask, description]);
+  }, [isOpen, title, titleTask]);
 
   useEffect(() => {
     const now = new Date();
@@ -449,8 +448,7 @@ export const ModalEvent = ({
                 const checked = e.target.checked;
 
                 setAddTask(checked);
-
-                if (checked && taskCards.length === 0) {
+                if (checked && activeTodos.length === 0) {
                   handleAddTodoCard();
                 }
 
