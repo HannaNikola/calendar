@@ -9,16 +9,17 @@ import { toast } from "sonner";
 import { useEventHandlers } from "../hooks/useEventHandlers";
 import { toDate } from "../shared/utils/date";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodoApi, deleteTodoApi, updateTodotApi } from "../api/todoApi";
+import { addTodoApi, updateTodotApi } from "../api/todoApi";
 import { AppDispatch, RootState } from "../store/store";
 import { ModalWrapper } from "../shared/ui/ModalWrapper";
 import { EventModalProps } from "../types/typesModalEvent";
+import { Plus } from "lucide-react";
 import { CalendarTodo } from "../types/typesTodoApi";
-import dayjs from "dayjs";
+import { EventTodoCard } from "./EventTodoCard";
 
 const EventSchema = Yup.object().shape({
   title: Yup.string()
-    .max(70, "Title must be less than 100 characters")
+    .max(70, "Title must be less than 70 characters")
     .required("itle can`t be empty"),
 });
 
@@ -36,7 +37,6 @@ export const ModalEvent = ({
   const [titleTask, setTitleTask] = useState("");
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [endTime, setEndTime] = useState<Date | null>(null);
-  const [deadlineTask, setDeadlineTask] = useState<Date | null>(null);
   const [startDay, setStartDay] = useState<Date | null>(null);
   const [endDay, setEndDay] = useState<Date | null>(null);
   const [allDay, setAllDay] = useState(false);
@@ -47,13 +47,23 @@ export const ModalEvent = ({
   const titleRef = useRef<HTMLTextAreaElement | null>(null);
   const titleTaskRef = useRef<HTMLTextAreaElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [taskCards, setTaskCards] = useState<CalendarTodo[]>([]);
 
   const { handelAddEvent, handleDeleteEvent, handelUpdateEvent } =
     useEventHandlers();
 
-  const formattedDeadline = deadlineTask
-    ? dayjs(deadlineTask).format("DD/MM/YYYY HH:mm")
-    : "Not set";
+
+  const eventTodos = selectedEvent?.todoIds ?? [];
+
+  const activeTodos = eventTodos.filter((todo) => !todo.isCompletedTask);
+
+  const canAddTodo = activeTodos.length < 3;
+
+  useEffect(() => {
+    if (taskCards.length === 0) {
+      setAddTask(false);
+    }
+  }, [taskCards]);
 
   useEffect(() => {
     if (isOpen) {
@@ -74,30 +84,15 @@ export const ModalEvent = ({
     const end = toDate(selectedEvent?.end ?? slotEnd ?? now);
 
     const completed = selectedEvent?.isCompletedTask ?? false;
-
+    setTaskCards(selectedEvent?.todoIds ?? []);
     setTitle(selectedEvent?.title ?? "");
     setAllDay(selectedEvent?.allDay ?? false);
-    setIsCompletedTask(completed);
     setAddTask(completed ? false : selectedEvent?.addTask ?? false);
 
     setStartDay(start);
     setEndDay(isNew ? start : end ?? start);
     setStartTime(start ? new Date(start) : new Date());
     setEndTime(end ? new Date(end) : new Date());
-
-    const todo = selectedEvent?.todoIds?.[0];
-
-    setTitleTask(todo?.title ?? "");
-    setDescription(todo?.description ?? "");
-    setDeadlineTask(
-      todo
-        ? todo.end
-          ? toDate(todo.end)
-          : null
-        : selectedEvent?.end
-          ? toDate(selectedEvent.end)
-          : null,
-    );
   }, [selectedEvent, slotStart, slotEnd, isNew]);
 
   useEffect(() => {
@@ -201,45 +196,11 @@ export const ModalEvent = ({
     }
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     await EventSchema.validate({ title });
-
-  //     const start =
-  //       allDay && startDay
-  //         ? new Date(
-  //             startDay.getFullYear(),
-  //             startDay.getMonth(),
-  //             startDay.getDate(),
-  //             0,
-  //             0,
-  //             0,
-  //             0,
-  //           )
-  //         : combineDateTime(startDay, startTime);
-
-  //     const end =
-  //       allDay && (endDay || startDay)
-  //         ? new Date(
-  //             (endDay ?? startDay!).getFullYear(),
-  //             (endDay ?? startDay!).getMonth(),
-  //             (endDay ?? startDay!).getDate(),
-  //             23,
-  //             59,
-  //             59,
-  //             999,
-  //           )
-  //         : combineDateTime(endDay, endTime);
-
-  //     if (start && end && end < start) {
-  //       end.setDate(end.getDate() + 1);
-  //     }
-
   const handleSubmit = async () => {
     try {
       await EventSchema.validate({ title });
 
-      if (addTask && !titleTask.trim()) {
+      if (addTask && taskCards.some((todo) => !todo.title.trim())) {
         toast.error("Please enter a task title");
         return;
       }
@@ -274,16 +235,6 @@ export const ModalEvent = ({
         end.setDate(end.getDate() + 1);
       }
 
-      const existingTodos = isNew ? [] : selectedEvent?.todoIds ?? [];
-
-      const existingTodo = existingTodos[0];
-
-      // Проверяем лимит только если действительно создаём новый Todo
-      if (addTask && !existingTodo && existingTodos.length >= 3) {
-        toast.error("An event can have a maximum of 3 tasks");
-        return;
-      }
-
       const eventData: CalendarEvent = {
         ...selectedEvent,
         title,
@@ -298,37 +249,95 @@ export const ModalEvent = ({
         ? await handelAddEvent(eventData)
         : await handelUpdateEvent(eventData);
 
-      if (!savedEvent?._id || !addTask) return;
+      if (!savedEvent?._id) return;
 
-      const todoData = {
-        title: titleTask.trim(),
-        description: description.trim(),
-        isCompletedTask,
-        start: start ?? null,
-        end: deadlineTask ?? end ?? null,
-      };
+      if (addTask) {
+        const existingTodoIds = new Set(
+          selectedEvent?.todoIds?.map((todo) => todo._id) ?? [],
+        );
 
-      if (existingTodo?._id) {
-        await dispatch(
-          updateTodotApi({
-            id: existingTodo._id,
-            todoData,
-          }),
-        ).unwrap();
-      } else {
-        await dispatch(
-          addTodoApi({
-            ...todoData,
-            isImportant: false,
-            eventId: savedEvent._id,
-          }),
-        ).unwrap();
+        for (const todo of taskCards) {
+          const todoData = {
+            title: todo.title.trim(),
+            description: todo.description?.trim() ?? "",
+            isCompletedTask: todo.isCompletedTask ?? false,
+            isImportant: todo.isImportant ?? false,
+            start: todo.start ?? start ?? null,
+            end: todo.end ?? null,
+          };
+
+          if (existingTodoIds.has(todo._id)) {
+            await dispatch(
+              updateTodotApi({
+                id: todo._id,
+                todoData,
+              }),
+            ).unwrap();
+          } else {
+            await dispatch(
+              addTodoApi({
+                ...todoData,
+                eventId: savedEvent._id,
+              }),
+            ).unwrap();
+          }
+        }
       }
+
       onClose();
     } catch (error) {
       console.error(error);
       toast.error("Failed to save event");
     }
+  };
+
+  const handleTodoChange = (id: string, fields: Partial<CalendarTodo>) => {
+    setTaskCards(
+      taskCards.map((todo) =>
+        todo._id === id ? { ...todo, ...fields } : todo,
+      ),
+    );
+  };
+
+  const handleRemoveTodoCard = (id: string) => {
+    setTaskCards(taskCards.filter((todo) => todo._id !== id));
+  };
+
+  const handleAddTodoCard = () => {
+    if (!canAddTodo) {
+      toast.error("An event can have a maximum of 3 active tasks");
+      return;
+    }
+
+    const eventEnd =
+      allDay && (endDay || startDay)
+        ? new Date(
+            (endDay ?? startDay!).getFullYear(),
+            (endDay ?? startDay!).getMonth(),
+            (endDay ?? startDay!).getDate(),
+            23,
+            59,
+            59,
+            999,
+          )
+        : combineDateTime(endDay, endTime) ??
+          (selectedEvent?.end ? toDate(selectedEvent.end) : null);
+
+    setTaskCards([
+      ...taskCards,
+      {
+        _id: crypto.randomUUID(),
+        title: "",
+        description: "",
+        isCompletedTask: false,
+        isImportant: false,
+        start: null,
+        end: eventEnd ? new Date(eventEnd) : null,
+        eventId: selectedEvent?._id
+          ? { _id: selectedEvent._id, title: selectedEvent.title }
+          : null,
+      },
+    ]);
   };
 
   if (!isOpen) return null;
@@ -429,82 +438,57 @@ export const ModalEvent = ({
             />
           </div>
 
-          {addTask ? (
-            <div className="flex items-center justify-between ">
-              <label className="mr-2 text-main">Mark is done</label>
-              <input
-                type="checkbox"
-                checked={isCompletedTask}
-                onChange={(e) => {
-                  setIsCompletedTask(e.target.checked);
-                  if (timeoutRef.current) clearTimeout(timeoutRef.current);
-                  setDescription("");
-                  timeoutRef.current = setTimeout(() => {
-                    setAddTask(false);
-                  }, 300);
-                }}
-                className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
-                before:flex before:items-center before:justify-center 
-                checked:before:content-['✓'] checked:before:text-white 
-                text-sm cursor-pointer transition"
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-between">
-              <label className="mr-2 text-main">Add Task</label>
-              <input
-                type="checkbox"
-                checked={addTask}
-                onChange={(e) => {
-                  setAddTask(e.target.checked);
-                  if (timeoutRef.current) clearTimeout(timeoutRef.current);
-                  timeoutRef.current = setTimeout(() => {
-                    setIsCompletedTask(false);
-                  }, 300);
-                }}
-                className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
+          {/* !task */}
+
+          <div className="flex items-center justify-between">
+            <label className="mr-2 text-main">Add Task</label>
+            <input
+              type="checkbox"
+              checked={addTask}
+              onChange={(e) => {
+                const checked = e.target.checked;
+
+                setAddTask(checked);
+
+                if (checked && taskCards.length === 0) {
+                  handleAddTodoCard();
+                }
+
+                if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+                timeoutRef.current = setTimeout(() => {
+                  setIsCompletedTask(false);
+                }, 300);
+              }}
+              className="appearance-none w-4 h-4 border-[1px] border-gray-400 rounded checked:bg-checkboks checked:border-checkboks relative before:content-[''] before:absolute before:inset-0 
       before:flex before:items-center before:justify-center 
       checked:before:content-['✓'] checked:before:text-white 
       text-sm cursor-pointer transition"
-              />
-            </div>
-          )}
-        </div>
-        {addTask && (
-          <div className=" w-full">
-            <textarea
-              ref={titleTaskRef}
-              value={titleTask}
-              maxLength={70}
-              placeholder="Task title"
-              rows={1}
-              onChange={(e) => setTitleTask(e.target.value)}
-              onInput={(e) => {
-                e.currentTarget.style.height = "auto";
-                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-              }}
-              className="w-full border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-2
-      text-main text-justify resize-none overflow-hidden min-h-[20px] shadow-md"
             />
-            <textarea
-              ref={desRef}
-              placeholder="Type your description maximum 600 characters ..."
-              value={description}
-              maxLength={600}
-              onChange={(e) => setDescription(e.target.value)}
-              className=" w-full border-none rounded bg-input-light focus:outline-none focus:bg-hover-input p-2 mb-4 text-main 
-            text-justify  placeholder:text-gray resize-none overflow-hidden min-h-[40px] line-clamp-2 shadow-md"
-              onInput={(e) => {
-                e.currentTarget.style.height = "auto";
-                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-              }}
-            />
-            <p>deadline:{formattedDeadline}</p>
           </div>
-        )}
-      </div>
+        </div>
 
-      <div className="flex flex-row justify-between">
+        {addTask &&
+          taskCards
+            .filter((todo) => !todo.isCompletedTask)
+            .map((todo) => (
+              <EventTodoCard
+                key={todo._id}
+                todo={todo}
+                isSaved={eventTodos.some((item) => item._id === todo._id)}
+                canRestore={canAddTodo}
+                onChange={handleTodoChange}
+                onRemove={handleRemoveTodoCard}
+              />
+            ))}
+      </div>
+      {addTask && canAddTodo && (
+        <button type="button" onClick={handleAddTodoCard}>
+          <Plus />
+        </button>
+      )}
+
+      <div className="flex flex-row justify-between mt-3">
         {isNew && (
           <Button
             variant="default"

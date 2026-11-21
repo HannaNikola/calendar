@@ -8,6 +8,7 @@ import {
 import {
   addTodoApi,
   completedTodoApi,
+  favoriteTodoApi,
   updateTodotApi,
 } from "@/app/api/todoApi";
 import { EventStateProps } from "@/app/types/typesApi";
@@ -105,7 +106,6 @@ const eventSlice = createSlice({
             : event,
         );
       })
-
       .addCase(completedTodoApi.fulfilled, (state, action) => {
         const todo = action.payload;
 
@@ -124,6 +124,19 @@ const eventSlice = createSlice({
               }
             : event,
         );
+      })
+
+      .addCase(favoriteTodoApi.fulfilled, (state, action) => {
+        const todo = action.payload;
+
+        state.events = state.events.map((event) => ({
+          ...event,
+          todoIds: event.todoIds?.map((item) =>
+            item._id === todo._id
+              ? { ...item, isImportant: todo.isImportant }
+              : item,
+          ),
+        }));
       })
       .addCase(deleteEventApi.pending, (state) => {
         state.status = "loading";
