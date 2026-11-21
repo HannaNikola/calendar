@@ -48,6 +48,7 @@ export const TaskItem = ({
   const formattedEnd = item.end
     ? dayjs(item.end).format("DD/MM/YYYY HH:mm")
     : "—";
+    
   const formatDate = (date: string | Date) =>
     dayjs(date).format("DD/MM/YYYY HH:mm");
 
